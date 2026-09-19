@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070d1b">
+<title>Ski Jumping Manager Ultimate Pro 2026/2027</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--bg-main: #070d1b;
+--bg-card: #131b2e;
+--bg-card-hover: #1e293b;
+--bg-panel: #0f172a;
+--bg-input: #09111f;
+
+--accent-blue: #2563eb;
+--accent-blue-hover: #1d4ed8;
+--accent-blue-light: #60a5fa;
+
+--text-main: #f8fafc;
+--text-muted: #94a3b8;
+--text-dark: #64748b;
+
+--border-color: #334155;
+--border-light: #475569;
+
+--success: #22c55e;
+--success-light: #4ade80;
+
+--danger: #ef4444;
+--danger-hover: #dc2626;
+
+--warning: #f59e0b;
+--warning-light: #fbbf24;
+
+--purple: #8b5cf6;
+--cyan: #06b6d4;
+
+--radius-small: 4px;
+--radius: 6px;
+--radius-large: 10px;
+
+--shadow-card: 0 2px 8px rgba(0,0,0,.15);
+--shadow-blue: 0 2px 10px rgba(37,99,235,.2);
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: 'Inter', sans-serif;
+-webkit-tap-highlight-color: transparent;
+}
+
+html {
+min-height: 100%;
+background: var(--bg-main);
+}
+
+body {
+background: var(--bg-main);
+color: var(--text-main);
+min-height: 100vh;
+overflow-x: hidden;
+font-size: 11px;
+}
+
+button { font-family: inherit; }
+button:focus { outline: none; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0b1220; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+.phone-container {
+width: 100%;
+max-width: 480px;
+margin: 0 auto;
+min-height: 100vh;
+background-color: var(--bg-main);
+display: flex;
+flex-direction: column;
+position: relative;
+}
+
+.app-header {
+background: rgba(15,23,42,.96);
+backdrop-filter: blur(10px);
+padding: 8px 12px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 1px solid var(--border-color);
+position: sticky;
+top: 0;
+z-index: 200;
+}
+
+.brand-area {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.brand-logo {
+background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+color: white;
+font-weight: 800;
+font-size: 11px;
+padding: 5px 8px;
+border-radius: 5px;
+}
+
+.brand-title {
+font-size: 12px;
+font-weight: 700;
+color: var(--text-main);
+}
+
+.brand-subtitle {
+font-size: 8px;
+color: var(--text-muted);
+}
+
+.header-status {
+display: flex;
+align-items: center;
+gap: 4px;
+font-size: 8px;
+color: var(--success-light);
+}
+
+.status-dot {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(--success);
+}
+
+.content-body {
+flex: 1;
+padding: 8px;
+padding-bottom: 75px;
+overflow-y: auto;
+}
+
+.view-section {
+display: none;
+animation: fadeIn .12s ease;
+}
+
+.view-section.active { display: block; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(2px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+background: var(--bg-card);
+border-radius: var(--radius-large);
+padding: 10px;
+margin-bottom: 8px;
+border: 1px solid var(--border-color);
+box-shadow: var(--shadow-card);
+}
+.card:last-child { margin-bottom: 0; }
+
+.card-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 8px;
+}
+
+.card-title { font-size: 12px; font-weight: 800; }
+.card-subtitle { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+
+.section-title {
+font-size: 10px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: .5px;
+color: var(--text-muted);
+display: flex;
+align-items: center;
+gap: 5px;
+margin-bottom: 8px;
+}
+
+.btn-action {
+width: 100%;
+background: var(--accent-blue);
+color: white;
+border: none;
+padding: 8px;
+border-radius: 6px;
+font-weight: 700;
+font-size: 10px;
+cursor: pointer;
+transition: background .15s, transform .1s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+box-shadow: var(--shadow-blue);
+margin-bottom: 5px;
+}
+.btn-action:last-child { margin-bottom: 0; }
+.btn-action:hover { background: var(--accent-blue-hover); }
+.btn-action:active { transform: scale(.98); }
+.btn-action:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; opacity: .6; }
+
+.btn-secondary { background: #334155; box-shadow: none; }
+.btn-secondary:hover { background: #475569; }
+.btn-danger { background: var(--danger); box-shadow: none; }
+.btn-danger:hover { background: var(--danger-hover); }
+.btn-success { background: var(--success); box-shadow: none; }
+.btn-success:hover { background: #16a34a; }
+.btn-warning { background: var(--warning); color: #111827; box-shadow: none; }
+.btn-purple { background: var(--purple); box-shadow: none; }
+
+.btn-small {
+background: var(--accent-blue);
+color: white;
+border: none;
+padding: 4px 7px;
+border-radius: 4px;
+font-size: 8px;
+font-weight: 700;
+cursor: pointer;
+}
+.btn-small:hover { background: var(--accent-blue-hover); }
+
+.welcome-screen {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 10px 5px;
+text-align: center;
+}
+
+.welcome-logo { font-size: 32px; margin-bottom: 6px; }
+.welcome-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.welcome-desc { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; max-width: 320px; line-height: 1.4; }
+
+.mode-select-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 8px;
+width: 100%;
+max-width: 360px;
+margin-bottom: 10px;
+}
+
+.mode-card {
+background: var(--bg-card);
+border: 1.5px solid var(--border-color);
+border-radius: 8px;
+padding: 10px;
+cursor: pointer;
+transition: all .15s;
+text-align: left;
+}
+
+.mode-card:hover, .mode-card.selected {
+border-color: var(--accent-blue-light);
+background: rgba(37,99,235,.08);
+}
+
+.mode-card-title { font-size: 11px; font-weight: 800; margin-bottom: 3px; color: var(--accent-blue-light); }
+.mode-card-desc { font-size: 8px; color: var(--text-muted); line-height: 1.3; }
+
+.builder-box {
+background: rgba(15,23,42,.6);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+padding: 8px;
+margin-bottom: 8px;
+}
+
+.builder-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: var(--bg-input);
+padding: 5px 6px;
+border-radius: 4px;
+margin-bottom: 4px;
+font-size: 9px;
+}
+
+.save-slots-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 6px;
+width: 100%;
+max-width: 360px;
+margin-bottom: 10px;
+}
+
+.save-slot-card {
+background: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+padding: 8px 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+text-align: left;
+}
+
+.save-slot-info { font-size: 9px; }
+.save-slot-title { font-weight: 800; color: var(--accent-blue-light); margin-bottom: 2px; }
+.save-slot-desc { font-size: 7px; color: var(--text-muted); }
+
+.next-event-card {
+background: linear-gradient(145deg, #131b2e, #0c1425);
+border: 1px solid rgba(59,130,246,.3);
+}
+
+.event-badge-row { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+.event-location { font-size: 9px; color: var(--text-muted); margin-bottom: 8px; }
+
+.event-extra { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 8px; }
+.event-extra-box { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 5px; padding: 5px; text-align: center; }
+.event-extra-label { font-size: 6px; color: var(--text-muted); text-transform: uppercase; }
+.event-extra-value { font-size: 9px; font-weight: 800; margin-top: 1px; }
+
+.home-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+.home-stat { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; text-align: center; }
+.home-stat-value { font-size: 13px; font-weight: 800; }
+.home-stat-label { font-size: 7px; color: var(--text-muted); margin-top: 1px; }
+
+.calendar-table { width: 100%; border-collapse: collapse; font-size: 9px; }
+.calendar-table th { color: var(--text-muted); text-align: left; padding: 5px; border-bottom: 1px solid var(--border-color); font-weight: 700; font-size: 7px; }
+.calendar-table td { padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); vertical-align: middle; }
+.calendar-table tr.active-event { background: rgba(37,99,235,.08); }
+.calendar-clickable { cursor: pointer; transition: background .15s; }
+.calendar-clickable:hover { background: rgba(59,130,246,.1); }
+
+.badge-cykl { background: rgba(59,130,246,.12); color: var(--accent-blue-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-pk { background: rgba(245,158,11,.18); color: var(--warning-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-team { background: rgba(139,92,246,.18); color: #c084fc; padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-finished { background: rgba(34,197,94,.12); color: var(--success-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; display: inline-flex; align-items: center; gap: 3px; }
+.badge-cancelled { background: rgba(239,68,68,.12); color: var(--danger); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; display: inline-flex; align-items: center; gap: 3px; }
+
+.live-wrapper { display: flex; flex-direction: column; gap: 6px; }
+.live-jumper-panel { background: linear-gradient(135deg, #131b2e, #090e1a); border: 1px solid rgba(59,130,246,.25); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+
+.jumper-active-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+.active-jumper-name { font-size: 11px; font-weight: 800; color: var(--accent-blue-light); }
+.live-hill-badge { font-size: 7px; background: rgba(59,130,246,.12); color: var(--accent-blue-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; text-align: right; }
+
+.next-up-info { font-size: 8px; color: var(--text-muted); background: rgba(15,23,42,.6); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.leader-target-box { font-size: 8px; color: var(--warning-light); background: rgba(245,158,11,.08); padding: 4px 6px; border-radius: 4px; border: 1px solid rgba(245,158,11,.25); display: flex; justify-content: space-between; align-items: center; }
+
+.control-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.gate-box, .wind-direction-box { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 5px; padding: 4px 6px; display: flex; justify-content: space-between; align-items: center; font-size: 8px; }
+
+.gate-controls { display: flex; gap: 3px; }
+.gate-btn { background: var(--accent-blue); color: white; border: none; width: 20px; height: 20px; border-radius: 3px; font-weight: 800; cursor: pointer; font-size: 10px; }
+.gate-btn:hover { background: var(--accent-blue-hover); }
+
+.live-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
+.stat-box { background: rgba(15,23,42,.5); border: 1px solid var(--border-color); border-radius: 5px; padding: 4px; text-align: center; }
+.stat-label { font-size: 6px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+.stat-value { font-size: 10px; font-weight: 800; margin-top: 1px; }
+
+.active-details-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,.7); padding: 4px 6px; border-radius: 5px; font-size: 8px; border: 1px solid var(--border-color); }
+.judges-notes-row { display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end; }
+.judge-badge { background: #334155; padding: 1px 4px; border-radius: 3px; font-size: 7px; font-weight: 700; display: flex; align-items: center; gap: 2px; }
+
+.live-table-panel { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; margin-top: 6px; }
+.table-mode-header { padding: 6px 8px; background: var(--bg-panel); font-size: 9px; font-weight: 800; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.competition-status { font-size: 7px; }
+
+.fis-table-container { overflow-x: auto; overflow-y: auto; max-height: 42vh; }
+.fis-table { width: 100%; border-collapse: collapse; font-size: 8px; min-width: 380px; }
+.fis-table th { background: #0f172a; color: var(--text-muted); padding: 5px 6px; text-align: left; position: sticky; top: 0; z-index: 10; font-weight: 700; border-bottom: 1px solid var(--border-color); }
+.fis-table td { padding: 5px 6px; border-bottom: 1px solid rgba(51,65,85,.3); }
+.fis-table tr.current-skier-row { background: rgba(59,130,246,.2); }
+
+.wind-pos { color: var(--success); }
+.wind-neg { color: var(--danger); }
+
+.squads-header-info {
+font-size: 8px;
+color: var(--text-muted);
+margin-bottom: 10px;
+line-height: 1.45;
+background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(139,92,246,.08));
+padding: 8px 10px;
+border-radius: 8px;
+border: 1px solid rgba(59,130,246,.25);
+}
+
+.country-accordion {
+background: var(--bg-card);
+border-radius: 8px;
+margin-bottom: 6px;
+border: 1px solid var(--border-color);
+overflow: hidden;
+box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.country-accordion-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 9px 10px;
+background: rgba(15,23,42,.7);
+cursor: pointer;
+user-select: none;
+transition: background .15s;
+}
+.country-accordion-header:hover {
+background: rgba(30,41,59,.8);
+}
+
+.country-title-area {
+display: flex;
+align-items: center;
+gap: 7px;
+font-weight: 800;
+font-size: 10px;
+color: var(--text-main);
+}
+
+.country-meta-badges {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.country-count { 
+font-size: 7.5px; 
+font-weight: 700; 
+color: var(--text-muted); 
+background: var(--bg-input); 
+padding: 3px 6px; 
+border-radius: 4px; 
+border: 1px solid var(--border-color); 
+}
+
+.accordion-arrow {
+font-size: 9px;
+color: var(--text-muted);
+transition: transform 0.2s ease;
+}
+.country-accordion.open .accordion-arrow {
+transform: rotate(180deg);
+}
+
+.country-accordion-body {
+display: none;
+padding: 8px;
+background: var(--bg-main);
+border-top: 1px solid var(--border-color);
+}
+.country-accordion.open .country-accordion-body {
+display: block;
+}
+
+.jumper-list-item { 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+background: rgba(15,23,42,.55); 
+padding: 7px 8px; 
+border-radius: 7px; 
+margin-bottom: 5px; 
+font-size: 9px; 
+border: 1px solid rgba(51,65,85,.35);
+transition: background .12s;
+}
+.jumper-list-item:hover { background: rgba(30,41,59,.7); }
+.jumper-list-item:last-child { margin-bottom: 0; }
+
+.jumper-left { display: flex; align-items: center; gap: 7px; }
+.jumper-number { color: var(--text-dark); font-size: 7px; min-width: 16px; font-weight: 700; }
+.jumper-meta-info { display: flex; flex-direction: column; gap: 1px; }
+.jumper-name-text { font-weight: 700; color: var(--text-main); font-size: 9.5px; }
+.jumper-pot-text { font-size: 7px; color: var(--text-muted); }
+
+.jumper-toggles-group {
+display: flex;
+gap: 4px;
+align-items: center;
+}
+
+.toggle-switch { 
+cursor: pointer; 
+padding: 4px 6px; 
+border-radius: 5px; 
+font-size: 7.5px; 
+font-weight: 800; 
+user-select: none; 
+transition: all .12s;
+border: 1px solid transparent;
+display: inline-flex;
+align-items: center;
+gap: 2px;
+justify-content: center;
+}
+.toggle-on { background: rgba(34,197,94,.18); color: var(--success-light); border-color: rgba(34,197,94,.35); }
+.toggle-off { background: rgba(51,65,85,.45); color: var(--text-muted); border-color: var(--border-color); }
+
+.toggle-team.toggle-on {
+background: rgba(139,92,246,.25);
+color: #c084fc;
+border-color: rgba(139,92,246,.4);
+}
+
+.toggle-pk.toggle-on {
+background: rgba(245,158,11,.25);
+color: var(--warning-light);
+border-color: rgba(245,158,11,.4);
+}
+
+.standings-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+.standings-tab-btn { flex: 1; min-width: 48%; background: var(--bg-panel); border: 1px solid var(--border-color); color: var(--text-muted); padding: 5px; border-radius: 5px; font-size: 8px; font-weight: 800; cursor: pointer; text-align: center; }
+.standings-tab-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue-light); }
+
+.standings-header { display: grid; grid-template-columns: 28px 1fr 45px 50px; padding: 5px; background: var(--bg-panel); color: var(--text-muted); font-size: 7px; font-weight: 800; border-bottom: 1px solid var(--border-color); }
+.standings-header-team { display: grid; grid-template-columns: 28px 1fr 50px; padding: 5px; background: var(--bg-panel); color: var(--text-muted); font-size: 7px; font-weight: 800; border-bottom: 1px solid var(--border-color); }
+
+.standing-row { display: grid; grid-template-columns: 28px 1fr 45px 50px; padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); align-items: center; font-size: 8px; cursor: pointer; transition: background .12s; }
+.standing-row:hover { background: rgba(59,130,246,.12); }
+.standing-row-team { display: grid; grid-template-columns: 28px 1fr 50px; padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); align-items: center; font-size: 8px; }
+
+.standing-position { font-weight: 800; }
+.standing-name { font-weight: 700; }
+.standing-country { color: var(--text-muted); }
+.standing-points { text-align: right; color: var(--accent-blue-light); font-weight: 800; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+.modal-overlay.show { display: flex; }
+
+.modal { width: 100%; max-width: 380px; background: #131b2e; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; box-shadow: 0 15px 40px rgba(0,0,0,.6); max-height: 80vh; display: flex; flex-direction: column; }
+
+.modal-title { font-size: 12px; font-weight: 800; margin-bottom: 5px; }
+.modal-text { font-size: 9px; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px; }
+.modal-buttons { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 8px; }
+.modal-btn { border: none; border-radius: 5px; padding: 8px; font-size: 9px; font-weight: 800; cursor: pointer; }
+.modal-cancel { background: #334155; color: white; }
+
+.toast-container { position: fixed; left: 50%; bottom: 65px; transform: translateX(-50%); width: calc(100% - 20px); max-width: 440px; z-index: 2000; pointer-events: none; }
+.toast { background: #1e293b; border: 1px solid var(--border-light); border-radius: 6px; padding: 8px 10px; font-size: 9px; font-weight: 700; box-shadow: 0 5px 20px rgba(0,0,0,.4); margin-top: 5px; }
+.toast.success { border-color: rgba(34,197,94,.4); }
+.toast.error { border-color: rgba(239,68,68,.4); }
+.toast.info { border-color: rgba(59,130,246,.4); }
+
+.bottom-nav { background: rgba(15,23,42,.97); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 500; }
+.nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 8px; gap: 2px; cursor: pointer; width: 25%; }
+.nav-item.active { color: var(--accent-blue-light); }
+.nav-item svg { width: 16px; height: 16px; fill: currentColor; }
+
+.empty-state { text-align: center; padding: 20px 10px; color: var(--text-muted); }
+.empty-state-icon { font-size: 24px; margin-bottom: 6px; }
+.empty-state-title { color: var(--text-main); font-weight: 800; font-size: 10px; margin-bottom: 3px; }
+
+.q-badge {
+background: rgba(34, 197, 94, 0.2);
+color: var(--success-light);
+border: 1px solid rgba(34, 197, 94, 0.4);
+font-size: 7px;
+font-weight: 800;
+padding: 1px 4px;
+border-radius: 3px;
+margin-left: 4px;
+display: inline-block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone-container">
+
+<header class="app-header">
+<div class="brand-area">
+<div class="brand-logo">SJM</div>
+<div>
+<div class="brand-title">Ski Jumping Manager</div>
+<div class="brand-subtitle">Sezon 2026/2027 Pro</div>
+</div>
+</div>
+<div class="header-status">
+<span class="status-dot"></span> ONLINE
+</div>
+</header>
+
+<div class="content-body">
+
+<!-- WYBÓR TRYBU / SLOTÓW ZAPISU -->
+<div id="view-mode-select" class="view-section active">
+<div class="welcome-screen">
+<div class="welcome-logo">🏆</div>
+<div class="welcome-title">Wybierz slot zapisu / karierę</div>
+<div class="welcome-desc">
+Wybierz jeden z 3 dostępnych slotów zapisu lub rozpocznij nową grę.
+</div>
+
+<div class="save-slots-grid" id="save-slots-container"></div>
+
+<div id="mode-selection-box" style="display:none; width:100%; max-width:360px;">
+<div class="section-title">Wybierz typ kalendarza:</div>
+<div class="mode-select-grid">
+<div class="mode-card" id="card-mode-real" onclick="app.selectMode('real')">
+<div class="mode-card-title">📅 Prawdziwy Sezon 2026/2027</div>
+<div class="mode-card-desc">Oficjalny harmonogram FIS ze skoczniami PŚ, PK, TCS oraz konkursami drużynowymi.</div>
+</div>
+<div class="mode-card" id="card-mode-custom" onclick="app.selectMode('custom')">
+<div class="mode-card-title">🛠 Własny Kalendarz Skoczni</div>
+<div class="mode-card-desc">Ułóż własną sekwencję obiektów z bazy z możliwością wyboru typu (Indywidualny PŚ / PK lub Drużynowy).</div>
+</div>
+</div>
+
+<div id="custom-builder-container" style="display:none; width:100%; text-align:left; margin-bottom:10px;">
+<div class="section-title">Wybierz skocznie i cykl/typ (min. 3):</div>
+<div class="builder-box" id="builder-pool-list" style="max-height:180px; overflow-y:auto;"></div>
+<div style="font-size:8px; color:var(--text-muted); margin-bottom:5px;" id="builder-counter">Wybrano: 0 skoczni</div>
+</div>
+
+<button class="btn-action" id="btn-start-game" onclick="app.initializeGameMode()" disabled>
+▶ ROZPOCZNIJ GRĘ W TYM LOCIE
+</button>
+<button class="btn-action btn-secondary" onclick="app.cancelSlotSelection()" style="margin-top:5px;">
+← POWRÓT DO WYBORU SLOTÓW
+</button>
+</div>
+</div>
+</div>
+
+<!-- HOME -->
+<div id="view-home" class="view-section">
+<div class="card next-event-card">
+<div class="section-title">⏱ Najbliższy Konkurs</div>
+<div class="event-badge-row" id="home-event-title">
+<span>🇳🇴</span>
+<span id="home-event-name">Lillehammer · HS 140 m</span>
+</div>
+<div class="event-location" id="home-event-desc">
+Kwalifikacje + 1. Seria + Seria Finałowa
+</div>
+<div class="event-extra">
+<div class="event-extra-box">
+<div class="event-extra-label">Skocznia</div>
+<div class="event-extra-value" id="home-hill">HS 140</div>
+</div>
+<div class="event-extra-box">
+<div class="event-extra-label">Typ / Cykl</div>
+<div class="event-extra-value" id="home-cycle">PŚ Indywidualny</div>
+</div>
+<div class="event-extra-box">
+<div class="event-extra-label">Warunki</div>
+<div class="event-extra-value" id="home-weather">☀️ Stabilne</div>
+</div>
+</div>
+<button class="btn-action" id="home-main-btn" onclick="app.startCompetition()">
+▶ ROZPOCZNIJ ZAWODY NA ŻYWO
+</button>
+</div>
+
+<div class="card">
+<div class="section-title">📊 Statystyki sezonu</div>
+<div class="home-stats">
+<div class="home-stat">
+<div class="home-stat-value" id="home-stat-events">0</div>
+<div class="home-stat-label">Konkursy</div>
+</div>
+<div class="home-stat">
+<div class="home-stat-value" id="home-stat-points">0</div>
+<div class="home-stat-label">Punkty PŚ</div>
+</div>
+<div class="home-stat">
+<div class="home-stat-value" id="home-stat-active">10</div>
+<div class="home-stat-label">Powołani PŚ</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title">💾 Zarządzanie stanem gry</div>
+<button class="btn-action btn-secondary" onclick="app.manualSave()">💾 ZAPISZ DO AKTYWNEGO SLOTU</button>
+<button class="btn-action btn-danger" onclick="app.resetGame()">🔄 ZMIANA SLOTU / RESET GRY</button>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div>
+<div class="card-title">📅 Kalendarz Sezonu</div>
+<div class="card-subtitle">Kliknij w ukończony konkurs, aby zobaczyć wyniki</div>
+</div>
+</div>
+<table class="calendar-table">
+<thead>
+<tr>
+<th>Gospodarz</th>
+<th>Cykl</th>
+<th>Skocznia</th>
+<th>Akcja / Wyniki</th>
+</tr>
+</thead>
+<tbody id="calendar-table-body"></tbody>
+</table>
+</div>
+</div>
+
+<!-- LIVE -->
+<div id="view-live" class="view-section">
+<div class="live-wrapper">
+<div class="live-jumper-panel">
+<div class="jumper-active-header">
+<div>
+<span id="live-jumper-flag">🇳🇴</span>
+<span class="active-jumper-name" id="live-jumper-name">Oczekiwanie</span>
+</div>
+<div id="live-hill-display" class="live-hill-badge">
+Lillehammer · HS 140
+</div>
+</div>
+
+<div class="next-up-info">
+<span>Kolejny na belce:</span>
+<strong id="next-jumper-name" style="color:#60a5fa;">Brak</strong>
+</div>
+
+<div class="leader-target-box" id="leader-target-box">
+<span>Cel do 1. miejsca:</span>
+<strong id="leader-target-text" style="color:var(--warning-light);">Oczekiwanie na lidera</strong>
+</div>
+
+<div class="control-row">
+<div class="gate-box">
+<span>Belka: <strong id="current-gate" style="color:#60a5fa;">15</strong></span>
+<div class="gate-controls">
+<button class="gate-btn" onclick="app.changeGate(-1)">-</button>
+<button class="gate-btn" onclick="app.changeGate(1)">+</button>
+</div>
+</div>
+<div class="wind-direction-box">
+<span>Wiatr:</span>
+<span id="wind-dir-indicator" style="font-weight:700; color:#60a5fa;">⬅️ 1.2 m/s</span>
+</div>
+</div>
+
+<div class="live-stats-grid">
+<div class="stat-box">
+<div class="stat-label">Odległość</div>
+<div class="stat-value" id="live-stat-dist">- m</div>
+</div>
+<div class="stat-box">
+<div class="stat-label">Wiatr (pkt)</div>
+<div class="stat-value" id="live-stat-wind">-</div>
+</div>
+<div class="stat-box">
+<div class="stat-label">Belka (pkt)</div>
+<div class="stat-value" id="live-stat-comp">-</div>
+</div>
+</div>
+
+<div class="active-details-bar">
+<div>Poz: <strong id="live-stat-rank" style="color:#60a5fa;">-</strong></div>
+<div class="judges-notes-row" id="live-judges-row">
+<span class="judge-badge">-</span>
+<span class="judge-badge">-</span>
+<span class="judge-badge">-</span>
+<span class="judge-badge">-</span>
+<span class="judge-badge">-</span>
+</div>
+</div>
+
+<button class="btn-action" id="btn-next-jump" onclick="app.performNextJump()">
+PUŚĆ KOLEJNEGO SKOCZKA
+</button>
+<button class="btn-action btn-purple" id="btn-simulate-series" onclick="app.simulateRemainingSeries()">
+⚡ SYMULUJ CAŁĄ SERIĘ NA RAZ
+</button>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px;">
+<button class="btn-action btn-warning" onclick="app.cancelCurrentSeries()" style="margin-bottom:0; font-size:8px;">
+❌ ODWOŁAJ SERIĘ
+</button>
+<button class="btn-action btn-danger" onclick="app.cancelEntireCompetition()" style="margin-bottom:0; font-size:8px;">
+🚫 ODWOŁAJ KONKURS
+</button>
+</div>
+</div>
+
+<div class="live-table-panel">
+<div class="table-mode-header">
+<span id="table-title-mode">Wyniki Kwalifikacji</span>
+<span id="competition-status-badge" class="competition-status" style="color:var(--warning);">Trwa runda</span>
+</div>
+<div class="fis-table-container">
+<table class="fis-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Skoczek / Drużyna</th>
+<th>Odległość</th>
+<th>Nota</th>
+<th>Wiatr</th>
+<th>Łącznie</th>
+</tr>
+</thead>
+<tbody id="fis-table-body"></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SQUADS -->
+<div id="view-squads" class="view-section">
+<div class="card">
+<div class="section-title">👥 Powołania Kadrowe</div>
+
+<div class="squads-header-info">
+<strong>Zasady powołań:</strong><br>
+• <strong style="color:var(--success-light);">PŚ</strong> – powołanie zawodnika do startów w Pucharze Świata.<br>
+• <strong style="color:var(--warning-light);">PK</strong> – powołanie zawodnika do startów w Pucharze Kontynentalnym.<br>
+• <strong style="color:#c084fc;">Team</strong> – wyznaczenie do 4-osobowego składu drużynowego.<br>
+⚠️ <em>W przypadku groźnego upadku zawodnik może doznać kontuzji – czas jego pauzy wyświetli się przy jego nazwisku!</em><br>
+💡 <em>Kliknij w dany kraj, aby rozwinąć lub zwinąć listę jego zawodników.</em>
+</div>
+
+<div id="squads-container"></div>
+</div>
+</div>
+
+<!-- STANDINGS -->
+<div id="view-standings" class="view-section">
+<div class="card">
+<div class="standings-tabs">
+<button class="standings-tab-btn active" id="tab-btn-individual" onclick="app.switchStandingsTab('individual')">🏆 Generalna PŚ</button>
+<button class="standings-tab-btn" id="tab-btn-team" onclick="app.switchStandingsTab('team')">👥 Drużynowa PŚ</button>
+<button class="standings-tab-btn" id="tab-btn-pk-ind" onclick="app.switchStandingsTab('pk_individual')">🏆 Generalna PK</button>
+<button class="standings-tab-btn" id="tab-btn-pk-team" onclick="app.switchStandingsTab('pk_team')">👥 Drużynowa PK</button>
+</div>
+<div style="font-size: 7.5px; color: var(--text-muted); margin-bottom: 6px;" id="standings-hint">
+💡 Kliknij na wybranego skoczka, aby zobaczyć jego rekord życiowy, cechy i historię.
+</div>
+
+<div id="standings-individual-view">
+<div class="standings-header">
+<span>#</span>
+<span>Skoczek</span>
+<span>Kraj</span>
+<span style="text-align:right;">Punkty</span>
+</div>
+<div id="standings-body"></div>
+</div>
+
+<div id="standings-team-view" style="display:none;">
+<div class="standings-header-team">
+<span>#</span>
+<span>Kraj</span>
+<span style="text-align:right;">Punkty</span>
+</div>
+<div id="standings-team-body"></div>
+</div>
+
+<div id="standings-pk-individual-view" style="display:none;">
+<div class="standings-header">
+<span>#</span>
+<span>Skoczek (PK)</span>
+<span>Kraj</span>
+<span style="text-align:right;">Punkty</span>
+</div>
+<div id="standings-pk-body"></div>
+</div>
+
+<div id="standings-pk-team-view" style="display:none;">
+<div class="standings-header-team">
+<span>#</span>
+<span>Kraj (PK)</span>
+<span style="text-align:right;">Punkty</span>
+</div>
+<div id="standings-pk-team-body"></div>
+</div>
+</div>
+</div>
+
+</div>
+
+<nav class="bottom-nav" id="main-bottom-nav" style="display:none;">
+<button class="nav-item active" onclick="app.switchTab('home', this)">
+<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+Główna
+</button>
+<button class="nav-item" onclick="app.switchTab('live', this)">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+Konkurs
+</button>
+<button class="nav-item" onclick="app.switchTab('squads', this)">
+<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+Kadra
+</button>
+<button class="nav-item" onclick="app.switchTab('standings', this)">
+<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+Generalna
+</button>
+</nav>
+
+</div>
+
+<div class="modal-overlay" id="general-modal">
+<div class="modal" id="general-modal-content"></div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+class SkiManagerUltimatePro2026 {
+constructor() {
+this.activeSlot = 1;
+this.selectedMode = null;
+this.customSelectedHills = [];
+this.currentStandingsTab = 'individual';
+this.defaultJumpers = this.createDefaultJumpers();
+this.availableHillsPool = this.createAvailableHillsPool();
+this.openCountriesState = {};
+
+this.resetToDefaults();
+this.renderSlotSelection();
+}
+
+getElement(id) { return document.getElementById(id); }
+
+getJumperCharacteristics(name) {
+const map = {
+"Dawid Kubacki": { pos: "Mocne i agresywne wybicie z progu", neg: "Słabiej sobie radzi na obiektach mamucich" },
+"Piotr Żyła": { pos: "Ogromna dynamika i waleczność", neg: "Niestabilna sylwetka w locie i podatność na wiatr" },
+"Kacper Tomasiak": { pos: "Świetna technika i noszenie w locie", neg: "Brak doświadczenia na dużych obiektach" },
+"Domen Prevc": { pos: "Genialne czucie lotu, absolutna dominacja na mamutach", neg: "Czasami problem z lądowaniem przy ekstremalnych odległościach" },
+"Anže Lanišek": { pos: "Bardzo wysoka powtarzalność i styl", neg: "Podatny na gorszy dzień w trudnych warunkach" },
+"Timi Zajc": { pos: "Niesamowity błysk na mamutach, dalekie loty", neg: "Duża nierównomierność formy w sezonie" },
+"Stefan Kraft": { pos: "Niezwykła regularność, perfekcyjna pozycja dojazdowa", neg: "Bywa podatny na silny wiatr w plecy" },
+"Daniel Tschofenig": { pos: "Doskonałe lądowanie telemarkiem i stabilność", neg: "Czasami zbyt zachowawczy na progu" },
+"Ryōyū Kobayashi": { pos: "Genialny timing na progu, świetny TCS", neg: "Bywa chimeryczny, gdy sprzęt nie domaga" },
+"Andreas Wellinger": { pos: "Piękny, wysoki lot i wysokie noty za styl", neg: "Trudności z osiąganiem dalekich odległości przy mocnym wietrze z tyłu" },
+"Karl Geiger": { pos: "Świetna faza lotu, silny psychicznie", neg: "Słabsze prędkości początkowe na rozbiegu" },
+"Halvor Egner Granerud": { pos: "Potężna faza lotu w sprzyjających warunkach", neg: "Duże wahania formy i kłopoty w trudnym wietrze" },
+"Marius Lindvik": { pos: "Znakomity lotnik, świetny na mamutach", neg: "Nierówna dyspozycja w konkursach letnich/początku zimy" },
+"Gregor Deschwanden": { pos: "Ogromne doświadczenie i waleczność", neg: "Miewa problem z powtórzeniem dwóch równych skoków" }
+};
+
+return map[name] || { 
+pos: "Solidna technika i rzetelna praca treningowa", 
+neg: "Czasami brakuje błysku w rywalizacji z najlepszymi" 
+};
+}
+
+getDefaultPersonalBest(name, skill) {
+const flyingGiants = ["Domen Prevc", "Timi Zajc", "Marius Lindvik", "Stefan Kraft", "Ryōyū Kobayashi", "Halvor Egner Granerud", "Johann André Forfang", "Žiga Jelar"];
+if (flyingGiants.includes(name)) {
+return 235.0 + Math.floor(Math.random() * 15);
+} else if (skill > 82) {
+return 220.0 + Math.floor(Math.random() * 15);
+} else if (skill > 75) {
+return 195.0 + Math.floor(Math.random() * 20);
+} else {
+return 140.0 + Math.floor(Math.random() * 35);
+}
+}
+
+createDefaultJumpers() {
+const rawData = [
+{ country: "Austria", flag: "🇦🇹", names: [
+{n: "Daniel Tschofenig", s: 94}, {n: "Stephan Embacher", s: 92}, {n: "Jan Hörl", s: 90},
+{n: "Stefan Kraft", s: 89}, {n: "Manuel Fettner", s: 86}, {n: "Maximilian Ortner", s: 85},
+{n: "Jonas Schuster", s: 84}, {n: "Clemens Aigner", s: 78}, {n: "Markus Müller", s: 80},
+{n: "Clemens Leitner", s: 76}, {n: "Niklas Bachlinger", s: 74}, {n: "Philipp Aschenwald", s: 73},
+{n: "Lukas Haagen", s: 72}, {n: "Francisco Mörth", s: 71}, {n: "Hannes Landerer", s: 70},
+{n: "Julijan Smid", s: 69}, {n: "Stefan Rainer", s: 68}, {n: "Raffael Zimmermann", s: 67},
+{n: "Jakob Steinberger", s: 66}, {n: "Johannes Pölz", s: 65}, {n: "Janni Reisenauer", s: 64},
+{n: "Peter Resinger", s: 63}, {n: "Marco Wörgötter", s: 62}, {n: "Simon Steinberger", s: 61},
+{n: "Maximilian Steiner", s: 60}, {n: "Maximilian Gartner", s: 59}
+]},
+{ country: "Niemcy", flag: "🇩🇪", names: [
+{n: "Philipp Raimund", s: 91}, {n: "Felix Hoffmann", s: 88}, {n: "Andreas Wellinger", s: 87},
+{n: "Karl Geiger", s: 84}, {n: "Pius Paschke", s: 83}, {n: "Luca Roth", s: 78},
+{n: "Ben Bayer", s: 76}, {n: "Constantin Schmid", s: 77}, {n: "Martin Hamann", s: 74},
+{n: "Adrian Tittel", s: 75}, {n: "Jannik Faißt", s: 72}, {n: "Max Unglaube", s: 71},
+{n: "Lasse Deimel", s: 70}, {n: "Janne Holz", s: 69}, {n: "Finn Braun", s: 68},
+{n: "Emanuel Schmid", s: 67}, {n: "Alex Reiter", s: 66}
+]},
+{ country: "Norwegia", flag: "🇳🇴", names: [
+{n: "Marius Lindvik", s: 88}, {n: "Johann André Forfang", s: 87}, {n: "Kristoffer Eriksen Sundal", s: 85},
+{n: "Halvor Egner Granerud", s: 84}, {n: "Isak Andreas Langmo", s: 80}, {n: "Robin Pedersen", s: 79},
+{n: "Jørgen Oliver Strøm", s: 78}, {n: "Benjamin Østvold", s: 77}, {n: "Adrian Thon Gundersrud", s: 76},
+{n: "Fredrik Villumstad", s: 75}, {n: "Sindre Ulven Jørgensen", s: 74}, {n: "Oddvar Gunnerød", s: 72},
+{n: "Richard Selbekk-Hansen", s: 71}, {n: "Johannes Aardal", s: 70}, {n: "Fredrik Gran", s: 69},
+{n: "Anders Haare", s: 68}, {n: "Paal Haakon Bjørntomt", s: 67}, {n: "Bendik Jakobsen Heggli", s: 66}
+]},
+{ country: "Słowenia", flag: "🇸🇮", names: [
+{n: "Domen Prevc", s: 96}, {n: "Anže Lanišek", s: 93}, {n: "Timi Zajc", s: 87},
+{n: "Rok Oblak", s: 80}, {n: "Žiga Jančar", s: 78}, {n: "Žak Mogel", s: 77},
+{n: "Enej Faletič", s: 74}, {n: "Rok Masle", s: 73}, {n: "Gorazd Završnik", s: 72},
+{n: "Žiga Jelar", s: 81}, {n: "Lovro Kos", s: 82}, {n: "Maksim Bartolj", s: 71},
+{n: "Jaka Kramer", s: 70}, {n: "Nik Gostisa Lah", s: 69}, {n: "Jernej Presečnik", s: 68}
+]},
+{ country: "Japonia", flag: "🇯🇵", names: [
+{n: "Ryōyū Kobayashi", s: 94}, {n: "Ren Nikaidō", s: 93}, {n: "Naoki Nakamura", s: 88},
+{n: "Tomofumi Naito", s: 85}, {n: "Yukiya Satō", s: 83}, {n: "Sakutaro Kobayashi", s: 82},
+{n: "Junshiro Kobayashi", s: 78}, {n: "Keiichi Satō", s: 76}, {n: "Go Yamamoto", s: 74},
+{n: "Yuto Nakamura", s: 73}, {n: "Shinnosuke Fujita", s: 72}, {n: "Taku Takeuchi", s: 75},
+{n: "Riki Kurita", s: 71}, {n: "Daimatsu Takehana", s: 70}
+]},
+{ country: "Polska", flag: "🇵🇱", names: [
+{n: "Kacper Tomasiak", s: 84}, {n: "Piotr Żyła", s: 80}, {n: "Dawid Kubacki", s: 79},
+{n: "Maciej Kot", s: 77}, {n: "Paweł Wąsek", s: 76}, {n: "Aleksander Zniszczoł", s: 75},
+{n: "Klemens Joniak", s: 73}, {n: "Adam Niżnik", s: 72}, {n: "Jakub Wolny", s: 74},
+{n: "Jarosław Krzak", s: 70}, {n: "Kamil Waszek", s: 69}, {n: "Łukasz Łukaszczyk", s: 68},
+{n: "Kacper Juroszek", s: 71}, {n: "Konrad Tomasiak", s: 67}, {n: "Jan Galica", s: 66},
+{n: "Tomasz Pilch", s: 65}
+]},
+{ country: "Szwajcaria", flag: "🇨🇭", names: [
+{n: "Gregor Deschwanden", s: 86}, {n: "Sandro Hauswirth", s: 80}, {n: "Killian Peier", s: 79},
+{n: "Remo Imhof", s: 76}, {n: "Felix Trunz", s: 75}, {n: "Juri Kesseli", s: 74},
+{n: "Yannick Wasser", s: 73}, {n: "Simon Ammann", s: 72}
+]},
+{ country: "Finlandia", flag: "🇫🇮", names: [
+{n: "Antti Aalto", s: 83}, {n: "Niko Kytösaho", s: 81}, {n: "Eetu Nousiainen", s: 76},
+{n: "Jarkko Määttä", s: 75}, {n: "Vilho Palosaari", s: 74}, {n: "Paavo Romppainen", s: 73},
+{n: "Tuomas Kinnunen", s: 71}, {n: "Tomas Kuisma", s: 70}, {n: "Henri Kavilo", s: 69},
+{n: "Ilkka Herola", s: 68}, {n: "Timi Heiskanen", s: 67}
+]},
+{ country: "Francja", flag: "🇫🇷", names: [
+{n: "Valentin Foubert", s: 82}, {n: "Jules Chervet", s: 76}, {n: "Enzo Milesi", s: 74},
+{n: "Alessandro Batby", s: 72}, {n: "Louis Obersteiner", s: 71}, {n: "Anoki Pouradier", s: 70},
+{n: "Ari Repellin", s: 69}
+]},
+{ country: "USA", flag: "🇺🇸", names: [
+{n: "Kevin Bickner", s: 80}, {n: "Jason Colby", s: 78}, {n: "Tate Frantz", s: 79},
+{n: "Andrew Urlaub", s: 76}, {n: "Erik Belshaw", s: 77}, {n: "Bryce Kloc", s: 72},
+{n: "Decker Dean", s: 73}
+]},
+{ country: "Włochy", flag: "🇮🇹", names: [
+{n: "Giovanni Bresadola", s: 78}, {n: "Alex Insam", s: 76}, {n: "Francesco Cecon", s: 74},
+{n: "Maximilian Gartner", s: 70}
+]},
+{ country: "Czechy", flag: "🇨🇿", names: [
+{n: "Roman Koudelka", s: 77}, {n: "David Rygl", s: 72}, {n: "Daniel Skarka", s: 71},
+{n: "Filip Křenek", s: 70}, {n: "Benedikt Holub", s: 69}
+]},
+{ country: "Kazachstan", flag: "🇰🇿", names: [
+{n: "Danil Vassilyev", s: 76}, {n: "Ilya Mizernykh", s: 73}, {n: "Sergey Tkachenko", s: 72},
+{n: "Nurshat Tursunzhanov", s: 70}
+]},
+{ country: "Słowacja", flag: "🇸🇰", names: [{n: "Hektor Kapustík", s: 68}] },
+{ country: "Bułgaria", flag: "🇧🇬", names: [{n: "Vladimir Zografski", s: 84}] },
+{ country: "Estonia", flag: "🇪🇪", names: [{n: "Artti Aigro", s: 79}, {n: "Kaimar Vagul", s: 74}] },
+{ country: "Ukraina", flag: "🇺🇦", names: [{n: "Yevhen Marusiak", s: 72}, {n: "Vitaliy Kalinichenko", s: 71}] },
+{ country: "Kanada", flag: "🇨🇦", names: [{n: "Mackenzie Boyd-Clowes", s: 80}, {n: "Tarik VanWieren", s: 73}, {n: "Mitchell Penning", s: 70}] },
+{ country: "Turcja", flag: "🇹🇷", names: [{n: "Fatih Arda İpcioğlu", s: 74}, {n: "Muhammed Ali Bedir", s: 69}] },
+{ country: "Rumunia", flag: "🇷🇴", names: [{n: "Daniel Andrei Cacina", s: 70}] },
+{ country: "Korea Południowa", flag: "🇰🇷", names: [{n: "Sunwoong Jang", s: 68}, {n: "Heung Chul Choi", s: 66}] },
+{ country: "Chiny", flag: "🇨🇳", names: [{n: "Qiwu Song", s: 69}, {n: "Weijie Zhen", s: 67}] }
+];
+
+let idCounter = 1;
+let jumpersList = [];
+rawData.forEach(group => {
+group.names.forEach((entry, index) => {
+const name = typeof entry === "string" ? entry : entry.n;
+const skill = typeof entry === "string" ? 70 : entry.s;
+const chars = this.getJumperCharacteristics(name);
+const pb = this.getDefaultPersonalBest(name, skill);
+
+jumpersList.push({
+id: idCounter++,
+name: name,
+country: `${group.flag} ${group.country}`,
+countryName: group.country,
+flag: group.flag,
+active: true,
+squadPK: false,
+squadTeam: index < 4,
+pointsWC: 0,
+pointsPK: 0,
+skillBase: skill,
+form: Number((0.92 + Math.random() * 0.16).toFixed(2)),
+injuryWeeks: 0,
+chars: chars,
+personalBest: pb,
+history: []
+});
+});
+});
+return jumpersList;
+}
+
+createAvailableHillsPool() {
+return [
+{ id: 201, city: "Kulm", flag: "🇦🇹", cycle: "PŚ", hill: "HS 235", hs: 235, defaultGate: 12 },
+{ id: 202, city: "Bischofshofen", flag: "🇦🇹", cycle: "TCS", hill: "HS 142", hs: 142, defaultGate: 13 },
+{ id: 203, city: "Innsbruck", flag: "🇦🇹", cycle: "TCS", hill: "HS 128", hs: 128, defaultGate: 11 },
+{ id: 204, city: "Stams", flag: "🇦🇹", cycle: "PK", hill: "HS 115", hs: 115, defaultGate: 10 },
+{ id: 205, city: "Hinzenbach", flag: "🇦🇹", cycle: "PK", hill: "HS 90", hs: 90, defaultGate: 9 },
+{ id: 206, city: "Tschagguns", flag: "🇦🇹", cycle: "PK", hill: "HS 108", hs: 108, defaultGate: 10 },
+{ id: 207, city: "Seefeld", flag: "🇦🇹", cycle: "PŚ", hill: "HS 109", hs: 109, defaultGate: 10 },
+{ id: 208, city: "Oberstdorf (Loty)", flag: "🇩🇪", cycle: "PŚ", hill: "HS 235", hs: 235, defaultGate: 12 },
+{ id: 209, city: "Oberstdorf", flag: "🇩🇪", cycle: "TCS", hill: "HS 137", hs: 137, defaultGate: 12 },
+{ id: 210, city: "Garmisch-Partenkirchen", flag: "🇩🇪", cycle: "TCS", hill: "HS 142", hs: 142, defaultGate: 13 },
+{ id: 211, city: "Klingenthal", flag: "🇩🇪", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+{ id: 212, city: "Willingen", flag: "🇩🇪", cycle: "PŚ", hill: "HS 147", hs: 147, defaultGate: 14 },
+{ id: 213, city: "Titisee-Neustadt", flag: "🇩🇪", cycle: "PK", hill: "HS 142", hs: 142, defaultGate: 13 },
+{ id: 214, city: "Oberhof", flag: "🇩🇪", cycle: "PK", hill: "HS 100", hs: 100, defaultGate: 9 },
+{ id: 215, city: "Oberwiesenthal", flag: "🇩🇪", cycle: "PK", hill: "HS 105", hs: 105, defaultGate: 10 },
+{ id: 216, city: "Hinterzarten", flag: "🇩🇪", cycle: "PK", hill: "HS 111", hs: 111, defaultGate: 10 },
+{ id: 217, city: "Pöhla", flag: "🇩🇪", cycle: "PK", hill: "HS 66", hs: 66, defaultGate: 8 },
+{ id: 218, city: "Vikersund", flag: "🇳🇴", cycle: "PŚ", hill: "HS 240", hs: 240, defaultGate: 12 },
+{ id: 219, city: "Lillehammer", flag: "🇳🇴", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+{ id: 220, city: "Oslo", flag: "🇳🇴", cycle: "PŚ", hill: "HS 134", hs: 134, defaultGate: 12 },
+{ id: 221, city: "Trondheim", flag: "🇳🇴", cycle: "PK", hill: "HS 138", hs: 138, defaultGate: 12 },
+{ id: 222, city: "Planica", flag: "🇸🇮", cycle: "PŚ", hill: "HS 240", hs: 240, defaultGate: 12 },
+{ id: 223, city: "Kranj", flag: "🇸🇮", cycle: "PK", hill: "HS 109", hs: 109, defaultGate: 10 },
+{ id: 224, city: "Ljubno", flag: "🇸🇮", cycle: "PK", hill: "HS 94", hs: 94, defaultGate: 9 },
+{ id: 225, city: "Villach", flag: "🇸🇮", cycle: "PK", hill: "HS 98", hs: 98, defaultGate: 9 },
+{ id: 226, city: "Ruka", flag: "🇫🇮", cycle: "PŚ", hill: "HS 142", hs: 142, defaultGate: 13 },
+{ id: 227, city: "Lahti", flag: "🇫🇮", cycle: "PK", hill: "HS 130", hs: 130, defaultGate: 11 },
+{ id: 228, city: "Zakopane", flag: "🇵🇱", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+{ id: 229, city: "Wisła", flag: "🇵🇱", cycle: "PK", hill: "HS 134", hs: 134, defaultGate: 12 },
+{ id: 230, city: "Szczyrk", flag: "🇵🇱", cycle: "PK", hill: "HS 104", hs: 104, defaultGate: 10 },
+{ id: 231, city: "Sapporo", flag: "🇯🇵", cycle: "PŚ", hill: "HS 137", hs: 137, defaultGate: 12 },
+{ id: 232, city: "Zao", flag: "🇯🇵", cycle: "PK", hill: "HS 102", hs: 102, defaultGate: 9 },
+{ id: 233, city: "Hakuba", flag: "🇯🇵", cycle: "PK", hill: "HS 131", hs: 131, defaultGate: 11 },
+{ id: 234, city: "Engelberg", flag: "🇨🇭", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+{ id: 235, city: "Einsiedeln", flag: "🇨🇭", cycle: "PK", hill: "HS 117", hs: 117, defaultGate: 10 },
+{ id: 236, city: "Kandersteg", flag: "🇨🇭", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 },
+{ id: 237, city: "Liberec", flag: "🇨🇿", cycle: "PK", hill: "HS 136", hs: 136, defaultGate: 11 },
+{ id: 238, city: "Frenštát", flag: "🇨🇿", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 },
+{ id: 239, city: "Harrachov", flag: "🇨🇿", cycle: "PK", hill: "HS 142", hs: 142, defaultGate: 12 },
+{ id: 240, city: "Courchevel", flag: "🇫🇷", cycle: "PK", hill: "HS 135", hs: 135, defaultGate: 11 },
+{ id: 241, city: "Chaux-Neuve", flag: "🇫🇷", cycle: "PK", hill: "HS 118", hs: 118, defaultGate: 10 },
+{ id: 242, city: "Prémanon", flag: "🇫🇷", cycle: "PK", hill: "HS 90", hs: 90, defaultGate: 9 },
+{ id: 243, city: "Lake Placid", flag: "🇺🇸", cycle: "PŚ", hill: "HS 128", hs: 128, defaultGate: 11 },
+{ id: 244, city: "Park City", flag: "🇺🇸", cycle: "PK", hill: "HS 134", hs: 134, defaultGate: 11 },
+{ id: 245, city: "Iron Mountain", flag: "🇺🇸", cycle: "PK", hill: "HS 133", hs: 133, defaultGate: 11 },
+{ id: 246, city: "Whistler", flag: "🇨🇦", cycle: "PK", hill: "HS 140", hs: 140, defaultGate: 12 },
+{ id: 247, city: "Râșnov", flag: "🇷🇴", cycle: "PK", hill: "HS 97", hs: 97, defaultGate: 9 },
+{ id: 248, city: "Ałmaty", flag: "🇰🇿", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 }
+];
+}
+
+createRealCalendar() {
+return [
+{ id: 0, city: "Ruka", flag: "🇫🇮", cycle: "PŚ", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+{ id: 1, city: "Lillehammer (PK)", flag: "🇳🇴", cycle: "PK", type: "individual", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+{ id: 2, city: "Wisła", flag: "🇵🇱", cycle: "PŚ", type: "team", hill: "HS 134", hs: 134, defaultGate: 12, status: "pending", results: [] },
+{ id: 3, city: "Wisła Ind.", flag: "🇵🇱", cycle: "PŚ", type: "individual", hill: "HS 134", hs: 134, defaultGate: 12, status: "pending", results: [] },
+{ id: 4, city: "Oberstdorf", flag: "🇩🇪", cycle: "TCS", type: "individual", hill: "HS 137", hs: 137, defaultGate: 12, status: "pending", results: [] },
+{ id: 5, city: "Garmisch-Partenkirchen", flag: "🇩🇪", cycle: "TCS", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+{ id: 6, city: "Innsbruck", flag: "🇦🇹", cycle: "TCS", type: "individual", hill: "HS 128", hs: 128, defaultGate: 11, status: "pending", results: [] },
+{ id: 7, city: "Bischofshofen", flag: "🇦🇹", cycle: "TCS", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+{ id: 8, city: "Zakopane", flag: "🇵🇱", cycle: "PŚ", type: "team", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+{ id: 9, city: "Zakopane Ind.", flag: "🇵🇱", cycle: "PŚ", type: "individual", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+{ id: 10, city: "Planica", flag: "🇸🇮", cycle: "PŚ", type: "individual", hill: "HS 240", hs: 240, defaultGate: 14, status: "pending", results: [] }
+];
+}
+
+resetToDefaults() {
+this.jumpers = JSON.parse(JSON.stringify(this.defaultJumpers));
+this.jumpers.forEach(j => {
+if (!j.chars) j.chars = this.getJumperCharacteristics(j.name);
+if (!j.personalBest) j.personalBest = this.getDefaultPersonalBest(j.name, j.skillBase);
+});
+this.calendar = [];
+this.activeCompetitionIndex = 0;
+this.phase = "QUAL";
+this.currentList = [];
+this.currentIndex = 0;
+this.currentGate = 12;
+this.baseGate = 12;
+this.windSpeed = 0.0;
+this.windDirectionLabel = "➡️";
+this.currentWeatherProfile = { name: "Stabilne", volatility: 0.15, maxWind: 1.5 };
+this.currentJuryFlags = ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮"];
+this.teamStandings = {};
+this.pkTeamStandings = {};
+}
+
+getSaveKey(slot) {
+return `ski_manager_slot_${slot}_2026_2027_v36_fixed`;
+}
+
+loadGame(slot) {
+this.activeSlot = slot;
+const saved = localStorage.getItem(this.getSaveKey(slot));
+if (!saved) return false;
+try {
+const data = JSON.parse(saved);
+if (data && typeof data === "object") {
+this.selectedMode = data.selectedMode || 'real';
+this.customSelectedHills = data.customSelectedHills || [];
+this.jumpers = data.jumpers || this.jumpers;
+this.jumpers.forEach(j => {
+if (!j.chars) j.chars = this.getJumperCharacteristics(j.name);
+if (!j.personalBest) j.personalBest = this.getDefaultPersonalBest(j.name, j.skillBase);
+if (j.form === undefined) j.form = 1.0;
+});
+this.calendar = data.calendar || [];
+this.activeCompetitionIndex = data.activeCompetitionIndex || 0;
+this.phase = data.phase || "QUAL";
+this.currentList = data.currentList || [];
+this.currentIndex = data.currentIndex || 0;
+this.currentGate = data.currentGate || 12;
+this.baseGate = data.baseGate || 12;
+this.windSpeed = data.windSpeed || 0.0;
+this.windDirectionLabel = data.windDirectionLabel || "➡️";
+this.currentWeatherProfile = data.currentWeatherProfile || { name: "Stabilne", volatility: 0.15, maxWind: 1.5 };
+this.currentJuryFlags = data.currentJuryFlags || ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮"];
+this.teamStandings = data.teamStandings || {};
+this.pkTeamStandings = data.pkTeamStandings || {};
+return true;
+}
+} catch (e) {
+return false;
+}
+return false;
+}
+
+saveGame() {
+const gameState = {
+selectedMode: this.selectedMode,
+customSelectedHills: this.customSelectedHills,
+jumpers: this.jumpers,
+calendar: this.calendar,
+activeCompetitionIndex: this.activeCompetitionIndex,
+phase: this.phase,
+currentList: this.currentList,
+currentIndex: this.currentIndex,
+currentGate: this.currentGate,
+baseGate: this.baseGate,
+windSpeed: this.windSpeed,
+windDirectionLabel: this.windDirectionLabel,
+currentWeatherProfile: this.currentWeatherProfile,
+currentJuryFlags: this.currentJuryFlags,
+teamStandings: this.teamStandings,
+pkTeamStandings: this.pkTeamStandings
+};
+try {
+localStorage.setItem(this.getSaveKey(this.activeSlot), JSON.stringify(gameState));
+return true;
+} catch (e) {
+return false;
+}
+}
+
+manualSave() {
+if (this.saveGame()) {
+this.showToast(`💾 Zapisano w Locie #${this.activeSlot}`, "success");
+} else {
+this.showToast("❌ Błąd zapisu.", "error");
+}
+}
+
+renderSlotSelection() {
+const container = this.getElement("save-slots-container");
+if (!container) return;
+container.innerHTML = "";
+
+for (let i = 1; i <= 3; i++) {
+const raw = localStorage.getItem(this.getSaveKey(i));
+let desc = "Pusty slot / Nowa gra";
+let hasSave = false;
+if (raw) {
+try {
+const parsed = JSON.parse(raw);
+const finished = (parsed.calendar || []).filter(e => e.status === "finished" || e.status === "cancelled").length;
+const total = (parsed.calendar || []).length;
+desc = `Zapisana gra · Przerobiono: ${finished}/${total}`;
+hasSave = true;
+} catch(e) {}
+}
+
+const card = document.createElement("div");
+card.className = "save-slot-card";
+card.innerHTML = `
+<div class="save-slot-info">
+<div class="save-slot-title">💾 Lot Zapisu #${i}</div>
+<div class="save-slot-desc">${desc}</div>
+</div>
+<div style="display:flex; gap:4px;">
+${hasSave ? `<button class="btn-small btn-success" onclick="app.loadSlot(${i})">Wczytaj</button>` : ""}
+<button class="btn-small" onclick="app.prepareNewGameInSlot(${i})">${hasSave ? "Nowa" : "Graj"}</button>
+</div>
+`;
+container.appendChild(card);
+}
+
+const modeBox = this.getElement("mode-selection-box");
+if (modeBox) modeBox.style.display = "none";
+const slotsContainer = this.getElement("save-slots-container");
+if (slotsContainer) slotsContainer.style.display = "grid";
+}
+
+loadSlot(slot) {
+if (this.loadGame(slot)) {
+this.showMainAppView();
+this.renderAll();
+this.switchTab('home', document.querySelectorAll(".nav-item")[0]);
+this.showToast(`Wczytano zapis #${slot}`, "success");
+} else {
+this.showToast("Błąd wczytywania.", "error");
+}
+}
+
+prepareNewGameInSlot(slot) {
+this.activeSlot = slot;
+this.resetToDefaults();
+const slotsContainer = this.getElement("save-slots-container");
+if (slotsContainer) slotsContainer.style.display = "none";
+const modeBox = this.getElement("mode-selection-box");
+if (modeBox) modeBox.style.display = "block";
+this.renderCustomBuilderList();
+}
+
+cancelSlotSelection() {
+this.renderSlotSelection();
+}
+
+selectMode(mode) {
+this.selectedMode = mode;
+const realCard = this.getElement("card-mode-real");
+const customCard = this.getElement("card-mode-custom");
+const builderBox = this.getElement("custom-builder-container");
+const startBtn = this.getElement("btn-start-game");
+
+if (realCard) realCard.classList.remove("selected");
+if (customCard) customCard.classList.remove("selected");
+
+if (mode === 'real') {
+if (realCard) realCard.classList.add("selected");
+if (builderBox) builderBox.style.display = "none";
+if (startBtn) startBtn.disabled = false;
+} else if (mode === 'custom') {
+if (customCard) customCard.classList.add("selected");
+if (builderBox) builderBox.style.display = "block";
+this.updateCustomBuilderValidation();
+}
+}
+
+renderCustomBuilderList() {
+const poolList = this.getElement("builder-pool-list");
+if (!poolList) return;
+poolList.innerHTML = "";
+
+this.availableHillsPool.forEach(hill => {
+const instances = this.customSelectedHills.filter(h => h.id === hill.id);
+const count = instances.length;
+
+const item = document.createElement("div");
+item.className = "builder-item";
+item.innerHTML = `
+<div><span>${hill.flag}</span> <strong>${hill.city}</strong> (${hill.hill}) ${count > 0 ? `<span style="color:var(--success-light); font-weight:700;">(${count})</span>` : ""}</div>
+<div style="display:flex; gap:3px;">
+${count > 0 ? `<button class="btn-small btn-danger" onclick="app.removeCustomHillInstance(${hill.id})">-</button>` : ""}
+<button class="btn-small btn-success" onclick="app.addCustomHillInstance(${hill.id}, 'PŚ', 'individual')">+PŚ</button>
+<button class="btn-small btn-warning" onclick="app.addCustomHillInstance(${hill.id}, 'PK', 'individual')" style="color:#111827;">+PK</button>
+<button class="btn-small btn-purple" onclick="app.addCustomHillInstance(${hill.id}, 'PŚ', 'team')">+Team</button>
+</div>
+`;
+poolList.appendChild(item);
+});
+}
+
+addCustomHillInstance(id, forcedCycle, forcedType) {
+const found = this.availableHillsPool.find(h => h.id === id);
+if (found) {
+let newHill = JSON.parse(JSON.stringify(found));
+newHill.cycle = forcedCycle;
+newHill.type = forcedType;
+this.customSelectedHills.push(newHill);
+this.renderCustomBuilderList();
+this.updateCustomBuilderValidation();
+}
+}
+
+removeCustomHillInstance(id) {
+const idx = this.customSelectedHills.findIndex(h => h.id === id);
+if (idx > -1) this.customSelectedHills.splice(idx, 1);
+this.renderCustomBuilderList();
+this.updateCustomBuilderValidation();
+}
+
+updateCustomBuilderValidation() {
+const counter = this.getElement("builder-counter");
+const startBtn = this.getElement("btn-start-game");
+if (counter) counter.innerText = `Wybrano: ${this.customSelectedHills.length} (min. 3)`;
+if (startBtn) {
+if (this.selectedMode === 'real') startBtn.disabled = false;
+else startBtn.disabled = this.customSelectedHills.length < 3;
+}
+}
+
+initializeGameMode() {
+if (this.selectedMode === 'real') {
+this.calendar = this.createRealCalendar();
+} else {
+this.calendar = this.customSelectedHills.map((hill, idx) => ({
+id: idx,
+city: hill.city,
+flag: hill.flag,
+cycle: hill.cycle || "PŚ",
+type: hill.type,
+hill: hill.hill,
+hs: hill.hs || 140,
+defaultGate: hill.defaultGate || 12,
+status: "pending",
+results: []
+}));
+}
+this.activeCompetitionIndex = 0;
+this.teamStandings = {};
+this.pkTeamStandings = {};
+this.saveGame();
+this.showMainAppView();
+this.renderAll();
+this.switchTab('home', document.querySelectorAll(".nav-item")[0]);
+this.showToast(`🚀 Nowa gra rozpoczęta!`, "success");
+}
+
+showMainAppView() {
+const nav = this.getElement("main-bottom-nav");
+if (nav) nav.style.display = "flex";
+const modeView = this.getElement("view-mode-select");
+if (modeView) modeView.classList.remove("active");
+}
+
+switchTab(tabId, element) {
+document.querySelectorAll(".view-section").forEach(el => el.classList.remove("active"));
+const target = this.getElement(`view-${tabId}`);
+if (target) target.classList.add("active");
+
+document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+if (element) element.classList.add("active");
+
+if (tabId === "standings") this.renderStandings();
+if (tabId === "squads") this.renderSquadsManagement();
+if (tabId === "home") { this.renderCalendar(); this.updateHomeCard(); }
+if (tabId === "live") this.updateLiveInterface();
+}
+
+switchStandingsTab(tabType) {
+this.currentStandingsTab = tabType;
+const btnInd = this.getElement("tab-btn-individual");
+const btnTeam = this.getElement("tab-btn-team");
+const btnPkInd = this.getElement("tab-btn-pk-ind");
+const btnPkTeam = this.getElement("tab-btn-pk-team");
+
+const viewInd = this.getElement("standings-individual-view");
+const viewTeam = this.getElement("standings-team-view");
+const viewPkInd = this.getElement("standings-pk-individual-view");
+const viewPkTeam = this.getElement("standings-pk-team-view");
+const hint = this.getElement("standings-hint");
+
+[btnInd, btnTeam, btnPkInd, btnPkTeam].forEach(b => { if(b) b.classList.remove("active"); });
+[viewInd, viewTeam, viewPkInd, viewPkTeam].forEach(v => { if(v) v.style.display = "none"; });
+
+if (tabType === 'individual') {
+if (btnInd) btnInd.classList.add("active");
+if (viewInd) viewInd.style.display = "block";
+if (hint) hint.style.display = "block";
+} else if (tabType === 'team') {
+if (btnTeam) btnTeam.classList.add("active");
+if (viewTeam) viewTeam.style.display = "block";
+if (hint) hint.style.display = "none";
+} else if (tabType === 'pk_individual') {
+if (btnPkInd) btnPkInd.classList.add("active");
+if (viewPkInd) viewPkInd.style.display = "block";
+if (hint) hint.style.display = "block";
+} else if (tabType === 'pk_team') {
+if (btnPkTeam) btnPkTeam.classList.add("active");
+if (viewPkTeam) viewPkTeam.style.display = "block";
+if (hint) hint.style.display = "none";
+}
+this.renderStandings();
+}
+
+renderAll() {
+this.renderCalendar();
+this.renderSquadsManagement();
+this.renderStandings();
+this.updateHomeCard();
+this.updateHomeStats();
+this.updateLiveInterface();
+}
+
+updateHomeStats() {
+const finished = this.calendar.filter(e => e.status === "finished" || e.status === "cancelled").length;
+const totalPoints = this.jumpers.reduce((sum, j) => sum + Number(j.pointsWC || 0), 0);
+const active = this.jumpers.filter(j => j.active && j.injuryWeeks === 0).length;
+
+const evEl = this.getElement("home-stat-events");
+const ptEl = this.getElement("home-stat-points");
+const actEl = this.getElement("home-stat-active");
+if (evEl) evEl.innerText = finished;
+if (ptEl) ptEl.innerText = totalPoints;
+if (actEl) actEl.innerText = active;
+}
+
+renderCalendar() {
+const tbody = this.getElement("calendar-table-body");
+if (!tbody) return;
+tbody.innerHTML = "";
+this.calendar.forEach((event, index) => {
+const tr = document.createElement("tr");
+if (index === this.activeCompetitionIndex) tr.classList.add("active-event");
+let actionHtml = "";
+if (event.status === "finished") {
+tr.classList.add("calendar-clickable");
+tr.onclick = () => app.openArchivedResultsModal(index);
+actionHtml = `<span class="badge-finished"><span>🏆</span> Wyniki</span>`;
+} else if (event.status === "cancelled") {
+tr.classList.add("calendar-clickable");
+tr.onclick = () => app.openArchivedResultsModal(index);
+actionHtml = `<span class="badge-cancelled"><span>🚫</span> Odwołany</span>`;
+} else if (index === this.activeCompetitionIndex) {
+actionHtml = `<button class="btn-small" onclick="event.stopPropagation(); app.startCompetition(${index})">START</button>`;
+} else {
+actionHtml = `<span style="font-size:7px; color:var(--text-muted);">Oczekuje</span>`;
+}
+
+let cycleBadge = `<span class="badge-cykl">PŚ</span>`;
+if (event.cycle === 'PK') cycleBadge = `<span class="badge-pk">PK</span>`;
+if (event.cycle === 'TCS') cycleBadge = `<span class="badge-cykl" style="background:rgba(139,92,246,.2); color:#c084fc;">TCS</span>`;
+
+if (event.type === 'team') {
+cycleBadge += ` <span class="badge-team">Team</span>`;
+}
+
+tr.innerHTML = `
+<td><span>${event.flag || '📍'}</span> <strong>${event.city}</strong></td>
+<td>${cycleBadge}</td>
+<td>${event.hill}</td>
+<td>${actionHtml}</td>
+`;
+tbody.appendChild(tr);
+});
+}
+
+openArchivedResultsModal(index) {
+const ev = this.calendar[index];
+if (!ev) return;
+
+const modal = document.getElementById("general-modal");
+const content = document.getElementById("general-modal-content");
+if (!modal || !content) return;
+
+if (ev.status === "cancelled") {
+content.innerHTML = `
+<div class="modal-title">🚫 Konkurs Odwołany: ${ev.flag || ''} ${ev.city} (${ev.hill})</div>
+<div class="modal-text">Ten konkurs został oficjalnie odwołany przez jury z powodu złych warunków pogodowych. Brak przyznanych punktów.</div>
+<div class="modal-buttons">
+<button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button>
+</div>
+`;
+modal.classList.add("show");
+return;
+}
+
+let rowsHtml = "";
+(ev.results || []).forEach((res, i) => {
+rowsHtml += `
+<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding:4px 0; border-bottom:1px solid rgba(51,65,85,.3); font-size:8px; align-items:center;">
+<span style="font-weight:800;">${i + 1}.</span>
+<span>${res.flag || ''} ${res.name}</span>
+<span style="color:var(--text-muted);">${res.distance || '-'}</span>
+<span style="text-align:right; font-weight:800; color:var(--accent-blue-light);">${res.totalScore} pkt</span>
+</div>
+`;
+});
+
+content.innerHTML = `
+<div class="modal-title">🏆 Wyniki: ${ev.flag || ''} ${ev.city} (${ev.hill}) [${ev.cycle}]</div>
+<div class="modal-text">Oficjalne końcowe rezultaty.</div>
+<div style="max-height: 45vh; overflow-y: auto; margin-bottom: 8px; background:var(--bg-input); padding:6px; border-radius:5px;">
+<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding-bottom:4px; border-bottom:1px solid var(--border-color); font-size:7px; font-weight:800; color:var(--text-muted);">
+<span>#</span><span>Skoczek</span><span>Odległość</span><span style="text-align:right;">Nota</span>
+</div>
+${rowsHtml}
+</div>
+<div class="modal-buttons">
+<button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button>
+</div>
+`;
+modal.classList.add("show");
+}
+
+openJumperHistoryModal(jumperId) {
+const jumper = this.jumpers.find(j => j.id === jumperId);
+if (!jumper) return;
+
+const modal = document.getElementById("general-modal");
+const content = document.getElementById("general-modal-content");
+if (!modal || !content) return;
+
+const chars = jumper.chars || this.getJumperCharacteristics(jumper.name);
+const pb = jumper.personalBest ? jumper.personalBest.toFixed(1) : "Brak";
+
+let historyRows = "";
+if (!jumper.history || jumper.history.length === 0) {
+historyRows = `<div style="text-align:center; padding: 10px; color:var(--text-muted); font-size:8px;">Brak ukończonych konkursów w tym sezonie.</div>`;
+} else {
+jumper.history.forEach(h => {
+historyRows += `
+<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding:4px 0; border-bottom:1px solid rgba(51,65,85,.3); font-size:8px; align-items:center;">
+<span style="font-weight:800; color:var(--accent-blue-light);">${h.rank}.</span>
+<span>${h.flag || ''} <strong>${h.city}</strong> (${h.cycle})</span>
+<span style="color:var(--text-muted); text-align:right;">${h.rank}.</span>
+<span style="text-align:right; font-weight:800; color:var(--success-light);">+${h.points} pkt</span>
+</div>
+`;
+});
+}
+
+content.innerHTML = `
+<div class="modal-title">📊 ${jumper.flag} ${jumper.name}</div>
+<div class="modal-text" style="margin-bottom:6px;">Ocena ogólna (Skill: ${jumper.skillBase}) · Forma: ${(jumper.form * 100).toFixed(0)}%</div>
+
+<div style="background: rgba(37,99,235,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: 5px; padding: 5px 7px; margin-bottom: 6px; font-size: 7.5px;">
+<div style="display:flex; justify-content:space-between; margin-bottom: 3px; border-bottom:1px solid rgba(59,130,246,0.15); padding-bottom:3px;">
+<span>🚀 <strong style="color:var(--accent-blue-light);">Rekord życiowy:</strong></span>
+<strong style="color:var(--warning-light);">${pb} m</strong>
+</div>
+<div style="margin-bottom: 2px;">✅ <strong style="color:var(--success-light);">Zalety:</strong> ${chars.pos}</div>
+<div>❌ <strong style="color:var(--danger);">Wady:</strong> ${chars.neg}</div>
+</div>
+
+<div style="font-size: 8px; font-weight: 800; margin-bottom: 4px; color:var(--text-muted);">HISTORIA KONKURSÓW:</div>
+<div style="max-height: 30vh; overflow-y: auto; margin-bottom: 8px; background:var(--bg-input); padding:6px; border-radius:5px;">
+<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding-bottom:4px; border-bottom:1px solid var(--border-color); font-size:7px; font-weight:800; color:var(--text-muted);">
+<span>Poz</span><span>Konkurs</span><span style="text-align:right;">Lokata</span><span style="text-align:right;">Pkt</span>
+</div>
+${historyRows}
+</div>
+<div style="font-size:8px; color:var(--text-muted); margin-bottom: 6px; display:flex; justify-content:space-between;">
+<span>Punkty PŚ: <strong style="color:var(--accent-blue-light);">${jumper.pointsWC}</strong></span>
+<span>Punkty PK: <strong style="color:var(--warning-light);">${jumper.pointsPK}</strong></span>
+</div>
+<div class="modal-buttons">
+<button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button>
+</div>
+`;
+modal.classList.add("show");
+}
+
+closeGeneralModal() {
+const modal = document.getElementById("general-modal");
+if (modal) modal.classList.remove("show");
+}
+
+updateHomeCard() {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+const title = this.getElement("home-event-title");
+const name = this.getElement("home-event-name");
+const desc = this.getElement("home-event-desc");
+const button = this.getElement("home-main-btn");
+const hill = this.getElement("home-hill");
+const cycle = this.getElement("home-cycle");
+const weather = this.getElement("home-weather");
+
+if (!currentEv || currentEv.status === "finished" || currentEv.status === "cancelled") {
+if (title) title.innerHTML = `<span>🏆</span><span>Koniec Sezonu</span>`;
+if (name) name.innerText = "Wszystkie konkursy rozegrane";
+if (desc) desc.innerText = "Sprawdź klasyfikację generalną.";
+if (button) { button.innerText = "ZAWODY ZAKOŃCZONE"; button.disabled = true; }
+if (hill) hill.innerText = "—";
+if (cycle) cycle.innerText = "Koniec";
+if (weather) weather.innerText = "—";
+return;
+}
+
+const isTeam = currentEv.type === 'team';
+if (title) title.innerHTML = `<span>${currentEv.flag || '📍'}</span><span>${currentEv.city} · ${currentEv.hill}</span>`;
+if (desc) desc.innerText = isTeam ? "Konkurs Drużynowy PŚ" : `Cykl: ${currentEv.cycle} · Kwalifikacje + Finał`;
+if (button) { button.innerText = "▶ ROZPOCZNIJ ZAWODY NA ŻYWO"; button.disabled = false; }
+if (hill) hill.innerText = currentEv.hill;
+if (cycle) cycle.innerText = isTeam ? "PŚ Drużynowy" : `${currentEv.cycle} Indywidualny`;
+if (weather) weather.innerText = currentEv.weatherName || "☀️ Stabilne";
+}
+
+renderSquadsManagement() {
+const container = this.getElement("squads-container");
+if (!container) return;
+container.innerHTML = "";
+const countries = {};
+this.jumpers.forEach(j => {
+if (!countries[j.country]) countries[j.country] = [];
+countries[j.country].push(j);
+});
+
+Object.keys(countries).forEach(country => {
+const list = countries[country];
+const activeCount = list.filter(j => j.active && j.injuryWeeks === 0).length;
+const pkCount = list.filter(j => j.squadPK && j.injuryWeeks === 0).length;
+const teamCount = list.filter(j => j.squadTeam && j.injuryWeeks === 0).length;
+
+if (this.openCountriesState[country] === undefined) {
+this.openCountriesState[country] = country.includes("Polska");
+}
+const isOpen = this.openCountriesState[country];
+
+const accordion = document.createElement("div");
+accordion.className = `country-accordion ${isOpen ? "open" : ""}`;
+
+const header = document.createElement("div");
+header.className = "country-accordion-header";
+header.onclick = () => {
+this.openCountriesState[country] = !this.openCountriesState[country];
+this.renderSquadsManagement();
+};
+
+header.innerHTML = `
+<div class="country-title-area">
+<span>${country}</span>
+</div>
+<div class="country-meta-badges">
+<span class="country-count">PŚ: ${activeCount} · PK: ${pkCount} · Team: <strong style="color:${teamCount >= 4 ? 'var(--success-light)' : 'var(--danger)'};">${teamCount}/4</strong></span>
+<span class="accordion-arrow">▼</span>
+</div>
+`;
+accordion.appendChild(header);
+
+const body = document.createElement("div");
+body.className = "country-accordion-body";
+
+list.forEach(jumper => {
+let formIcon = jumper.form > 1.08 ? "🔥" : (jumper.form < 0.92 ? "🌧️" : "☀️");
+let injuryText = jumper.injuryWeeks > 0 ? `<span style="color:var(--danger); font-weight:800;">🏥 Kontuzja: pauza na ${jumper.injuryWeeks} kon.</span>` : `Skill: ${jumper.skillBase} · PB: ${jumper.personalBest ? jumper.personalBest.toFixed(1) : '-'}m`;
+
+const item = document.createElement("div");
+item.className = "jumper-list-item";
+item.innerHTML = `
+<div class="jumper-left">
+<span class="jumper-number">#${jumper.id}</span>
+<div class="jumper-meta-info">
+<span class="jumper-name-text">${formIcon} ${jumper.name}</span>
+<span class="jumper-pot-text">${injuryText}</span>
+</div>
+</div>
+<div class="jumper-toggles-group">
+<span class="toggle-switch ${jumper.active && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}"
+onclick="app.toggleJumperActive(${jumper.id}, event)" title="Puchar Świata">
+${jumper.injuryWeeks > 0 ? "🏥" : "PŚ"}
+</span>
+<span class="toggle-switch toggle-pk ${jumper.squadPK && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}"
+onclick="app.toggleJumperPK(${jumper.id}, event)" title="Puchar Kontynentalny">
+PK
+</span>
+<span class="toggle-switch toggle-team ${jumper.squadTeam && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}"
+onclick="app.toggleJumperTeam(${jumper.id}, event)" title="Skład drużynowy">
+Team
+</span>
+</div>
+`;
+body.appendChild(item);
+});
+
+accordion.appendChild(body);
+container.appendChild(accordion);
+});
+}
+
+toggleJumperActive(id, event) {
+if(event) event.stopPropagation();
+const jumper = this.jumpers.find(item => item.id === id);
+if (!jumper || jumper.injuryWeeks > 0) {
+if (jumper && jumper.injuryWeeks > 0) this.showToast("Zawodnik jest kontuzjowany!", "error");
+return;
+}
+jumper.active = !jumper.active;
+this.renderSquadsManagement();
+this.updateHomeStats();
+this.saveGame();
+}
+
+toggleJumperPK(id, event) {
+if(event) event.stopPropagation();
+const jumper = this.jumpers.find(item => item.id === id);
+if (!jumper || jumper.injuryWeeks > 0) return;
+jumper.squadPK = !jumper.squadPK;
+this.renderSquadsManagement();
+this.saveGame();
+}
+
+toggleJumperTeam(id, event) {
+if(event) event.stopPropagation();
+const jumper = this.jumpers.find(item => item.id === id);
+if (!jumper || jumper.injuryWeeks > 0) return;
+jumper.squadTeam = !jumper.squadTeam;
+this.renderSquadsManagement();
+this.saveGame();
+}
+
+startCompetition(index = -1) {
+if (index !== -1) this.activeCompetitionIndex = index;
+const currentEv = this.calendar[this.activeCompetitionIndex];
+if (!currentEv || currentEv.status === "finished" || currentEv.status === "cancelled") return;
+
+this.jumpers.forEach(j => {
+if (j.injuryWeeks > 0) {
+j.injuryWeeks--;
+}
+});
+
+const isTeamEvent = currentEv.type === 'team';
+const isPK = currentEv.cycle === 'PK';
+
+if (isTeamEvent) {
+const countryGroups = {};
+this.jumpers.forEach(j => {
+if (j.squadTeam && j.injuryWeeks === 0) {
+if (!countryGroups[j.country]) countryGroups[j.country] = [];
+countryGroups[j.country].push(j);
+}
+});
+
+let playerTeamCount = (countryGroups["🇵🇱 Polska"] || countryGroups["Polska"] || []).length;
+if (playerTeamCount < 4) {
+this.showToast("Twoja reprezentacja musi mieć powołanych min. 4 zdrowych skoczków do Teamu!", "error");
+this.switchTab("squads", document.querySelectorAll(".nav-item")[2]);
+return;
+}
+} else {
+const activePool = this.jumpers.filter(j => (isPK ? j.squadPK : j.active) && j.injuryWeeks === 0);
+if (activePool.length === 0) {
+this.showToast(`Brak zdrowych skoczków powołanych do cyklu ${currentEv.cycle}!`, "error");
+this.switchTab("squads", document.querySelectorAll(".nav-item")[2]);
+return;
+}
+}
+
+this.jumpers.forEach(j => {
+if (j.injuryWeeks === 0) {
+const drift = (Math.random() - 0.5) * 0.08;
+j.form = Math.max(0.80, Math.min(1.20, (j.form || 1.0) + drift));
+}
+});
+
+this.generateJury();
+this.phase = "QUAL";
+this.currentIndex = 0;
+
+this.assignWeatherProfile(currentEv.city);
+this.updateWindConditions(true);
+
+const hs = currentEv.hs || 140;
+let baseStandardGate = hs > 200 ? 14 : (hs > 130 ? 12 : 9);
+
+let windGateAdjustment = 0;
+if (this.windSpeed < -0.8) {
+windGateAdjustment = Math.round(Math.abs(this.windSpeed) * 0.7);
+} else if (this.windSpeed > 1.2) {
+windGateAdjustment = -Math.round(this.windSpeed * 0.5);
+}
+
+let juryRandomShift = Math.floor(Math.random() * 3) - 1; 
+
+this.baseGate = Math.max(5, Math.min(30, baseStandardGate + windGateAdjustment + juryRandomShift));
+this.currentGate = this.baseGate;
+
+if (isTeamEvent) {
+let teamList = [];
+const countryGroups = {};
+this.jumpers.forEach(j => {
+if (j.squadTeam && j.injuryWeeks === 0) {
+if (!countryGroups[j.country]) countryGroups[j.country] = [];
+countryGroups[j.country].push(j);
+}
+});
+
+Object.keys(countryGroups).forEach(country => {
+let groupJumpers = countryGroups[country];
+if (groupJumpers.length >= 4) {
+for (let roundGroup = 0; roundGroup < 4; roundGroup++) {
+let jumper = groupJumpers[roundGroup];
+if (jumper) {
+teamList.push({
+id: jumper.id,
+name: `${jumper.countryName} (Grupa ${roundGroup + 1})`,
+realJumpName: jumper.name,
+pureName: jumper.name,
+country: jumper.country,
+countryName: jumper.countryName,
+flag: jumper.flag,
+isTeamEntry: true,
+groupIndex: roundGroup + 1,
+skillBase: jumper.skillBase,
+form: jumper.form,
+distance: "-",
+round1Distance: "-",
+wind: "+0.0 pkt",
+comp: "+0.0 pkt",
+roundScore: 0,
+totalScore: 0,
+notes: Array(5).fill({val: "18.0", flag: "🏳️"}),
+rank: "-"
+});
+}
+}
+}
+});
+teamList.sort((a,b) => a.groupIndex - b.groupIndex);
+this.currentList = teamList;
+} else {
+let activePool = this.jumpers.filter(j => (isPK ? j.squadPK : j.active) && j.injuryWeeks === 0);
+this.currentList = activePool.map(jumper => ({
+id: jumper.id,
+name: jumper.name,
+pureName: jumper.name,
+country: jumper.country,
+countryName: jumper.countryName,
+flag: jumper.flag,
+isTeamEntry: false,
+skillBase: jumper.skillBase,
+form: jumper.form,
+distance: "-",
+round1Distance: "-",
+round1Score: 0,
+wind: "+0.0 pkt",
+comp: "+0.0 pkt",
+roundScore: 0,
+totalScore: 0,
+notes: Array(5).fill({val: "18.0", flag: "🏳️"}),
+rank: "-",
+rankingPoints: isPK ? (jumper.pointsPK || 0) : (jumper.pointsWC || 0)
+}));
+// Lista startowa według klasyfikacji generalnej (od najniższych punktów do najwyższych)
+this.currentList.sort((a, b) => a.rankingPoints - b.rankingPoints);
+}
+
+const button = this.getElement("btn-next-jump");
+if (button) { button.disabled = false; button.innerText = "PUŚĆ KOLEJNEGO SKOCZKA"; }
+const simBtn = this.getElement("btn-simulate-series");
+if (simBtn) simBtn.style.display = "flex";
+
+const status = this.getElement("competition-status-badge");
+if (status) { status.innerText = isTeamEvent ? "Konkurs Drużynowy" : "Trwa runda"; status.style.color = "var(--warning)"; }
+
+const hillBadge = this.getElement("live-hill-display");
+if (hillBadge) hillBadge.innerText = `${currentEv.city} · ${currentEv.hill} [${currentEv.cycle}] (Belka: ${this.baseGate})`;
+
+currentEv.weatherName = this.currentWeatherProfile.name;
+
+this.saveGame();
+this.switchTab("live", document.querySelectorAll(".nav-item")[1]);
+this.updateLiveInterface();
+this.showToast(`🏁 Start zawodów (${currentEv.cycle}) w ${currentEv.city}! Belka startowa: ${this.baseGate}`, "success");
+}
+
+assignWeatherProfile(cityName) {
+const isWindyHill = cityName.includes("Ruka") || cityName.includes("Oslo") || cityName.includes("Willingen");
+const profiles = isWindyHill ? [
+{ name: "☀️ Stabilne warunki", volatility: 0.20, maxWind: 2.0 },
+{ name: "🌤️ Zmienne warunki", volatility: 0.50, maxWind: 3.8 },
+{ name: "💨 Silny wiatr", volatility: 0.80, maxWind: 5.5 }
+] : [
+{ name: "☀️ Stabilne warunki", volatility: 0.10, maxWind: 1.2 },
+{ name: "🌤️ Lekki wiatr", volatility: 0.30, maxWind: 2.5 },
+{ name: "💨 Zmienne warunki", volatility: 0.55, maxWind: 4.0 }
+];
+const chosen = profiles[Math.floor(Math.random() * profiles.length)];
+this.currentWeatherProfile = chosen;
+}
+
+generateJury() {
+const flags = ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮", "🇫🇮", "🇯🇵", "🇨🇭", "🇫🇷", "🇮🇹"];
+this.currentJuryFlags = [];
+for (let i = 0; i < 5; i++) {
+let randomFlag;
+do {
+randomFlag = flags[Math.floor(Math.random() * flags.length)];
+} while (this.currentJuryFlags.includes(randomFlag) && flags.length > 5);
+this.currentJuryFlags.push(randomFlag);
+}
+}
+
+shuffleArray(array) {
+for (let i = array.length - 1; i > 0; i--) {
+const j = Math.floor(Math.random() * (i + 1));
+[array[i], array[j]] = [array[j], array[i]];
+}
+return array;
+}
+
+changeGate(value) {
+if (this.phase === "END") return;
+this.currentGate += value;
+if (this.currentGate < 1) this.currentGate = 1;
+if (this.currentGate > 35) this.currentGate = 35;
+const gate = this.getElement("current-gate");
+if (gate) gate.innerText = this.currentGate;
+this.updateLiveInterface();
+}
+
+updateWindConditions(forceNew = false) {
+const volatility = this.currentWeatherProfile.volatility;
+const maxWind = this.currentWeatherProfile.maxWind;
+
+if (forceNew || Math.random() < volatility) {
+let base = (Math.random() - 0.5) * maxWind;
+if (Math.random() < 0.2) base *= 1.3;
+this.windSpeed = Number(Math.max(-5.5, Math.min(5.5, base)).toFixed(1));
+}
+
+if (this.windSpeed > 0.5) {
+this.windDirectionLabel = "➡️";
+} else if (this.windSpeed < -0.5) {
+this.windDirectionLabel = "⬅️";
+} else {
+const side = ["↗️", "↘️", "➡️", "⬅️"];
+this.windDirectionLabel = side[Math.floor(Math.random() * side.length)];
+}
+
+const indicator = this.getElement("wind-dir-indicator");
+if (indicator) {
+const abs = Math.abs(this.windSpeed).toFixed(1);
+const label = this.windSpeed > 0.15 ? "HEAD" : (this.windSpeed < -0.15 ? "TAIL" : "SIDE");
+indicator.innerText = `${this.windDirectionLabel} ${abs} m/s (${label})`;
+indicator.style.color = this.windSpeed > 0.3 ? "var(--success-light)" : (this.windSpeed < -0.3 ? "var(--danger)" : "#60a5fa");
+}
+
+if (!forceNew && this.phase !== "END") {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+if (currentEv) {
+if (this.windSpeed > 2.2 && Math.random() < 0.4 && this.currentGate > 4) {
+this.currentGate -= 1;
+this.showToast(`⚖️ Jury obniżyło belkę na ${this.currentGate} z powodu silnego wiatru pod narty!`, "info");
+} 
+else if (this.windSpeed < -2.0 && Math.random() < 0.4 && this.currentGate < 30) {
+this.currentGate += 1;
+this.showToast(`⚖️ Jury podwyższyło belkę na ${this.currentGate} z powodu wiatru w plecy!`, "info");
+}
+}
+}
+
+this.updateLiveInterface();
+}
+
+performNextJump() {
+if (this.phase === "END") return;
+if (!this.currentList || this.currentList.length === 0) return;
+
+if (this.currentIndex >= this.currentList.length) {
+this.advancePhase();
+return;
+}
+
+if (Math.random() > 0.35) {
+this.updateWindConditions(false);
+}
+
+this.executeSingleJumpForIndex(this.currentIndex);
+this.currentIndex++;
+this.saveGame();
+this.updateLiveInterface();
+
+if (this.currentIndex >= this.currentList.length) {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+const isTeam = currentEv && currentEv.type === 'team';
+
+if (isTeam || this.phase === "ROUND2") {
+this.finishCompetition();
+} else {
+const btn = this.getElement("btn-next-jump");
+if (btn) btn.innerText = "PRZEJDŹ DO KOLEJNEJ FAZY";
+}
+}
+}
+
+simulateRemainingSeries() {
+if (this.phase === "END") return;
+while (this.currentIndex < this.currentList.length) {
+if (Math.random() > 0.4) this.updateWindConditions(false);
+this.executeSingleJumpForIndex(this.currentIndex);
+this.currentIndex++;
+}
+this.saveGame();
+this.updateLiveInterface();
+
+const currentEv = this.calendar[this.activeCompetitionIndex];
+const isTeam = currentEv && currentEv.type === 'team';
+
+if (isTeam || this.phase === "ROUND2") {
+this.finishCompetition();
+} else {
+const btn = this.getElement("btn-next-jump");
+if (btn) btn.innerText = "PRZEJDŹ DO KOLEJNEJ FAZY";
+}
+this.showToast("⚡ Symulacja zakończona!", "success");
+}
+
+cancelCurrentSeries() {
+if (this.phase === "END") return;
+if (this.phase === "QUAL") {
+this.showToast("⚠️ Nie można odwołać kwalifikacji w trakcie trwania.", "error");
+return;
+}
+
+if (this.phase === "ROUND2") {
+this.phase = "ROUND1";
+this.currentIndex = this.currentList.length;
+this.showToast("❌ Odwołano serię finałową! Wyniki bazują na 1. serii.", "info");
+this.finishCompetition();
+} else if (this.phase === "ROUND1") {
+this.cancelEntireCompetition();
+}
+}
+
+cancelEntireCompetition() {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+if (!currentEv) return;
+
+currentEv.status = "cancelled";
+currentEv.results = [];
+this.phase = "END";
+
+this.activeCompetitionIndex++;
+if (this.activeCompetitionIndex >= this.calendar.length) this.activeCompetitionIndex = this.calendar.length;
+
+const btn = this.getElement("btn-next-jump");
+if (btn) { btn.innerText = "KONKURS ODWOŁANY"; btn.disabled = true; }
+const simBtn = this.getElement("btn-simulate-series");
+if (simBtn) simBtn.style.display = "none";
+
+const status = this.getElement("competition-status-badge");
+if (status) { status.innerText = "Odwołany"; status.style.color = "var(--danger)"; }
+
+this.saveGame();
+this.updateLiveInterface();
+this.renderCalendar();
+this.renderStandings();
+this.updateHomeCard();
+this.updateHomeStats();
+this.showToast("🚫 Konkurs został odwołany przez jury!", "error");
+}
+
+executeSingleJumpForIndex(idx) {
+const jumper = this.currentList[idx];
+const currentEv = this.calendar[this.activeCompetitionIndex] || this.calendar[0];
+const hsLimit = currentEv.hs || 140;
+
+const gateDiff = this.baseGate - this.currentGate;
+const gateFactor = hsLimit > 200 ? 4.2 : (hsLimit > 140 ? 3.2 : 2.6);
+const gatePoints = Number((gateDiff * gateFactor).toFixed(1));
+
+const meterValue = hsLimit > 200 ? 1.2 : (hsLimit > 130 ? 1.8 : 2.0);
+const windEffectMeters = this.windSpeed * (hsLimit - 36) / 20;
+
+let sideFactor = 1.0;
+if (["↗️","↘️","↖️","↙️"].includes(this.windDirectionLabel)) {
+sideFactor = 0.6 + Math.random() * 0.2;
+}
+
+let dirMultiplier = 1.0;
+if (this.windSpeed < 0) dirMultiplier = 1.15;
+
+const effectiveWindMeters = windEffectMeters * sideFactor * dirMultiplier;
+const windPointsVal = Number((-effectiveWindMeters * meterValue).toFixed(1));
+
+let effectiveSkill = (jumper.skillBase * jumper.form) - 75;
+
+// Specjalna premia dla Domena Prevca na mamutach (HS > 200)
+let isDomen = jumper.name.includes("Domen Prevc");
+if (hsLimit > 200 && isDomen) {
+effectiveSkill += 14; // Potężna dominacja w locie
+}
+
+let targetBase = hsLimit > 200 ? 218 : (hsLimit - 15);
+let baseDist = targetBase + (effectiveSkill * (hsLimit > 200 ? (isDomen ? 0.75 : 0.55) : 0.35)) - (gateDiff * 0.85);
+
+const windDistEffect = effectiveWindMeters * 0.90;
+const randomFactor = (Math.random() - 0.5) * 6.0;
+
+let rawDist = baseDist + randomFactor + windDistEffect;
+
+let isFall = false;
+let fallThreshold = hsLimit > 200 ? hsLimit + 12 : hsLimit + 4;
+if (rawDist > fallThreshold || (Math.random() < 0.03 && jumper.form < 0.90) || (Math.abs(this.windSpeed) > 4.5 && Math.random() < 0.08)) {
+isFall = true;
+rawDist = Math.min(rawDist, hsLimit + (hsLimit > 200 ? 15 : 5));
+
+if (Math.random() < 0.12) {
+let injuryWeeksVal = Math.floor(Math.random() * 2) + 1;
+const originalJumper = this.jumpers.find(j => j.id === jumper.id);
+if (originalJumper) {
+originalJumper.injuryWeeks = injuryWeeksVal;
+}
+}
+}
+
+let distVal = Math.round(rawDist * 2) / 2;
+
+const originalJumperRef = this.jumpers.find(j => j.id === jumper.id);
+if (originalJumperRef) {
+if (!originalJumperRef.personalBest || distVal > originalJumperRef.personalBest) {
+originalJumperRef.personalBest = distVal;
+}
+}
+
+const notes = [];
+let styleBonus = jumper.skillBase > 85 ? 1.0 : (jumper.skillBase > 75 ? 0.5 : 0.0);
+if (isFall) styleBonus = -9.0;
+
+for (let i = 0; i < 5; i++) {
+let baseStep = 18.0 + styleBonus + ((Math.floor(Math.random() * 5) - 2) * 0.5);
+if (isFall) baseStep = 8.0 + (Math.floor(Math.random() * 5) * 0.5);
+let noteVal = Math.max(3.0, Math.min(20.0, baseStep));
+notes.push({ val: noteVal.toFixed(1), flag: this.currentJuryFlags[i] });
+}
+
+const sortedNotes = notes.map(n => Number(n.val)).sort((a,b) => a-b);
+const judgesSum = sortedNotes[1] + sortedNotes[2] + sortedNotes[3];
+
+const baseK = hsLimit > 200 ? 200 : (hsLimit > 130 ? 120 : 95);
+const distancePoints = (distVal - baseK) * meterValue;
+
+const finalJumpScore = Number((60 + distancePoints + judgesSum + windPointsVal + gatePoints).toFixed(1));
+
+jumper.distance = `${distVal.toFixed(1)} m${isFall ? " 💥" : ""}`;
+if (this.phase === "ROUND1" || this.phase === "QUAL") jumper.round1Distance = jumper.distance;
+jumper.wind = `${windPointsVal >= 0 ? "+" : ""}${windPointsVal.toFixed(1)} pkt`;
+jumper.comp = `${gatePoints >= 0 ? "+" : ""}${gatePoints.toFixed(1)} pkt`;
+jumper.notes = notes;
+jumper.roundScore = finalJumpScore;
+
+if (this.phase === "ROUND2") {
+jumper.totalScore = Number((Number(jumper.round1Score || 0) + finalJumpScore).toFixed(1));
+} else {
+jumper.totalScore = finalJumpScore;
+}
+}
+
+advancePhase() {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+if (currentEv && currentEv.type === 'team') {
+this.finishCompetition();
+return;
+}
+
+if (this.phase === "QUAL") {
+this.finishQualification();
+} else if (this.phase === "ROUND1") {
+this.finishRoundOne();
+}
+}
+
+finishQualification() {
+this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+
+if (this.currentList.length > 50) {
+this.currentList = this.currentList.slice(0, 50);
+}
+
+this.phase = "ROUND1";
+this.currentIndex = 0;
+this.currentGate = this.baseGate;
+this.currentList.forEach(j => {
+j.distance = "-"; j.wind = "+0.0 pkt"; j.comp = "+0.0 pkt"; j.roundScore = 0; j.totalScore = 0;
+j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+});
+// Brak losowego mieszania – kolejność według wyniku kwalifikacji
+this.updateWindConditions(true);
+this.saveGame();
+this.updateLiveInterface();
+this.showToast("✅ Kwalifikacje zakończone (awansowało 50 zawodników). Startuje 1. seria!", "success");
+}
+
+finishRoundOne() {
+this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+if (this.currentList.length > 30) this.currentList = this.currentList.slice(0, 30);
+
+this.currentList.reverse();
+this.currentList.forEach(j => {
+j.round1Distance = j.distance;
+j.round1Score = Number(j.totalScore);
+j.distance = "-"; 
+j.wind = "+0.0 pkt"; 
+j.comp = "+0.0 pkt"; 
+j.roundScore = 0; 
+j.totalScore = j.round1Score;
+j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+});
+this.phase = "ROUND2";
+this.currentIndex = 0;
+this.currentGate = this.baseGate;
+this.updateWindConditions(true);
+this.saveGame();
+this.updateLiveInterface();
+this.showToast("🏆 1. seria zakończona. Startuje Finał!", "success");
+}
+
+finishCompetition() {
+this.phase = "END";
+const currentEv = this.calendar[this.activeCompetitionIndex];
+const isTeam = currentEv && currentEv.type === 'team';
+const isPK = currentEv && currentEv.cycle === 'PK';
+
+if (isTeam) {
+const teamScores = {};
+this.currentList.forEach(j => {
+if (!teamScores[j.country]) teamScores[j.country] = { country: j.country, countryName: j.countryName, flag: j.flag, totalScore: 0, distanceSummary: [] };
+teamScores[j.country].totalScore += Number(j.totalScore || 0);
+teamScores[j.country].distanceSummary.push(j.distance);
+});
+
+let aggregatedTeams = Object.values(teamScores).sort((a,b) => b.totalScore - a.totalScore);
+this.currentList = aggregatedTeams.map((t, idx) => ({
+id: idx,
+name: `${t.flag} ${t.countryName}`,
+country: t.country,
+countryName: t.countryName,
+flag: t.flag,
+distance: `${t.distanceSummary.join(', ')}`,
+totalScore: Number(t.totalScore.toFixed(1)),
+rank: idx + 1
+}));
+
+const teamWcTable = [400, 350, 300, 250, 200, 150, 100, 50];
+this.currentList.forEach((teamRes, idx) => {
+if (idx < teamWcTable.length) {
+let pts = teamWcTable[idx];
+if (!this.teamStandings[teamRes.countryName]) this.teamStandings[teamRes.countryName] = { country: teamRes.countryName, flag: teamRes.flag, points: 0 };
+this.teamStandings[teamRes.countryName].points += pts;
+}
+});
+} else {
+this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+
+this.currentList.forEach((j, index) => {
+j.calculatedRank = index + 1;
+});
+
+this.calculatePoints(isPK);
+}
+
+if (currentEv) {
+currentEv.status = "finished";
+currentEv.results = this.currentList.map((j, idx) => ({
+id: j.id,
+name: j.name,
+flag: j.flag,
+country: j.country,
+distance: j.distance,
+totalScore: j.totalScore,
+rank: j.calculatedRank || (idx + 1)
+}));
+
+if (!isTeam) {
+currentEv.results.forEach(res => {
+const jumperObj = this.jumpers.find(item => item.id === res.id);
+if (jumperObj) {
+if (!jumperObj.history) jumperObj.history = [];
+const wcTable = [100,80,60,50,45,40,36,32,29,26,24,22,20,18,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1];
+let ptsEarned = res.rank <= wcTable.length ? wcTable[res.rank - 1] : 0;
+jumperObj.history.push({
+city: currentEv.city,
+hill: currentEv.hill,
+flag: currentEv.flag,
+cycle: currentEv.cycle,
+rank: res.rank,
+points: ptsEarned
+});
+}
+});
+}
+}
+
+this.activeCompetitionIndex++;
+if (this.activeCompetitionIndex >= this.calendar.length) this.activeCompetitionIndex = this.calendar.length;
+
+const btn = this.getElement("btn-next-jump");
+if (btn) { btn.innerText = "KONKURS ZAKOŃCZONY"; btn.disabled = true; }
+const simBtn = this.getElement("btn-simulate-series");
+if (simBtn) simBtn.style.display = "none";
+
+const status = this.getElement("competition-status-badge");
+if (status) { status.innerText = "Zakończony"; status.style.color = "var(--success)"; }
+
+this.saveGame();
+this.updateLiveInterface();
+this.renderCalendar();
+this.renderStandings();
+this.updateHomeCard();
+this.updateHomeStats();
+this.showToast("🏆 Konkurs zakończony!", "success");
+}
+
+calculatePoints(isPK) {
+const table = [100,80,60,50,45,40,36,32,29,26,24,22,20,18,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1];
+this.currentList.forEach((jumper, index) => {
+if (index >= table.length) return;
+const original = this.jumpers.find(item => item.id === jumper.id);
+if (original) {
+let pts = table[index];
+if (isPK) {
+original.pointsPK += pts;
+let countryName = original.countryName;
+if (!this.pkTeamStandings[countryName]) this.pkTeamStandings[countryName] = { country: countryName, flag: original.flag, points: 0 };
+this.pkTeamStandings[countryName].points += pts;
+} else {
+original.pointsWC += pts;
+let countryName = original.countryName;
+if (!this.teamStandings[countryName]) this.teamStandings[countryName] = { country: countryName, flag: original.flag, points: 0 };
+this.teamStandings[countryName].points += pts;
+}
+}
+});
+}
+
+updateLiveInterface() {
+const currentEv = this.calendar[this.activeCompetitionIndex];
+const isTeam = currentEv && currentEv.type === 'team';
+
+let phaseTitle = isTeam ? "Konkurs Drużynowy" : "Kwalifikacje";
+if (!isTeam) {
+if (this.phase === "ROUND1") phaseTitle = `1. Seria`;
+if (this.phase === "ROUND2") phaseTitle = `Finał`;
+}
+if (this.phase === "END") phaseTitle = "Koniec Konkursu";
+
+const title = this.getElement("table-title-mode");
+if (title) title.innerText = phaseTitle;
+const gate = this.getElement("current-gate");
+if (gate) gate.innerText = this.currentGate;
+
+const nextName = this.getElement("next-jumper-name");
+if (this.phase !== "END" && this.currentIndex < this.currentList.length) {
+const next = this.currentList[this.currentIndex];
+if (isTeam) {
+if (nextName) nextName.innerHTML = `${next.flag || ''} <strong>${next.countryName}</strong> (${next.realJumpName})`;
+} else {
+if (nextName) nextName.innerHTML = `${next.flag || ''} ${next.name}`;
+}
+} else {
+if (nextName) nextName.innerText = "Koniec rundy";
+}
+
+let displaySorted = [];
+if (isTeam) {
+const liveTeamMap = {};
+this.currentList.forEach(j => {
+if (!liveTeamMap[j.countryName]) {
+liveTeamMap[j.countryName] = {
+name: `${j.flag} ${j.countryName}`,
+flag: j.flag,
+totalScore: 0,
+distance: []
+};
+}
+if (j.distance !== "-") {
+liveTeamMap[j.countryName].totalScore += Number(j.totalScore || 0);
+liveTeamMap[j.countryName].distance.push(j.distance);
+}
+});
+displaySorted = Object.values(liveTeamMap).map(t => ({
+name: t.name,
+flag: t.flag,
+distance: t.distance.length > 0 ? t.distance.join(', ') : '-',
+totalScore: Number(t.totalScore.toFixed(1)),
+roundScore: t.totalScore
+})).sort((a,b) => b.totalScore - a.totalScore);
+} else {
+displaySorted = [...this.currentList].sort((a,b) => Number(b.totalScore || 0) - Number(a.totalScore || 0));
+}
+
+displaySorted.forEach((j, idx) => j.rank = idx + 1);
+
+const targetBox = document.getElementById("leader-target-box");
+const targetText = document.getElementById("leader-target-text");
+
+if (this.phase !== "END" && this.currentIndex < this.currentList.length && !isTeam) {
+const leader = displaySorted.length > 0 ? displaySorted[0] : null;
+const nextJumper = this.currentList[this.currentIndex];
+
+if (leader && nextJumper) {
+if (leader.totalScore === 0) {
+if (targetText) targetText.innerText = "Oczekiwanie na pierwsze skoki";
+} else {
+const leaderScore = Number(leader.totalScore || 0);
+const currentScore = Number(nextJumper.totalScore || 0);
+const pointsNeeded = leaderScore - currentScore;
+
+if (pointsNeeded <= 0 && nextJumper.id === leader.id) {
+if (targetText) targetText.innerText = "Jesteś liderem!";
+} else {
+const hsLimit = currentEv.hs || 140;
+const meterValue = hsLimit > 200 ? 1.2 : (hsLimit > 130 ? 1.8 : 2.0);
+const baseK = hsLimit > 200 ? 200 : (hsLimit > 130 ? 120 : 95);
+
+const gateDiff = this.baseGate - this.currentGate;
+const gateFactor = hsLimit > 200 ? 4.2 : (hsLimit > 140 ? 3.2 : 2.6);
+const gatePoints = Number((gateDiff * gateFactor).toFixed(1));
+
+const windEffectMeters = this.windSpeed * (hsLimit - 36) / 20;
+let sideFactor = ["↗️","↘️","↖️","↙️"].includes(this.windDirectionLabel) ? 0.7 : 1.0;
+let dirMultiplier = this.windSpeed < 0 ? 1.15 : 1.0;
+const windPointsVal = Number((-windEffectMeters * sideFactor * dirMultiplier * meterValue).toFixed(1));
+
+const estimatedJudges = 54.0;
+const requiredJumpScore = pointsNeeded + 0.1;
+
+const pointsFromDistanceNeeded = requiredJumpScore - 60 - estimatedJudges - windPointsVal - gatePoints;
+let requiredDist = baseK + (pointsFromDistanceNeeded / meterValue);
+
+requiredDist = Math.round(requiredDist * 2) / 2;
+requiredDist = Math.max(hsLimit * 0.68, Math.min(hsLimit + 22, requiredDist));
+
+if (targetText) {
+targetText.innerHTML = `Musisz skoczyć ok. <strong>${requiredDist.toFixed(1)} m</strong> by prowadzić`;
+}
+}
+}
+if (targetBox) targetBox.style.display = "flex";
+} else {
+if (targetBox) targetBox.style.display = "none";
+}
+} else {
+if (targetBox) targetBox.style.display = "none";
+}
+
+if (this.phase !== "END" && this.currentIndex > 0 && this.currentIndex <= this.currentList.length) {
+this.displayActiveJumper(this.currentList[this.currentIndex - 1], isTeam);
+} else {
+this.displayIdleJumper();
+}
+
+this.renderFISTable(displaySorted, isTeam);
+}
+
+displayActiveJumper(jumper, isTeam) {
+const setText = (id, text) => { const el = this.getElement(id); if(el) el.innerText = text; };
+if (isTeam) {
+setText("live-jumper-name", `${jumper.countryName} (${jumper.realJumpName})`);
+} else {
+setText("live-jumper-name", jumper.name);
+}
+setText("live-jumper-flag", jumper.flag || '🏳️');
+setText("live-stat-dist", jumper.distance);
+setText("live-stat-comp", jumper.comp);
+setText("live-stat-rank", jumper.rank || "-");
+
+const wind = this.getElement("live-stat-wind");
+if (wind) {
+wind.innerText = jumper.wind || "+0.0 pkt";
+wind.className = `stat-value ${parseFloat(jumper.wind || 0) >= 0 ? "wind-pos" : "wind-neg"}`;
+}
+
+const judges = this.getElement("live-judges-row");
+if (judges && Array.isArray(jumper.notes)) {
+judges.innerHTML = "";
+jumper.notes.forEach(note => {
+const span = document.createElement("span");
+span.className = "judge-badge";
+span.innerHTML = `${note.flag} ${note.val}`;
+judges.appendChild(span);
+});
+}
+}
+
+displayIdleJumper() {
+const setText = (id, text) => { const el = this.getElement(id); if(el) el.innerText = text; };
+setText("live-jumper-name", "Oczekiwanie na skok");
+setText("live-jumper-flag", "⏳");
+setText("live-stat-dist", "- m");
+setText("live-stat-wind", "-");
+setText("live-stat-comp", "-");
+setText("live-stat-rank", "-");
+const judges = this.getElement("live-judges-row");
+if (judges) {
+judges.innerHTML = `<span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span>`;
+}
+}
+
+renderFISTable(displaySorted, isTeam) {
+const tbody = this.getElement("fis-table-body");
+if (!tbody) return;
+tbody.innerHTML = "";
+
+displaySorted.forEach((jumper, idx) => {
+const tr = document.createElement("tr");
+if (this.phase !== "END" && this.currentIndex > 0 && !isTeam && this.currentList[this.currentIndex - 1] && this.currentList[this.currentIndex - 1].id === jumper.id) {
+tr.classList.add("current-skier-row");
+}
+
+let qBadgeHtml = "";
+if (!isTeam) {
+if (this.phase === "QUAL" && idx < 50 && jumper.totalScore > 0) {
+qBadgeHtml = `<span class="q-badge">q</span>`;
+} else if (this.phase === "ROUND1" && idx < 30 && jumper.totalScore > 0) {
+qBadgeHtml = `<span class="q-badge">q</span>`;
+} else if (this.phase === "ROUND2" && jumper.totalScore > 0) {
+qBadgeHtml = `<span class="q-badge">q</span>`;
+}
+}
+
+tr.innerHTML = `
+<td><strong>${idx + 1}.</strong></td>
+<td>${jumper.flag || ''} <strong>${jumper.name}</strong> ${qBadgeHtml}</td>
+<td>${jumper.distance}</td>
+<td>${jumper.roundScore || jumper.totalScore}</td>
+<td style="color:${parseFloat(jumper.wind || 0) >= 0 ? 'var(--success-light)' : 'var(--danger)'};">${jumper.wind || '+0.0 pkt'}</td>
+<td><strong>${jumper.totalScore}</strong></td>
+`;
+tbody.appendChild(tr);
+});
+}
+
+renderStandings() {
+const indBody = this.getElement("standings-body");
+const teamBody = this.getElement("standings-team-body");
+const pkIndBody = this.getElement("standings-pk-body");
+const pkTeamBody = this.getElement("standings-pk-team-body");
+
+if (indBody) {
+indBody.innerHTML = "";
+let sortedJumpers = [...this.jumpers].sort((a,b) => b.pointsWC - a.pointsWC);
+sortedJumpers.forEach((j, idx) => {
+const row = document.createElement("div");
+row.className = "standing-row";
+row.onclick = () => app.openJumperHistoryModal(j.id);
+row.innerHTML = `
+<span class="standing-position">${idx + 1}.</span>
+<span class="standing-name">${j.flag} ${j.name}</span>
+<span class="standing-country">${j.countryName}</span>
+<span class="standing-points">${j.pointsWC} pkt</span>
+`;
+indBody.appendChild(row);
+});
+}
+
+if (teamBody) {
+teamBody.innerHTML = "";
+let sortedTeams = Object.values(this.teamStandings).sort((a,b) => b.points - a.points);
+if (sortedTeams.length === 0) {
+teamBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak punktów drużynowych PŚ</div></div>`;
+} else {
+sortedTeams.forEach((t, idx) => {
+const row = document.createElement("div");
+row.className = "standing-row-team";
+row.innerHTML = `
+<span class="standing-position">${idx + 1}.</span>
+<span class="standing-name">${t.flag} ${t.country}</span>
+<span class="standing-points">${t.points} pkt</span>
+`;
+teamBody.appendChild(row);
+});
+}
+}
+
+if (pkIndBody) {
+pkIndBody.innerHTML = "";
+let sortedPK = [...this.jumpers].sort((a,b) => b.pointsPK - a.pointsPK);
+sortedPK.forEach((j, idx) => {
+const row = document.createElement("div");
+row.className = "standing-row";
+row.onclick = () => app.openJumperHistoryModal(j.id);
+row.innerHTML = `
+<span class="standing-position">${idx + 1}.</span>
+<span class="standing-name">${j.flag} ${j.name}</span>
+<span class="standing-country">${j.countryName}</span>
+<span class="standing-points" style="color:var(--warning-light);">${j.pointsPK} pkt</span>
+`;
+pkIndBody.appendChild(row);
+});
+}
+
+if (pkTeamBody) {
+pkTeamBody.innerHTML = "";
+let sortedPkTeams = Object.values(this.pkTeamStandings).sort((a,b) => b.points - a.points);
+if (sortedPkTeams.length === 0) {
+pkTeamBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak punktów w Pucharze Kontynentalnym</div></div>`;
+} else {
+sortedPkTeams.forEach((t, idx) => {
+const row = document.createElement("div");
+row.className = "standing-row-team";
+row.innerHTML = `
+<span class="standing-position">${idx + 1}.</span>
+<span class="standing-name">${t.flag} ${t.country}</span>
+<span class="standing-points" style="color:var(--warning-light);">${t.points} pkt</span>
+`;
+pkTeamBody.appendChild(row);
+});
+}
+}
+}
+
+resetGame() {
+localStorage.removeItem(this.getSaveKey(this.activeSlot));
+this.resetToDefaults();
+const nav = this.getElement("main-bottom-nav");
+if (nav) nav.style.display = "none";
+const modeView = this.getElement("view-mode-select");
+if (modeView) modeView.classList.add("active");
+this.renderSlotSelection();
+this.showToast("🔄 Zresetowano slot gry.", "info");
+}
+
+showToast(message, type = "info") {
+const container = this.getElement("toast-container");
+if (!container) return;
+const toast = document.createElement("div");
+toast.className = `toast ${type}`;
+toast.innerText = message;
+container.appendChild(toast);
+setTimeout(() => {
+toast.style.opacity = "0";
+setTimeout(() => toast.remove(), 300);
+}, 2800);
+}
+}
+
+let app = null;
+window.addEventListener("DOMContentLoaded", () => {
+app = new SkiManagerUltimatePro2026();
+});
+</script>
+</body>
+</html>
