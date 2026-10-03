@@ -1,2 +1,2738 @@
-# Skoki
-skoki
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070d1b">
+<title>Ski Jumping Manager Ultimate Pro 2026/2027+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-main: #070d1b;
+    --bg-card: #131b2e;
+    --bg-card-hover: #1e293b;
+    --bg-panel: #0f172a;
+    --bg-input: #09111f;
+    --accent-blue: #2563eb;
+    --accent-blue-hover: #1d4ed8;
+    --accent-blue-light: #60a5fa;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dark: #64748b;
+    --border-color: #334155;
+    --border-light: #475569;
+    --success: #22c55e;
+    --success-light: #4ade80;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --warning: #f59e0b;
+    --warning-light: #fbbf24;
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+    --radius-small: 4px;
+    --radius: 6px;
+    --radius-large: 10px;
+    --shadow-card: 0 2px 8px rgba(0,0,0,.15);
+    --shadow-blue: 0 2px 10px rgba(37,99,235,.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+html { min-height: 100%; background: var(--bg-main); }
+body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; font-size: 11px; }
+button { font-family: inherit; }
+button:focus { outline: none; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0b1220; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+.phone-container { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background-color: var(--bg-main); display: flex; flex-direction: column; position: relative; }
+.main-menu-screen { position: fixed; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.main-menu-screen.hidden { display: none !important; }
+.main-menu-bg { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,13,27,0.40) 0%, rgba(7,13,27,0.65) 45%, rgba(7,13,27,0.88) 100%), url('skocznia-bg.jpg') center 35% / cover no-repeat; transform: scale(1.03); }
+.main-menu-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 15%, rgba(0,0,0,0.55) 100%); }
+.main-menu-card { position: relative; z-index: 2; width: calc(100% - 48px); max-width: 300px; background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(71, 85, 105, 0.6); border-radius: 14px; padding: 22px 18px 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.03) inset; backdrop-filter: blur(12px); text-align: center; }
+.main-menu-title { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; color: #f1f5f9; line-height: 1.2; margin-bottom: 2px; }
+.main-menu-year { font-size: 15px; font-weight: 800; color: #f1f5f9; margin-bottom: 6px; }
+.main-menu-subtitle { font-size: 8px; color: #64748b; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 16px; font-weight: 500; }
+.main-menu-btn { width: 100%; background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(71, 85, 105, 0.7); color: #e2e8f0; padding: 11px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer; margin-bottom: 8px; transition: background 0.15s, border-color 0.15s, transform 0.1s; }
+.main-menu-btn:last-child { margin-bottom: 0; }
+.main-menu-btn:hover { background: rgba(51, 65, 85, 0.95); border-color: rgba(100, 116, 139, 0.8); }
+.main-menu-btn:active { transform: scale(0.98); }
+.menu-panel { position: absolute; inset: 0; z-index: 3; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.55); padding: 16px; }
+.menu-panel.show { display: flex; }
+.menu-panel-card { width: 100%; max-width: 340px; background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(71, 85, 105, 0.65); border-radius: 12px; padding: 16px; max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+.menu-panel-title { font-size: 12px; font-weight: 800; margin-bottom: 4px; color: #f1f5f9; }
+.menu-panel-desc { font-size: 9px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+.app-header { background: rgba(15,23,42,.96); backdrop-filter: blur(10px); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 200; }
+.brand-area { display: flex; align-items: center; gap: 8px; }
+.brand-logo { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: white; font-weight: 800; font-size: 11px; padding: 5px 8px; border-radius: 5px; }
+.brand-title { font-size: 12px; font-weight: 700; color: var(--text-main); }
+.brand-subtitle { font-size: 8px; color: var(--text-muted); }
+.header-status { display: flex; align-items: center; gap: 4px; font-size: 8px; color: var(--success-light); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+.content-body { flex: 1; padding: 8px; padding-bottom: 75px; overflow-y: auto; }
+.view-section { display: none; animation: fadeIn .12s ease; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+.card { background: var(--bg-card); border-radius: var(--radius-large); padding: 10px; margin-bottom: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
+.card:last-child { margin-bottom: 0; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.card-title { font-size: 12px; font-weight: 800; }
+.card-subtitle { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+.section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+.btn-action { width: 100%; background: var(--accent-blue); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 700; font-size: 10px; cursor: pointer; transition: background .15s, transform .1s; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: var(--shadow-blue); margin-bottom: 5px; }
+.btn-action:last-child { margin-bottom: 0; }
+.btn-action:hover { background: var(--accent-blue-hover); }
+.btn-action:active { transform: scale(.98); }
+.btn-action:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; opacity: .6; }
+.btn-secondary { background: #334155; box-shadow: none; }
+.btn-secondary:hover { background: #475569; }
+.btn-danger { background: var(--danger); box-shadow: none; }
+.btn-danger:hover { background: var(--danger-hover); }
+.btn-success { background: var(--success); box-shadow: none; }
+.btn-success:hover { background: #16a34a; }
+.btn-warning { background: var(--warning); color: #111827; box-shadow: none; }
+.btn-purple { background: var(--purple); box-shadow: none; }
+.btn-small { background: var(--accent-blue); color: white; border: none; padding: 4px 7px; border-radius: 4px; font-size: 8px; font-weight: 700; cursor: pointer; }
+.btn-small:hover { background: var(--accent-blue-hover); }
+.mode-select-grid { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; margin-bottom: 10px; }
+.mode-card { background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 8px; padding: 10px; cursor: pointer; transition: all .15s; text-align: left; }
+.mode-card:hover, .mode-card.selected { border-color: var(--accent-blue-light); background: rgba(37,99,235,.08); }
+.mode-card-title { font-size: 11px; font-weight: 800; margin-bottom: 3px; color: var(--accent-blue-light); }
+.mode-card-desc { font-size: 8px; color: var(--text-muted); line-height: 1.3; }
+.builder-box { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; margin-bottom: 8px; }
+.builder-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-input); padding: 5px 6px; border-radius: 4px; margin-bottom: 4px; font-size: 9px; }
+.save-slots-grid { display: grid; grid-template-columns: 1fr; gap: 6px; width: 100%; margin-bottom: 10px; }
+.save-slot-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+.save-slot-info { font-size: 9px; }
+.save-slot-title { font-weight: 800; color: var(--accent-blue-light); margin-bottom: 2px; }
+.save-slot-desc { font-size: 7px; color: var(--text-muted); }
+.next-event-card { background: linear-gradient(145deg, #131b2e, #0c1425); border: 1px solid rgba(59,130,246,.3); }
+.event-badge-row { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+.event-location { font-size: 9px; color: var(--text-muted); margin-bottom: 8px; }
+.event-extra { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 8px; }
+.event-extra-box { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 5px; padding: 5px; text-align: center; }
+.event-extra-label { font-size: 6px; color: var(--text-muted); text-transform: uppercase; }
+.event-extra-value { font-size: 9px; font-weight: 800; margin-top: 1px; }
+.home-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+.home-stat { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; text-align: center; }
+.home-stat-value { font-size: 13px; font-weight: 800; }
+.home-stat-label { font-size: 7px; color: var(--text-muted); margin-top: 1px; }
+.calendar-table { width: 100%; border-collapse: collapse; font-size: 9px; }
+.calendar-table th { color: var(--text-muted); text-align: left; padding: 5px; border-bottom: 1px solid var(--border-color); font-weight: 700; font-size: 7px; }
+.calendar-table td { padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); vertical-align: middle; }
+.calendar-table tr.active-event { background: rgba(37,99,235,.08); }
+.calendar-clickable { cursor: pointer; transition: background .15s; }
+.calendar-clickable:hover { background: rgba(59,130,246,.1); }
+.badge-cykl { background: rgba(59,130,246,.12); color: var(--accent-blue-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-pk { background: rgba(245,158,11,.18); color: var(--warning-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-team { background: rgba(139,92,246,.18); color: #c084fc; padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.badge-finished { background: rgba(34,197,94,.12); color: var(--success-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; display: inline-flex; align-items: center; gap: 3px; }
+.badge-cancelled { background: rgba(239,68,68,.12); color: var(--danger); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; display: inline-flex; align-items: center; gap: 3px; }
+.badge-nat { background: rgba(6,182,212,.18); color: var(--cyan); padding: 2px 5px; border-radius: 3px; font-weight: 800; font-size: 7px; }
+.live-wrapper { display: flex; flex-direction: column; gap: 6px; }
+.live-jumper-panel { background: linear-gradient(135deg, #131b2e, #090e1a); border: 1px solid rgba(59,130,246,.25); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+.jumper-active-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+.active-jumper-name { font-size: 11px; font-weight: 800; color: var(--accent-blue-light); }
+.live-hill-badge { font-size: 7px; background: rgba(59,130,246,.12); color: var(--accent-blue-light); padding: 2px 5px; border-radius: 3px; font-weight: 800; text-align: right; }
+.next-up-info { font-size: 8px; color: var(--text-muted); background: rgba(15,23,42,.6); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.leader-target-box { font-size: 8px; color: var(--warning-light); background: rgba(245,158,11,.08); padding: 4px 6px; border-radius: 4px; border: 1px solid rgba(245,158,11,.25); display: flex; justify-content: space-between; align-items: center; }
+.control-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.gate-box, .wind-direction-box { background: rgba(15,23,42,.6); border: 1px solid var(--border-color); border-radius: 5px; padding: 4px 6px; display: flex; justify-content: space-between; align-items: center; font-size: 8px; }
+.gate-controls { display: flex; gap: 3px; }
+.gate-btn { background: var(--accent-blue); color: white; border: none; width: 20px; height: 20px; border-radius: 3px; font-weight: 800; cursor: pointer; font-size: 10px; }
+.gate-btn:hover { background: var(--accent-blue-hover); }
+.live-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
+.stat-box { background: rgba(15,23,42,.5); border: 1px solid var(--border-color); border-radius: 5px; padding: 4px; text-align: center; }
+.stat-label { font-size: 6px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+.stat-value { font-size: 10px; font-weight: 800; margin-top: 1px; }
+.active-details-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,.7); padding: 4px 6px; border-radius: 5px; font-size: 8px; border: 1px solid var(--border-color); }
+.judges-notes-row { display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end; }
+.judge-badge { background: #334155; padding: 1px 4px; border-radius: 3px; font-size: 7px; font-weight: 700; display: flex; align-items: center; gap: 2px; }
+.live-table-panel { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; margin-top: 6px; }
+.table-mode-header { padding: 6px 8px; background: var(--bg-panel); font-size: 9px; font-weight: 800; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.competition-status { font-size: 7px; }
+.fis-table-container { overflow-x: auto; overflow-y: auto; max-height: 42vh; }
+.fis-table { width: 100%; border-collapse: collapse; font-size: 8px; min-width: 380px; }
+.fis-table th { background: #0f172a; color: var(--text-muted); padding: 5px 6px; text-align: left; position: sticky; top: 0; z-index: 10; font-weight: 700; border-bottom: 1px solid var(--border-color); }
+.fis-table td { padding: 5px 6px; border-bottom: 1px solid rgba(51,65,85,.3); vertical-align: middle; }
+.fis-table tr.current-skier-row { background: rgba(59,130,246,.2); }
+.wind-pos { color: var(--success); }
+.wind-neg { color: var(--danger); }
+.squads-header-info { font-size: 8px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.45; background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(139,92,246,.08)); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,.25); }
+.country-accordion { background: var(--bg-card); border-radius: 8px; margin-bottom: 6px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,.1); }
+.country-accordion-header { display: flex; align-items: center; justify-content: space-between; padding: 9px 10px; background: rgba(15,23,42,.7); cursor: pointer; user-select: none; transition: background .15s; }
+.country-accordion-header:hover { background: rgba(30,41,59,.8); }
+.country-title-area { display: flex; align-items: center; gap: 7px; font-weight: 800; font-size: 10px; color: var(--text-main); }
+.country-meta-badges { display: flex; align-items: center; gap: 5px; }
+.country-count { font-size: 7.5px; font-weight: 700; color: var(--text-muted); background: var(--bg-input); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--border-color); }
+.accordion-arrow { font-size: 9px; color: var(--text-muted); transition: transform 0.2s ease; }
+.country-accordion.open .accordion-arrow { transform: rotate(180deg); }
+.country-accordion-body { display: none; padding: 8px; background: var(--bg-main); border-top: 1px solid var(--border-color); }
+.country-accordion.open .country-accordion-body { display: block; }
+.jumper-list-item { display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,.55); padding: 7px 8px; border-radius: 7px; margin-bottom: 5px; font-size: 9px; border: 1px solid rgba(51,65,85,.35); transition: background .12s; }
+.jumper-list-item:hover { background: rgba(30,41,59,.7); }
+.jumper-list-item:last-child { margin-bottom: 0; }
+.jumper-left { display: flex; align-items: center; gap: 7px; cursor: pointer; flex: 1; border-radius: 5px; padding: 2px 4px; transition: background .12s; }
+.jumper-left:hover { background: rgba(59,130,246,.15); }
+.jumper-number { color: var(--text-dark); font-size: 7px; min-width: 16px; font-weight: 700; }
+.jumper-meta-info { display: flex; flex-direction: column; gap: 1px; }
+.jumper-name-text { font-weight: 700; color: var(--text-main); font-size: 9.5px; }
+.jumper-pot-text { font-size: 7px; color: var(--text-muted); }
+.jumper-toggles-group { display: flex; gap: 4px; align-items: center; }
+.toggle-switch { cursor: pointer; padding: 4px 6px; border-radius: 5px; font-size: 7.5px; font-weight: 800; user-select: none; transition: all .12s; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 2px; justify-content: center; }
+.toggle-on { background: rgba(34,197,94,.18); color: var(--success-light); border-color: rgba(34,197,94,.35); }
+.toggle-off { background: rgba(51,65,85,.45); color: var(--text-muted); border-color: var(--border-color); }
+.toggle-team.toggle-on { background: rgba(139,92,246,.25); color: #c084fc; border-color: rgba(139,92,246,.4); }
+.toggle-pk.toggle-on { background: rgba(245,158,11,.25); color: var(--warning-light); border-color: rgba(245,158,11,.4); }
+.standings-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+.standings-tab-btn { flex: 1; min-width: 48%; background: var(--bg-panel); border: 1px solid var(--border-color); color: var(--text-muted); padding: 5px; border-radius: 5px; font-size: 8px; font-weight: 800; cursor: pointer; text-align: center; }
+.standings-tab-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue-light); }
+.standings-header { display: grid; grid-template-columns: 28px 1fr 45px 50px; padding: 5px; background: var(--bg-panel); color: var(--text-muted); font-size: 7px; font-weight: 800; border-bottom: 1px solid var(--border-color); }
+.standings-header-team { display: grid; grid-template-columns: 28px 1fr 50px; padding: 5px; background: var(--bg-panel); color: var(--text-muted); font-size: 7px; font-weight: 800; border-bottom: 1px solid var(--border-color); }
+.standing-row { display: grid; grid-template-columns: 28px 1fr 45px 50px; padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); align-items: center; font-size: 8px; cursor: pointer; transition: background .12s; }
+.standing-row:hover { background: rgba(59,130,246,.12); }
+.standing-row-team { display: grid; grid-template-columns: 28px 1fr 50px; padding: 6px 5px; border-bottom: 1px solid rgba(51,65,85,.3); align-items: center; font-size: 8px; }
+.standing-position { font-weight: 800; }
+.standing-name { font-weight: 700; }
+.standing-country { color: var(--text-muted); }
+.standing-points { text-align: right; color: var(--accent-blue-light); font-weight: 800; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+.modal-overlay.show { display: flex; }
+.modal { width: 100%; max-width: 380px; background: #131b2e; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; box-shadow: 0 15px 40px rgba(0,0,0,.6); max-height: 80vh; display: flex; flex-direction: column; }
+.modal-title { font-size: 12px; font-weight: 800; margin-bottom: 5px; }
+.modal-text { font-size: 9px; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px; }
+.modal-buttons { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 8px; }
+.modal-btn { border: none; border-radius: 5px; padding: 8px; font-size: 9px; font-weight: 800; cursor: pointer; }
+.modal-cancel { background: #334155; color: white; }
+.toast-container { position: fixed; left: 50%; bottom: 65px; transform: translateX(-50%); width: calc(100% - 20px); max-width: 440px; z-index: 2000; pointer-events: none; }
+.toast { background: #1e293b; border: 1px solid var(--border-light); border-radius: 6px; padding: 8px 10px; font-size: 9px; font-weight: 700; box-shadow: 0 5px 20px rgba(0,0,0,.4); margin-top: 5px; }
+.toast.success { border-color: rgba(34,197,94,.4); }
+.toast.error { border-color: rgba(239,68,68,.4); }
+.toast.info { border-color: rgba(59,130,246,.4); }
+.bottom-nav { background: rgba(15,23,42,.97); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 500; }
+.nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 8px; gap: 2px; cursor: pointer; width: 25%; }
+.nav-item.active { color: var(--accent-blue-light); }
+.nav-item svg { width: 16px; height: 16px; fill: currentColor; }
+.empty-state { text-align: center; padding: 20px 10px; color: var(--text-muted); }
+.empty-state-icon { font-size: 24px; margin-bottom: 6px; }
+.empty-state-title { color: var(--text-main); font-weight: 800; font-size: 10px; margin-bottom: 3px; }
+.q-badge { background: rgba(34, 197, 94, 0.2); color: var(--success-light); border: 1px solid rgba(34, 197, 94, 0.4); font-size: 7px; font-weight: 800; padding: 1px 4px; border-radius: 3px; margin-left: 4px; display: inline-block; }
+.dist-stack { line-height: 1.25; display: flex; flex-direction: column; gap: 1px; }
+.dist-stack span { display: block; }
+.season-end-list { max-height: 28vh; overflow-y: auto; background: var(--bg-input); border-radius: 6px; padding: 6px; margin-bottom: 8px; font-size: 8px; }
+.season-end-item { padding: 4px 0; border-bottom: 1px solid rgba(51,65,85,.3); }
+.season-end-item:last-child { border-bottom: none; }
+.generated-tag { font-size: 6.5px; font-weight: 800; color: var(--cyan); letter-spacing: 0.3px; text-transform: uppercase; opacity: 0.85; margin-left: 8px; padding-left: 6px; white-space: nowrap; }
+/* === MISTRZOSTWA KRAJU === */
+.nat-champ-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+.nat-champ-btn { background: var(--bg-panel); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; border-radius: 6px; font-size: 9px; font-weight: 700; cursor: pointer; text-align: center; transition: all .15s; }
+.nat-champ-btn:hover { border-color: var(--accent-blue-light); background: rgba(37,99,235,.1); }
+.nat-champ-btn:disabled { opacity: .4; cursor: not-allowed; }
+.nat-champ-btn.played { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.4); color: var(--success-light); }
+.hill-choice-list { max-height: 40vh; overflow-y: auto; margin-bottom: 8px; }
+.hill-choice-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-input); padding: 7px 8px; border-radius: 5px; margin-bottom: 4px; font-size: 9px; border: 1px solid var(--border-color); cursor: pointer; transition: all .12s; }
+.hill-choice-item:hover { border-color: var(--accent-blue-light); background: rgba(37,99,235,.08); }
+.hill-choice-item.selected { border-color: var(--accent-blue-light); background: rgba(37,99,235,.15); }
+.hill-host-country { font-size: 7px; color: var(--text-muted); margin-left: 4px; }
+
+/* === ŁADNIEJSZY FILTR KRAJÓW === */
+.filter-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.filter-icon-btn { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); border: 1px solid rgba(96,165,250,.4); color: white; border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; transition: all .15s; box-shadow: 0 2px 6px rgba(37,99,235,.3); }
+.filter-icon-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(37,99,235,.4); }
+.filter-icon-btn.active { background: linear-gradient(135deg, var(--warning), #d97706); box-shadow: 0 2px 6px rgba(245,158,11,.3); }
+.filter-active-chip { display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(135deg, rgba(37,99,235,.18), rgba(139,92,246,.12)); border: 1px solid rgba(96,165,250,.4); color: var(--accent-blue-light); padding: 4px 8px; border-radius: 20px; font-size: 8px; font-weight: 800; }
+.filter-active-chip .chip-flag { font-size: 11px; }
+.filter-active-chip .chip-remove { background: rgba(239,68,68,.15); color: var(--danger); border: none; border-radius: 50%; width: 14px; height: 14px; font-size: 9px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin-left: 2px; }
+.filter-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+.filter-modal-title { font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 6px; color: var(--accent-blue-light); }
+.filter-modal-close { background: rgba(239,68,68,.15); color: var(--danger); border: 1px solid rgba(239,68,68,.3); border-radius: 5px; padding: 3px 8px; font-size: 9px; font-weight: 800; cursor: pointer; }
+.filter-countries-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-height: 50vh; overflow-y: auto; padding-right: 2px; }
+.filter-country-card { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(30,41,59,.9), rgba(15,23,42,.9)); border: 1px solid var(--border-color); border-radius: 8px; padding: 7px 8px; cursor: pointer; transition: all .15s; text-align: left; position: relative; overflow: hidden; }
+.filter-country-card:hover { border-color: var(--accent-blue-light); background: rgba(37,99,235,.12); transform: translateY(-1px); }
+.filter-country-card.selected { border-color: var(--accent-blue-light); background: linear-gradient(135deg, rgba(37,99,235,.28), rgba(29,78,216,.15)); box-shadow: 0 0 0 1px rgba(96,165,250,.3) inset; }
+.filter-country-card.selected::after { content: '✓'; position: absolute; top: 3px; right: 5px; color: var(--accent-blue-light); font-size: 9px; font-weight: 900; }
+.filter-country-flag { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.filter-country-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.filter-country-name { font-size: 8.5px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.filter-country-count { font-size: 6.5px; color: var(--text-muted); font-weight: 700; }
+.filter-clear-btn { width: 100%; background: rgba(51,65,85,.4); border: 1px dashed var(--border-light); color: var(--text-muted); padding: 7px; border-radius: 6px; font-size: 8.5px; font-weight: 800; cursor: pointer; margin-bottom: 8px; transition: all .15s; }
+.filter-clear-btn:hover { background: rgba(51,65,85,.7); color: var(--text-main); border-color: var(--accent-blue-light); }
+.filter-clear-btn.active { background: rgba(239,68,68,.12); color: var(--danger); border-color: rgba(239,68,68,.4); border-style: solid; }
+</style>
+</head>
+<body>
+
+<div class="main-menu-screen" id="main-menu-screen">
+    <div class="main-menu-bg"></div>
+    <div class="main-menu-card">
+        <div class="main-menu-title">SKI JUMPING MANAGER</div>
+        <div class="main-menu-year" id="menu-season-label">2026 / 2027</div>
+        <div class="main-menu-subtitle">Zostań najlepszym menedżerem skoków</div>
+        <button class="main-menu-btn" onclick="app.menuNewCareer()">NOWA KARIERA</button>
+        <button class="main-menu-btn" onclick="app.menuLoadGame()">WCZYTAJ GRĘ</button>
+        <button class="main-menu-btn" onclick="app.menuSettings()">USTAWIENIA (wkrótce)</button>
+        <button class="main-menu-btn" onclick="app.menuExit()">WYJŚCIE</button>
+    </div>
+    <div class="menu-panel" id="panel-slots">
+        <div class="menu-panel-card">
+            <div class="menu-panel-title">💾 Wczytaj grę</div>
+            <div class="menu-panel-desc">Wybierz jeden z 3 slotów zapisu.</div>
+            <div class="save-slots-grid" id="save-slots-container"></div>
+            <button class="btn-action btn-secondary" onclick="app.closeMenuPanel()" style="margin-top:8px;">← POWRÓT</button>
+        </div>
+    </div>
+    <div class="menu-panel" id="panel-new-career">
+        <div class="menu-panel-card">
+            <div class="menu-panel-title">🚀 Nowa kariera</div>
+            <div class="menu-panel-desc">Wybierz slot i typ kalendarza.</div>
+            <div class="section-title" style="margin-top:4px;">Slot zapisu:</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:12px;" id="new-career-slots"></div>
+            <div class="section-title">Typ kalendarza:</div>
+            <div class="mode-select-grid">
+                <div class="mode-card" id="card-mode-real" onclick="app.selectMode('real')">
+                    <div class="mode-card-title">📅 Prawdziwy Sezon 2026/2027</div>
+                    <div class="mode-card-desc">Oficjalny harmonogram FIS ze skoczniami PŚ, PK, TCS oraz konkursami drużynowymi.</div>
+                </div>
+                <div class="mode-card" id="card-mode-custom" onclick="app.selectMode('custom')">
+                    <div class="mode-card-title">🛠 Własny Kalendarz Skoczni</div>
+                    <div class="mode-card-desc">Ułóż własną sekwencję obiektów z bazy (Indywidualny PŚ / PK lub Drużynowy).</div>
+                </div>
+            </div>
+            <div id="custom-builder-container" style="display:none; width:100%; text-align:left; margin-bottom:10px;">
+                <div class="section-title">Wybierz skocznie (min. 3):</div>
+                <div class="builder-box" id="builder-pool-list" style="max-height:160px; overflow-y:auto;"></div>
+                <div style="font-size:8px; color:var(--text-muted); margin-bottom:5px;" id="builder-counter">Wybrano: 0 skoczni</div>
+            </div>
+            <button class="btn-action" id="btn-start-game" onclick="app.initializeGameMode()" disabled>▶ ROZPOCZNIJ GRĘ</button>
+            <button class="btn-action btn-secondary" onclick="app.closeMenuPanel()" style="margin-top:5px;">← POWRÓT</button>
+        </div>
+    </div>
+</div>
+
+<div class="phone-container" id="phone-container" style="display:none;">
+    <header class="app-header">
+        <div class="brand-area">
+            <div class="brand-logo">SJM</div>
+            <div>
+                <div class="brand-title">Ski Jumping Manager</div>
+                <div class="brand-subtitle" id="header-season">Sezon 2026/2027 Pro</div>
+            </div>
+        </div>
+        <div class="header-status"><span class="status-dot"></span> ONLINE</div>
+    </header>
+    <div class="content-body">
+        <div id="view-home" class="view-section active">
+            <div class="card next-event-card">
+                <div class="section-title">⏱ Najbliższy Konkurs</div>
+                <div class="event-badge-row" id="home-event-title"><span>🇳🇴</span><span id="home-event-name">Lillehammer · HS 140 m</span></div>
+                <div class="event-location" id="home-event-desc">Kwalifikacje + 1. Seria + Seria Finałowa</div>
+                <div class="event-extra">
+                    <div class="event-extra-box"><div class="event-extra-label">Skocznia</div><div class="event-extra-value" id="home-hill">HS 140</div></div>
+                    <div class="event-extra-box"><div class="event-extra-label">Typ / Cykl</div><div class="event-extra-value" id="home-cycle">PŚ Indywidualny</div></div>
+                    <div class="event-extra-box"><div class="event-extra-label">Warunki</div><div class="event-extra-value" id="home-weather">☀️ Stabilne</div></div>
+                </div>
+                <button class="btn-action" id="home-main-btn" onclick="app.startCompetition()">▶ ROZPOCZNIJ ZAWODY NA ŻYWO</button>
+            </div>
+            <div class="card">
+                <div class="section-title">📊 Statystyki sezonu</div>
+                <div class="home-stats">
+                    <div class="home-stat"><div class="home-stat-value" id="home-stat-events">0</div><div class="home-stat-label">Konkursy</div></div>
+                    <div class="home-stat"><div class="home-stat-value" id="home-stat-points">0</div><div class="home-stat-label">Punkty PŚ</div></div>
+                    <div class="home-stat"><div class="home-stat-value" id="home-stat-active">10</div><div class="home-stat-label">Powołani PŚ</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="section-title">💾 Zarządzanie stanem gry</div>
+                <button class="btn-action btn-secondary" onclick="app.manualSave()">💾 ZAPISZ DO AKTYWNEGO SLOTU</button>
+                <button class="btn-action btn-danger" onclick="app.backToMainMenu()">🏠 MENU GŁÓWNE</button>
+            </div>
+            <div class="card">
+                <div class="card-header"><div><div class="card-title">📅 Kalendarz Sezonu</div><div class="card-subtitle">Kliknij w ukończony konkurs, aby zobaczyć wyniki</div></div></div>
+                <table class="calendar-table"><thead><tr><th>Gospodarz</th><th>Cykl</th><th>Skocznia</th><th>Akcja / Wyniki</th></tr></thead><tbody id="calendar-table-body"></tbody></table>
+            </div>
+        </div>
+        <div id="view-live" class="view-section">
+            <div class="live-wrapper">
+                <div class="live-jumper-panel">
+                    <div class="jumper-active-header"><div><span id="live-jumper-flag">🇳🇴</span><span class="active-jumper-name" id="live-jumper-name">Oczekiwanie</span></div><div id="live-hill-display" class="live-hill-badge">Lillehammer · HS 140</div></div>
+                    <div class="next-up-info"><span>Kolejny na belce:</span><strong id="next-jumper-name" style="color:#60a5fa;">Brak</strong></div>
+                    <div class="leader-target-box" id="leader-target-box"><span>Cel do 1. miejsca:</span><strong id="leader-target-text" style="color:var(--warning-light);">Oczekiwanie na lidera</strong></div>
+                    <div class="control-row">
+                        <div class="gate-box"><span>Belka: <strong id="current-gate" style="color:#60a5fa;">15</strong></span><div class="gate-controls"><button class="gate-btn" onclick="app.changeGate(-1)">-</button><button class="gate-btn" onclick="app.changeGate(1)">+</button></div></div>
+                        <div class="wind-direction-box"><span>Wiatr:</span><span id="wind-dir-indicator" style="font-weight:700; color:#60a5fa;">⬅️ 1.2 m/s</span></div>
+                    </div>
+                    <div class="live-stats-grid">
+                        <div class="stat-box"><div class="stat-label">Odległość</div><div class="stat-value" id="live-stat-dist">- m</div></div>
+                        <div class="stat-box"><div class="stat-label">Wiatr (pkt)</div><div class="stat-value" id="live-stat-wind">-</div></div>
+                        <div class="stat-box"><div class="stat-label">Belka (pkt)</div><div class="stat-value" id="live-stat-comp">-</div></div>
+                    </div>
+                    <div class="active-details-bar"><div>Poz: <strong id="live-stat-rank" style="color:#60a5fa;">-</strong></div><div class="judges-notes-row" id="live-judges-row"><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span></div></div>
+                    <button class="btn-action" id="btn-next-jump" onclick="app.performNextJump()">PUŚĆ KOLEJNEGO SKOCZKA</button>
+                    <button class="btn-action btn-purple" id="btn-simulate-series" onclick="app.simulateRemainingSeries()">⚡ SYMULUJ CAŁĄ SERIĘ NA RAZ</button>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px;">
+                        <button class="btn-action btn-warning" onclick="app.cancelCurrentSeries()" style="margin-bottom:0; font-size:8px;">❌ ODWOŁAJ SERIĘ</button>
+                        <button class="btn-action btn-danger" onclick="app.cancelEntireCompetition()" style="margin-bottom:0; font-size:8px;">🚫 ODWOŁAJ KONKURS</button>
+                    </div>
+                </div>
+                <div class="live-table-panel">
+                    <div class="table-mode-header"><span id="table-title-mode">Wyniki Kwalifikacji</span><span id="competition-status-badge" class="competition-status" style="color:var(--warning);">Trwa runda</span></div>
+                    <div class="fis-table-container"><table class="fis-table"><thead><tr><th>#</th><th>Skoczek / Drużyna</th><th>Odległość</th><th>Nota</th><th>Wiatr</th><th>Łącznie</th></tr></thead><tbody id="fis-table-body"></tbody></table></div>
+                </div>
+            </div>
+        </div>
+        <div id="view-squads" class="view-section">
+            <div class="card">
+                <div class="section-title">👥 Powołania Kadrowe</div>
+                <div class="squads-header-info">
+                    <strong>Zasady powołań:</strong><br>
+                    • <strong style="color:var(--success-light);">PŚ</strong> – Puchar Świata.<br>
+                    • <strong style="color:var(--warning-light);">PK</strong> – Puchar Kontynentalny.<br>
+                    • <strong style="color:#c084fc;">Team</strong> – skład drużynowy (min. 4).<br>
+                    ⚠️ Przy upadku możliwa kontuzja (lekka / średnia / poważna np. ACL – nawet 18–22 konkursy).<br>
+                    📅 Skoczkowie mają realny wiek – z czasem kończą kariery, pojawiają się nowi.<br>
+                    🌍 Nowi skoczkowie pochodzą z różnych krajów (także egzotycznych – rzadziej i zwykle słabsi).<br>
+                    💡 <strong>Kliknij nazwisko skoczka, aby zobaczyć historię.</strong>
+                </div>
+                <button class="btn-action btn-warning" onclick="app.openNationalChampionshipsModal()" style="margin-bottom:10px; font-weight:800;">🏆 MISTRZOSTWA KRAJU</button>
+                <div id="squads-container"></div>
+            </div>
+        </div>
+        <div id="view-standings" class="view-section">
+            <div class="card">
+                <div class="standings-tabs">
+                    <button class="standings-tab-btn active" id="tab-btn-individual" onclick="app.switchStandingsTab('individual')">🏆 Generalna PŚ</button>
+                    <button class="standings-tab-btn" id="tab-btn-team" onclick="app.switchStandingsTab('team')">👥 Drużynowa PŚ</button>
+                    <button class="standings-tab-btn" id="tab-btn-pk-ind" onclick="app.switchStandingsTab('pk_individual')">🏆 Generalna PK</button>
+                    <button class="standings-tab-btn" id="tab-btn-pk-team" onclick="app.switchStandingsTab('pk_team')">👥 Drużynowa PK</button>
+                </div>
+                <div class="filter-header">
+                    <div style="font-size: 7.5px; color: var(--text-muted); flex: 1;" id="standings-hint">💡 Kliknij skoczka, aby zobaczyć historię.</div>
+                    <button id="filter-icon-btn" class="filter-icon-btn" onclick="app.openFilterModal()" title="Filtruj po kraju">🌍</button>
+                </div>
+                <div id="active-filter-info" style="display: none; margin-bottom: 6px;"></div>
+                <div id="standings-individual-view"><div class="standings-header"><span>#</span><span>Skoczek</span><span>Kraj</span><span style="text-align:right;">Punkty</span></div><div id="standings-body"></div></div>
+                <div id="standings-team-view" style="display:none;"><div class="standings-header-team"><span>#</span><span>Kraj</span><span style="text-align:right;">Punkty</span></div><div id="standings-team-body"></div></div>
+                <div id="standings-pk-individual-view" style="display:none;"><div class="standings-header"><span>#</span><span>Skoczek (PK)</span><span>Kraj</span><span style="text-align:right;">Punkty</span></div><div id="standings-pk-body"></div></div>
+                <div id="standings-pk-team-view" style="display:none;"><div class="standings-header-team"><span>#</span><span>Kraj (PK)</span><span style="text-align:right;">Punkty</span></div><div id="standings-pk-team-body"></div></div>
+            </div>
+        </div>
+    </div>
+    <nav class="bottom-nav" id="main-bottom-nav">
+        <button class="nav-item active" onclick="app.switchTab('home', this)"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Główna</button>
+        <button class="nav-item" onclick="app.switchTab('live', this)"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Konkurs</button>
+        <button class="nav-item" onclick="app.switchTab('squads', this)"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Kadra</button>
+        <button class="nav-item" onclick="app.switchTab('standings', this)"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>Generalna</button>
+    </nav>
+</div>
+
+<div class="modal-overlay" id="general-modal"><div class="modal" id="general-modal-content"></div></div>
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+class SkiManagerUltimatePro2026 {
+    constructor() {
+        this.activeSlot = 1;
+        this.selectedMode = null;
+        this.customSelectedHills = [];
+        this.currentStandingsTab = 'individual';
+        this.defaultJumpers = this.createDefaultJumpers();
+        this.availableHillsPool = this.createAvailableHillsPool();
+        this.openCountriesState = {};
+        this.injuryCatalog = this.createInjuryCatalog();
+        this.seasonYearStart = 2026;
+        this.seasonLabel = "2026/2027";
+        this.nextJumperId = 1000;
+        this.nationalChampionshipsPlayed = {};
+        this.nationalChampionshipActive = false;
+        this.nationalChampEvent = null;
+        this.activeStandingsFilter = null;
+        this.resetToDefaults();
+        this.renderSlotSelection();
+        this.renderNewCareerSlots();
+        this.updateSeasonLabels();
+    }
+
+    getElement(id) { return document.getElementById(id); }
+
+    updateSeasonLabels() {
+        const menu = this.getElement("menu-season-label");
+        const header = this.getElement("header-season");
+        if (menu) menu.innerText = this.seasonLabel.replace("/", " / ");
+        if (header) header.innerText = `Sezon ${this.seasonLabel} Pro`;
+    }
+
+    menuNewCareer() {
+        this.renderNewCareerSlots();
+        this.renderCustomBuilderList();
+        this.getElement("panel-new-career").classList.add("show");
+        this.getElement("panel-slots").classList.remove("show");
+    }
+    menuLoadGame() {
+        this.renderSlotSelection();
+        this.getElement("panel-slots").classList.add("show");
+        this.getElement("panel-new-career").classList.remove("show");
+    }
+    menuSettings() { this.showToast("⚙️ Ustawienia (wkrótce).", "info"); }
+    menuExit() { this.showToast("👋 Do zobaczenia!", "info"); }
+    closeMenuPanel() {
+        this.getElement("panel-slots").classList.remove("show");
+        this.getElement("panel-new-career").classList.remove("show");
+    }
+    backToMainMenu() {
+        this.getElement("phone-container").style.display = "none";
+        this.getElement("main-menu-screen").classList.remove("hidden");
+        this.closeMenuPanel();
+        this.showToast("🏠 Wrócono do menu głównego.", "info");
+    }
+    showMainAppView() {
+        this.getElement("main-menu-screen").classList.add("hidden");
+        this.getElement("phone-container").style.display = "flex";
+        this.closeMenuPanel();
+        this.updateSeasonLabels();
+    }
+
+    createInjuryCatalog() {
+        return [
+            { name: "Stłuczenie uda", weeks: 1, severity: "lekka", weight: 22 },
+            { name: "Naciągnięcie mięśnia", weeks: 1, severity: "lekka", weight: 20 },
+            { name: "Ból dolnego odcinka pleców", weeks: 2, severity: "lekka", weight: 18 },
+            { name: "Lekkie stłuczenie kolana", weeks: 2, severity: "lekka", weight: 15 },
+            { name: "Skręcenie kostki", weeks: 3, severity: "średnia", weight: 10 },
+            { name: "Kontuzja kolana (naciągnięcie)", weeks: 4, severity: "średnia", weight: 8 },
+            { name: "Uraz barku", weeks: 3, severity: "średnia", weight: 7 },
+            { name: "Problemy z kręgosłupem", weeks: 5, severity: "średnia", weight: 5 },
+            { name: "Zerwanie ACL", weeks: 20, severity: "poważna", weight: 2 },
+            { name: "Poważne uszkodzenie więzadeł kolana", weeks: 16, severity: "poważna", weight: 2 },
+            { name: "Złamanie kości piszczelowej", weeks: 14, severity: "poważna", weight: 1 },
+            { name: "Poważny uraz kręgosłupa", weeks: 18, severity: "poważna", weight: 1 }
+        ];
+    }
+    pickRandomInjury() {
+        const totalWeight = this.injuryCatalog.reduce((s, i) => s + i.weight, 0);
+        let r = Math.random() * totalWeight;
+        for (const inj of this.injuryCatalog) {
+            r -= inj.weight;
+            if (r <= 0) return { ...inj };
+        }
+        return { ...this.injuryCatalog[0] };
+    }
+
+    getJumperCharacteristics(name) {
+        const map = {
+            "Dawid Kubacki": { pos: "Mocne i agresywne wybicie z progu", neg: "Słabiej sobie radzi na obiektach mamucich" },
+            "Piotr Żyła": { pos: "Ogromna dynamika i waleczność", neg: "Niestabilna sylwetka w locie i podatność na wiatr" },
+            "Kacper Tomasiak": { pos: "Świetna technika i noszenie w locie", neg: "Brak doświadczenia na dużych obiektach" },
+            "Domen Prevc": { pos: "Genialne czucie lotu, absolutna dominacja na mamutach", neg: "Czasami problem z lądowaniem przy ekstremalnych odległościach" },
+            "Anže Lanišek": { pos: "Bardzo wysoka powtarzalność i styl", neg: "Podatny na gorszy dzień w trudnych warunkach" },
+            "Timi Zajc": { pos: "Niesamowity błysk na mamutach, dalekie loty", neg: "Duża nierównomierność formy w sezonie" },
+            "Stefan Kraft": { pos: "Niezwykła regularność, perfekcyjna pozycja dojazdowa", neg: "Bywa podatny na silny wiatr w plecy" },
+            "Daniel Tschofenig": { pos: "Doskonałe lądowanie telemarkiem i stabilność", neg: "Czasami zbyt zachowawczy na progu" },
+            "Ryōyū Kobayashi": { pos: "Genialny timing na progu, świetny TCS", neg: "Bywa chimeryczny, gdy sprzęt nie domaga" },
+            "Andreas Wellinger": { pos: "Piękny, wysoki lot i wysokie noty za styl", neg: "Trudności z osiąganiem dalekich odległości przy mocnym wietrze z tyłu" },
+            "Karl Geiger": { pos: "Świetna faza lotu, silny psychicznie", neg: "Słabsze prędkości początkowe na rozbiegu" },
+            "Halvor Egner Granerud": { pos: "Potężna faza lotu w sprzyjających warunkach", neg: "Duże wahania formy i kłopoty w trudnym wietrze" },
+            "Marius Lindvik": { pos: "Znakomity lotnik, świetny na mamutach", neg: "Nierówna dyspozycja w konkursach letnich/początku zimy" },
+            "Gregor Deschwanden": { pos: "Ogromne doświadczenie i waleczność", neg: "Miewa problem z powtórzeniem dwóch równych skoków" }
+        };
+        return map[name] || { pos: "Solidna technika i rzetelna praca treningowa", neg: "Czasami brakuje błysku w rywalizacji z najlepszymi" };
+    }
+
+    getDefaultPersonalBest(name, skill) {
+        const flyingGiants = ["Domen Prevc", "Timi Zajc", "Marius Lindvik", "Stefan Kraft", "Ryōyū Kobayashi", "Halvor Egner Granerud", "Johann André Forfang", "Žiga Jelar"];
+        if (flyingGiants.includes(name)) return 235.0 + Math.floor(Math.random() * 15);
+        else if (skill > 82) return 220.0 + Math.floor(Math.random() * 15);
+        else if (skill > 75) return 195.0 + Math.floor(Math.random() * 20);
+        else return 140.0 + Math.floor(Math.random() * 35);
+    }
+
+    getRealAge(name) {
+        const realAges = {
+            "Dawid Kubacki": 36, "Piotr Żyła": 39, "Kacper Tomasiak": 19, "Maciej Kot": 35, "Paweł Wąsek": 27,
+            "Aleksander Zniszczoł": 32, "Klemens Joniak": 21, "Adam Niżnik": 22, "Jakub Wolny": 30, "Jarosław Krzak": 24,
+            "Kamil Waszek": 23, "Łukasz Łukaszczyk": 22, "Kacper Juroszek": 22, "Konrad Tomasiak": 18, "Jan Galica": 21, "Tomasz Pilch": 26,
+            "Daniel Tschofenig": 24, "Stephan Embacher": 22, "Jan Hörl": 27, "Stefan Kraft": 33, "Manuel Fettner": 40,
+            "Maximilian Ortner": 24, "Jonas Schuster": 23, "Clemens Aigner": 32, "Markus Müller": 25, "Clemens Leitner": 28,
+            "Niklas Bachlinger": 23, "Philipp Aschenwald": 30, "Lukas Haagen": 24, "Francisco Mörth": 25, "Hannes Landerer": 23,
+            "Julijan Smid": 24, "Stefan Rainer": 25, "Raffael Zimmermann": 23, "Jakob Steinberger": 22, "Johannes Pölz": 21,
+            "Janni Reisenauer": 24, "Peter Resinger": 23, "Marco Wörgötter": 22, "Simon Steinberger": 21, "Maximilian Steiner": 23, "Maximilian Gartner": 24,
+            "Philipp Raimund": 25, "Felix Hoffmann": 27, "Andreas Wellinger": 31, "Karl Geiger": 33, "Pius Paschke": 35,
+            "Luca Roth": 25, "Ben Bayer": 22, "Constantin Schmid": 27, "Martin Hamann": 28, "Adrian Tittel": 24,
+            "Jannik Faißt": 23, "Max Unglaube": 22, "Lasse Deimel": 21, "Janne Holz": 22, "Finn Braun": 21, "Emanuel Schmid": 23, "Alex Reiter": 22,
+            "Marius Lindvik": 28, "Johann André Forfang": 31, "Kristoffer Eriksen Sundal": 23, "Halvor Egner Granerud": 30,
+            "Isak Andreas Langmo": 22, "Robin Pedersen": 26, "Jørgen Oliver Strøm": 23, "Benjamin Østvold": 22,
+            "Adrian Thon Gundersrud": 22, "Fredrik Villumstad": 25, "Sindre Ulven Jørgensen": 24, "Oddvar Gunnerød": 23,
+            "Richard Selbekk-Hansen": 22, "Johannes Aardal": 21, "Fredrik Gran": 23, "Anders Haare": 22, "Paal Haakon Bjørntomt": 21, "Bendik Jakobsen Heggli": 24,
+            "Domen Prevc": 27, "Anže Lanišek": 30, "Timi Zajc": 26, "Rok Oblak": 23, "Žiga Jančar": 22, "Žak Mogel": 23,
+            "Enej Faletič": 22, "Rok Masle": 21, "Gorazd Završnik": 24, "Žiga Jelar": 28, "Lovro Kos": 26, "Maksim Bartolj": 21,
+            "Jaka Kramer": 22, "Nik Gostisa Lah": 21, "Jernej Presečnik": 25,
+            "Ryōyū Kobayashi": 35, "Ren Nikaidō": 24, "Naoki Nakamura": 30, "Tomofumi Naito": 28, "Yukiya Satō": 31,
+            "Sakutaro Kobayashi": 22, "Junshiro Kobayashi": 34, "Keiichi Satō": 30, "Go Yamamoto": 31, "Yuto Nakamura": 24,
+            "Shinnosuke Fujita": 23, "Taku Takeuchi": 36, "Riki Kurita": 22, "Daimatsu Takehana": 23,
+            "Gregor Deschwanden": 34, "Sandro Hauswirth": 26, "Killian Peier": 30, "Remo Imhof": 24, "Felix Trunz": 23,
+            "Juri Kesseli": 22, "Yannick Wasser": 23, "Simon Ammann": 44,
+            "Antti Aalto": 31, "Niko Kytösaho": 28, "Eetu Nousiainen": 28, "Jarkko Määttä": 33, "Vilho Palosaari": 21,
+            "Paavo Romppainen": 22, "Tuomas Kinnunen": 24, "Tomas Kuisma": 23, "Henri Kavilo": 25, "Ilkka Herola": 31, "Timi Heiskanen": 22,
+            "Valentin Foubert": 24, "Jules Chervet": 23, "Enzo Milesi": 22, "Alessandro Batby": 24, "Louis Obersteiner": 21, "Anoki Pouradier": 20, "Ari Repellin": 22,
+            "Kevin Bickner": 30, "Jason Colby": 24, "Tate Frantz": 21, "Andrew Urlaub": 26, "Erik Belshaw": 22, "Bryce Kloc": 23, "Decker Dean": 24,
+            "Giovanni Bresadola": 25, "Alex Insam": 28, "Francesco Cecon": 23, "Maximilian Gartner": 24,
+            "Roman Koudelka": 37, "David Rygl": 23, "Daniel Skarka": 22, "Filip Křenek": 24, "Benedikt Holub": 21,
+            "Danil Vassilyev": 26, "Ilya Mizernykh": 24, "Sergey Tkachenko": 28, "Nurshat Tursunzhanov": 23,
+            "Hektor Kapustík": 22, "Vladimir Zografski": 33, "Artti Aigro": 28, "Kaimar Vagul": 24,
+            "Yevhen Marusiak": 26, "Vitaliy Kalinichenko": 31, "Mackenzie Boyd-Clowes": 34, "Tarik VanWieren": 23, "Mitchell Penning": 24,
+            "Fatih Arda İpcioğlu": 28, "Muhammed Ali Bedir": 24, "Daniel Andrei Cacina": 24,
+            "Sunwoong Jang": 25, "Heung Chul Choi": 28, "Qiwu Song": 24, "Weijie Zhen": 23
+        };
+        return realAges[name] || (18 + Math.floor(Math.random() * 7));
+    }
+
+    createDefaultJumpers() {
+        const rawData = [
+            { country: "Austria", flag: "🇦🇹", names: [
+                {n: "Daniel Tschofenig", s: 94}, {n: "Stephan Embacher", s: 92}, {n: "Jan Hörl", s: 90},
+                {n: "Stefan Kraft", s: 89}, {n: "Manuel Fettner", s: 86}, {n: "Maximilian Ortner", s: 85},
+                {n: "Jonas Schuster", s: 84}, {n: "Clemens Aigner", s: 78}, {n: "Markus Müller", s: 80},
+                {n: "Clemens Leitner", s: 76}, {n: "Niklas Bachlinger", s: 74}, {n: "Philipp Aschenwald", s: 73},
+                {n: "Lukas Haagen", s: 72}, {n: "Francisco Mörth", s: 71}, {n: "Hannes Landerer", s: 70},
+                {n: "Julijan Smid", s: 69}, {n: "Stefan Rainer", s: 68}, {n: "Raffael Zimmermann", s: 67},
+                {n: "Jakob Steinberger", s: 66}, {n: "Johannes Pölz", s: 65}, {n: "Janni Reisenauer", s: 64},
+                {n: "Peter Resinger", s: 63}, {n: "Marco Wörgötter", s: 62}, {n: "Simon Steinberger", s: 61},
+                {n: "Maximilian Steiner", s: 60}, {n: "Maximilian Gartner", s: 59}
+            ]},
+            { country: "Niemcy", flag: "🇩🇪", names: [
+                {n: "Philipp Raimund", s: 91}, {n: "Felix Hoffmann", s: 88}, {n: "Andreas Wellinger", s: 87},
+                {n: "Karl Geiger", s: 84}, {n: "Pius Paschke", s: 83}, {n: "Luca Roth", s: 78},
+                {n: "Ben Bayer", s: 76}, {n: "Constantin Schmid", s: 77}, {n: "Martin Hamann", s: 74},
+                {n: "Adrian Tittel", s: 75}, {n: "Jannik Faißt", s: 72}, {n: "Max Unglaube", s: 71},
+                {n: "Lasse Deimel", s: 70}, {n: "Janne Holz", s: 69}, {n: "Finn Braun", s: 68},
+                {n: "Emanuel Schmid", s: 67}, {n: "Alex Reiter", s: 66}
+            ]},
+            { country: "Norwegia", flag: "🇳🇴", names: [
+                {n: "Marius Lindvik", s: 88}, {n: "Johann André Forfang", s: 87}, {n: "Kristoffer Eriksen Sundal", s: 85},
+                {n: "Halvor Egner Granerud", s: 84}, {n: "Isak Andreas Langmo", s: 80}, {n: "Robin Pedersen", s: 79},
+                {n: "Jørgen Oliver Strøm", s: 78}, {n: "Benjamin Østvold", s: 77}, {n: "Adrian Thon Gundersrud", s: 76},
+                {n: "Fredrik Villumstad", s: 75}, {n: "Sindre Ulven Jørgensen", s: 74}, {n: "Oddvar Gunnerød", s: 72},
+                {n: "Richard Selbekk-Hansen", s: 71}, {n: "Johannes Aardal", s: 70}, {n: "Fredrik Gran", s: 69},
+                {n: "Anders Haare", s: 68}, {n: "Paal Haakon Bjørntomt", s: 67}, {n: "Bendik Jakobsen Heggli", s: 66}
+            ]},
+            { country: "Słowenia", flag: "🇸🇮", names: [
+                {n: "Domen Prevc", s: 96}, {n: "Anže Lanišek", s: 93}, {n: "Timi Zajc", s: 87},
+                {n: "Rok Oblak", s: 80}, {n: "Žiga Jančar", s: 78}, {n: "Žak Mogel", s: 77},
+                {n: "Enej Faletič", s: 74}, {n: "Rok Masle", s: 73}, {n: "Gorazd Završnik", s: 72},
+                {n: "Žiga Jelar", s: 81}, {n: "Lovro Kos", s: 82}, {n: "Maksim Bartolj", s: 71},
+                {n: "Jaka Kramer", s: 70}, {n: "Nik Gostisa Lah", s: 69}, {n: "Jernej Presečnik", s: 68}
+            ]},
+            { country: "Japonia", flag: "🇯🇵", names: [
+                {n: "Ryōyū Kobayashi", s: 94}, {n: "Ren Nikaidō", s: 93}, {n: "Naoki Nakamura", s: 88},
+                {n: "Tomofumi Naito", s: 85}, {n: "Yukiya Satō", s: 83}, {n: "Sakutaro Kobayashi", s: 82},
+                {n: "Junshiro Kobayashi", s: 78}, {n: "Keiichi Satō", s: 76}, {n: "Go Yamamoto", s: 74},
+                {n: "Yuto Nakamura", s: 73}, {n: "Shinnosuke Fujita", s: 72}, {n: "Taku Takeuchi", s: 75},
+                {n: "Riki Kurita", s: 71}, {n: "Daimatsu Takehana", s: 70}
+            ]},
+            { country: "Polska", flag: "🇵🇱", names: [
+                {n: "Kacper Tomasiak", s: 84}, {n: "Piotr Żyła", s: 80}, {n: "Dawid Kubacki", s: 79},
+                {n: "Maciej Kot", s: 77}, {n: "Paweł Wąsek", s: 76}, {n: "Aleksander Zniszczoł", s: 75},
+                {n: "Klemens Joniak", s: 73}, {n: "Adam Niżnik", s: 72}, {n: "Jakub Wolny", s: 74},
+                {n: "Jarosław Krzak", s: 70}, {n: "Kamil Waszek", s: 69}, {n: "Łukasz Łukaszczyk", s: 68},
+                {n: "Kacper Juroszek", s: 71}, {n: "Konrad Tomasiak", s: 67}, {n: "Jan Galica", s: 66},
+                {n: "Tomasz Pilch", s: 65}
+            ]},
+            { country: "Szwajcaria", flag: "🇨🇭", names: [
+                {n: "Gregor Deschwanden", s: 86}, {n: "Sandro Hauswirth", s: 80}, {n: "Killian Peier", s: 79},
+                {n: "Remo Imhof", s: 76}, {n: "Felix Trunz", s: 75}, {n: "Juri Kesseli", s: 74},
+                {n: "Yannick Wasser", s: 73}, {n: "Simon Ammann", s: 72}
+            ]},
+            { country: "Finlandia", flag: "🇫🇮", names: [
+                {n: "Antti Aalto", s: 83}, {n: "Niko Kytösaho", s: 81}, {n: "Eetu Nousiainen", s: 76},
+                {n: "Jarkko Määttä", s: 75}, {n: "Vilho Palosaari", s: 74}, {n: "Paavo Romppainen", s: 73},
+                {n: "Tuomas Kinnunen", s: 71}, {n: "Tomas Kuisma", s: 70}, {n: "Henri Kavilo", s: 69},
+                {n: "Ilkka Herola", s: 68}, {n: "Timi Heiskanen", s: 67}
+            ]},
+            { country: "Francja", flag: "🇫🇷", names: [
+                {n: "Valentin Foubert", s: 82}, {n: "Jules Chervet", s: 76}, {n: "Enzo Milesi", s: 74},
+                {n: "Alessandro Batby", s: 72}, {n: "Louis Obersteiner", s: 71}, {n: "Anoki Pouradier", s: 70},
+                {n: "Ari Repellin", s: 69}
+            ]},
+            { country: "USA", flag: "🇺🇸", names: [
+                {n: "Kevin Bickner", s: 80}, {n: "Jason Colby", s: 78}, {n: "Tate Frantz", s: 79},
+                {n: "Andrew Urlaub", s: 76}, {n: "Erik Belshaw", s: 77}, {n: "Bryce Kloc", s: 72},
+                {n: "Decker Dean", s: 73}
+            ]},
+            { country: "Włochy", flag: "🇮🇹", names: [
+                {n: "Giovanni Bresadola", s: 78}, {n: "Alex Insam", s: 76}, {n: "Francesco Cecon", s: 74},
+                {n: "Maximilian Gartner", s: 70}
+            ]},
+            { country: "Czechy", flag: "🇨🇿", names: [
+                {n: "Roman Koudelka", s: 77}, {n: "David Rygl", s: 72}, {n: "Daniel Skarka", s: 71},
+                {n: "Filip Křenek", s: 70}, {n: "Benedikt Holub", s: 69}
+            ]},
+            { country: "Kazachstan", flag: "🇰🇿", names: [
+                {n: "Danil Vassilyev", s: 76}, {n: "Ilya Mizernykh", s: 73}, {n: "Sergey Tkachenko", s: 72},
+                {n: "Nurshat Tursunzhanov", s: 70}
+            ]},
+            { country: "Słowacja", flag: "🇸🇰", names: [{n: "Hektor Kapustík", s: 68}] },
+            { country: "Bułgaria", flag: "🇧🇬", names: [{n: "Vladimir Zografski", s: 84}] },
+            { country: "Estonia", flag: "🇪🇪", names: [{n: "Artti Aigro", s: 79}, {n: "Kaimar Vagul", s: 74}] },
+            { country: "Ukraina", flag: "🇺🇦", names: [{n: "Yevhen Marusiak", s: 72}, {n: "Vitaliy Kalinichenko", s: 71}] },
+            { country: "Kanada", flag: "🇨🇦", names: [{n: "Mackenzie Boyd-Clowes", s: 80}, {n: "Tarik VanWieren", s: 73}, {n: "Mitchell Penning", s: 70}] },
+            { country: "Turcja", flag: "🇹🇷", names: [{n: "Fatih Arda İpcioğlu", s: 74}, {n: "Muhammed Ali Bedir", s: 69}] },
+            { country: "Rumunia", flag: "🇷🇴", names: [{n: "Daniel Andrei Cacina", s: 70}] },
+            { country: "Korea Południowa", flag: "🇰🇷", names: [{n: "Sunwoong Jang", s: 68}, {n: "Heung Chul Choi", s: 66}] },
+            { country: "Chiny", flag: "🇨🇳", names: [{n: "Qiwu Song", s: 69}, {n: "Weijie Zhen", s: 67}] }
+        ];
+        let idCounter = 1;
+        let jumpersList = [];
+        rawData.forEach(group => {
+            group.names.forEach((entry, index) => {
+                const name = typeof entry === "string" ? entry : entry.n;
+                const skill = typeof entry === "string" ? 70 : entry.s;
+                const chars = this.getJumperCharacteristics(name);
+                const pb = this.getDefaultPersonalBest(name, skill);
+                const age = this.getRealAge(name);
+                jumpersList.push({
+                    id: idCounter++,
+                    name: name,
+                    country: `${group.flag} ${group.country}`,
+                    countryName: group.country,
+                    flag: group.flag,
+                    active: true,
+                    squadPK: false,
+                    squadTeam: index < 4,
+                    pointsWC: 0,
+                    pointsPK: 0,
+                    skillBase: skill,
+                    form: Number((0.92 + Math.random() * 0.16).toFixed(2)),
+                    age: age,
+                    retired: false,
+                    retirementReason: null,
+                    injuryWeeks: 0,
+                    injuryName: null,
+                    injurySeverity: null,
+                    chars: chars,
+                    personalBest: pb,
+                    history: [],
+                    generated: false
+                });
+            });
+        });
+        this.nextJumperId = idCounter;
+        return jumpersList;
+    }
+
+    createAvailableHillsPool() {
+        return [
+            { id: 201, city: "Kulm", flag: "🇦🇹", country: "Austria", cycle: "PŚ", hill: "HS 235", hs: 235, defaultGate: 12 },
+            { id: 202, city: "Bischofshofen", flag: "🇦🇹", country: "Austria", cycle: "TCS", hill: "HS 142", hs: 142, defaultGate: 13 },
+            { id: 203, city: "Innsbruck", flag: "🇦🇹", country: "Austria", cycle: "TCS", hill: "HS 128", hs: 128, defaultGate: 11 },
+            { id: 204, city: "Stams", flag: "🇦🇹", country: "Austria", cycle: "PK", hill: "HS 115", hs: 115, defaultGate: 10 },
+            { id: 205, city: "Hinzenbach", flag: "🇦🇹", country: "Austria", cycle: "PK", hill: "HS 90", hs: 90, defaultGate: 9 },
+            { id: 206, city: "Tschagguns", flag: "🇦🇹", country: "Austria", cycle: "PK", hill: "HS 108", hs: 108, defaultGate: 10 },
+            { id: 207, city: "Seefeld", flag: "🇦🇹", country: "Austria", cycle: "PŚ", hill: "HS 109", hs: 109, defaultGate: 10 },
+            { id: 208, city: "Oberstdorf (Loty)", flag: "🇩🇪", country: "Niemcy", cycle: "PŚ", hill: "HS 235", hs: 235, defaultGate: 12 },
+            { id: 209, city: "Oberstdorf", flag: "🇩🇪", country: "Niemcy", cycle: "TCS", hill: "HS 137", hs: 137, defaultGate: 12 },
+            { id: 210, city: "Garmisch-Partenkirchen", flag: "🇩🇪", country: "Niemcy", cycle: "TCS", hill: "HS 142", hs: 142, defaultGate: 13 },
+            { id: 211, city: "Klingenthal", flag: "🇩🇪", country: "Niemcy", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+            { id: 212, city: "Willingen", flag: "🇩🇪", country: "Niemcy", cycle: "PŚ", hill: "HS 147", hs: 147, defaultGate: 14 },
+            { id: 213, city: "Titisee-Neustadt", flag: "🇩🇪", country: "Niemcy", cycle: "PK", hill: "HS 142", hs: 142, defaultGate: 13 },
+            { id: 214, city: "Oberhof", flag: "🇩🇪", country: "Niemcy", cycle: "PK", hill: "HS 100", hs: 100, defaultGate: 9 },
+            { id: 215, city: "Oberwiesenthal", flag: "🇩🇪", country: "Niemcy", cycle: "PK", hill: "HS 105", hs: 105, defaultGate: 10 },
+            { id: 216, city: "Hinterzarten", flag: "🇩🇪", country: "Niemcy", cycle: "PK", hill: "HS 111", hs: 111, defaultGate: 10 },
+            { id: 217, city: "Pöhla", flag: "🇩🇪", country: "Niemcy", cycle: "PK", hill: "HS 66", hs: 66, defaultGate: 8 },
+            { id: 218, city: "Vikersund", flag: "🇳🇴", country: "Norwegia", cycle: "PŚ", hill: "HS 240", hs: 240, defaultGate: 12 },
+            { id: 219, city: "Lillehammer", flag: "🇳🇴", country: "Norwegia", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+            { id: 220, city: "Oslo", flag: "🇳🇴", country: "Norwegia", cycle: "PŚ", hill: "HS 134", hs: 134, defaultGate: 12 },
+            { id: 221, city: "Trondheim", flag: "🇳🇴", country: "Norwegia", cycle: "PK", hill: "HS 138", hs: 138, defaultGate: 12 },
+            { id: 222, city: "Planica", flag: "🇸🇮", country: "Słowenia", cycle: "PŚ", hill: "HS 240", hs: 240, defaultGate: 12 },
+            { id: 223, city: "Kranj", flag: "🇸🇮", country: "Słowenia", cycle: "PK", hill: "HS 109", hs: 109, defaultGate: 10 },
+            { id: 224, city: "Ljubno", flag: "🇸🇮", country: "Słowenia", cycle: "PK", hill: "HS 94", hs: 94, defaultGate: 9 },
+            { id: 225, city: "Villach", flag: "🇸🇮", country: "Słowenia", cycle: "PK", hill: "HS 98", hs: 98, defaultGate: 9 },
+            { id: 226, city: "Ruka", flag: "🇫🇮", country: "Finlandia", cycle: "PŚ", hill: "HS 142", hs: 142, defaultGate: 13 },
+            { id: 227, city: "Lahti", flag: "🇫🇮", country: "Finlandia", cycle: "PK", hill: "HS 130", hs: 130, defaultGate: 11 },
+            { id: 228, city: "Zakopane", flag: "🇵🇱", country: "Polska", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+            { id: 229, city: "Wisła", flag: "🇵🇱", country: "Polska", cycle: "PK", hill: "HS 134", hs: 134, defaultGate: 12 },
+            { id: 230, city: "Szczyrk", flag: "🇵🇱", country: "Polska", cycle: "PK", hill: "HS 104", hs: 104, defaultGate: 10 },
+            { id: 231, city: "Sapporo", flag: "🇯🇵", country: "Japonia", cycle: "PŚ", hill: "HS 137", hs: 137, defaultGate: 12 },
+            { id: 232, city: "Zao", flag: "🇯🇵", country: "Japonia", cycle: "PK", hill: "HS 102", hs: 102, defaultGate: 9 },
+            { id: 233, city: "Hakuba", flag: "🇯🇵", country: "Japonia", cycle: "PK", hill: "HS 131", hs: 131, defaultGate: 11 },
+            { id: 234, city: "Engelberg", flag: "🇨🇭", country: "Szwajcaria", cycle: "PŚ", hill: "HS 140", hs: 140, defaultGate: 12 },
+            { id: 235, city: "Einsiedeln", flag: "🇨🇭", country: "Szwajcaria", cycle: "PK", hill: "HS 117", hs: 117, defaultGate: 10 },
+            { id: 236, city: "Kandersteg", flag: "🇨🇭", country: "Szwajcaria", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 },
+            { id: 237, city: "Liberec", flag: "🇨🇿", country: "Czechy", cycle: "PK", hill: "HS 136", hs: 136, defaultGate: 11 },
+            { id: 238, city: "Frenštát", flag: "🇨🇿", country: "Czechy", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 },
+            { id: 239, city: "Harrachov", flag: "🇨🇿", country: "Czechy", cycle: "PK", hill: "HS 142", hs: 142, defaultGate: 12 },
+            { id: 240, city: "Courchevel", flag: "🇫🇷", country: "Francja", cycle: "PK", hill: "HS 135", hs: 135, defaultGate: 11 },
+            { id: 241, city: "Chaux-Neuve", flag: "🇫🇷", country: "Francja", cycle: "PK", hill: "HS 118", hs: 118, defaultGate: 10 },
+            { id: 242, city: "Prémanon", flag: "🇫🇷", country: "Francja", cycle: "PK", hill: "HS 90", hs: 90, defaultGate: 9 },
+            { id: 243, city: "Lake Placid", flag: "🇺🇸", country: "USA", cycle: "PŚ", hill: "HS 128", hs: 128, defaultGate: 11 },
+            { id: 244, city: "Park City", flag: "🇺🇸", country: "USA", cycle: "PK", hill: "HS 134", hs: 134, defaultGate: 11 },
+            { id: 245, city: "Iron Mountain", flag: "🇺🇸", country: "USA", cycle: "PK", hill: "HS 133", hs: 133, defaultGate: 11 },
+            { id: 246, city: "Whistler", flag: "🇨🇦", country: "Kanada", cycle: "PK", hill: "HS 140", hs: 140, defaultGate: 12 },
+            { id: 247, city: "Râșnov", flag: "🇷🇴", country: "Rumunia", cycle: "PK", hill: "HS 97", hs: 97, defaultGate: 9 },
+            { id: 248, city: "Ałmaty", flag: "🇰🇿", country: "Kazachstan", cycle: "PK", hill: "HS 106", hs: 106, defaultGate: 10 }
+        ];
+    }
+
+    createRealCalendar() {
+        return [
+            { id: 0, city: "Ruka", flag: "🇫🇮", country: "Finlandia", cycle: "PŚ", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+            { id: 1, city: "Lillehammer (PK)", flag: "🇳🇴", country: "Norwegia", cycle: "PK", type: "individual", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+            { id: 2, city: "Wisła", flag: "🇵🇱", country: "Polska", cycle: "PŚ", type: "team", hill: "HS 134", hs: 134, defaultGate: 12, status: "pending", results: [] },
+            { id: 3, city: "Wisła Ind.", flag: "🇵🇱", country: "Polska", cycle: "PŚ", type: "individual", hill: "HS 134", hs: 134, defaultGate: 12, status: "pending", results: [] },
+            { id: 4, city: "Oberstdorf", flag: "🇩🇪", country: "Niemcy", cycle: "TCS", type: "individual", hill: "HS 137", hs: 137, defaultGate: 12, status: "pending", results: [] },
+            { id: 5, city: "Garmisch-Partenkirchen", flag: "🇩🇪", country: "Niemcy", cycle: "TCS", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+            { id: 6, city: "Innsbruck", flag: "🇦🇹", country: "Austria", cycle: "TCS", type: "individual", hill: "HS 128", hs: 128, defaultGate: 11, status: "pending", results: [] },
+            { id: 7, city: "Bischofshofen", flag: "🇦🇹", country: "Austria", cycle: "TCS", type: "individual", hill: "HS 142", hs: 142, defaultGate: 13, status: "pending", results: [] },
+            { id: 8, city: "Zakopane", flag: "🇵🇱", country: "Polska", cycle: "PŚ", type: "team", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+            { id: 9, city: "Zakopane Ind.", flag: "🇵🇱", country: "Polska", cycle: "PŚ", type: "individual", hill: "HS 140", hs: 140, defaultGate: 12, status: "pending", results: [] },
+            { id: 10, city: "Planica", flag: "🇸🇮", country: "Słowenia", cycle: "PŚ", type: "individual", hill: "HS 240", hs: 240, defaultGate: 14, status: "pending", results: [] }
+        ];
+    }
+
+    resetToDefaults() {
+        this.jumpers = JSON.parse(JSON.stringify(this.defaultJumpers));
+        this.jumpers.forEach(j => {
+            if (!j.chars) j.chars = this.getJumperCharacteristics(j.name);
+            if (!j.personalBest) j.personalBest = this.getDefaultPersonalBest(j.name, j.skillBase);
+            if (j.injuryName === undefined) j.injuryName = null;
+            if (j.injurySeverity === undefined) j.injurySeverity = null;
+            if (j.age === undefined) j.age = this.getRealAge(j.name);
+            if (j.retired === undefined) j.retired = false;
+            if (j.retirementReason === undefined) j.retirementReason = null;
+            if (j.generated === undefined) j.generated = false;
+        });
+        this.calendar = [];
+        this.activeCompetitionIndex = 0;
+        this.phase = "QUAL";
+        this.currentList = [];
+        this.currentIndex = 0;
+        this.currentGate = 12;
+        this.baseGate = 12;
+        this.windSpeed = 0.0;
+        this.windDirectionLabel = "➡️";
+        this.currentWeatherProfile = { name: "Stabilne", volatility: 0.15, maxWind: 1.5 };
+        this.currentJuryFlags = ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮"];
+        this.teamStandings = {};
+        this.pkTeamStandings = {};
+        this.seasonYearStart = 2026;
+        this.seasonLabel = "2026/2027";
+        this.nationalChampionshipsPlayed = {};
+        this.nationalChampionshipActive = false;
+        this.nationalChampEvent = null;
+        this.activeStandingsFilter = null;
+        this.updateSeasonLabels();
+    }
+
+    getSaveKey(slot) { return `ski_manager_slot_${slot}_2026_2027_v43_fixed`; }
+
+    loadGame(slot) {
+        this.activeSlot = slot;
+        const saved = localStorage.getItem(this.getSaveKey(slot));
+        if (!saved) return false;
+        try {
+            const data = JSON.parse(saved);
+            if (data && typeof data === "object") {
+                this.selectedMode = data.selectedMode || 'real';
+                this.customSelectedHills = data.customSelectedHills || [];
+                this.jumpers = data.jumpers || this.jumpers;
+                this.jumpers.forEach(j => {
+                    if (!j.chars) j.chars = this.getJumperCharacteristics(j.name);
+                    if (!j.personalBest) j.personalBest = this.getDefaultPersonalBest(j.name, j.skillBase);
+                    if (j.form === undefined) j.form = 1.0;
+                    if (j.injuryName === undefined) j.injuryName = null;
+                    if (j.injurySeverity === undefined) j.injurySeverity = null;
+                    if (j.age === undefined) j.age = this.getRealAge(j.name);
+                    if (j.retired === undefined) j.retired = false;
+                    if (j.retirementReason === undefined) j.retirementReason = null;
+                    if (j.generated === undefined) j.generated = false;
+                });
+                this.calendar = data.calendar || [];
+                this.activeCompetitionIndex = data.activeCompetitionIndex || 0;
+                this.phase = data.phase || "QUAL";
+                this.currentList = data.currentList || [];
+                this.currentIndex = data.currentIndex || 0;
+                this.currentGate = data.currentGate || 12;
+                this.baseGate = data.baseGate || 12;
+                this.windSpeed = data.windSpeed || 0.0;
+                this.windDirectionLabel = data.windDirectionLabel || "➡️";
+                this.currentWeatherProfile = data.currentWeatherProfile || { name: "Stabilne", volatility: 0.15, maxWind: 1.5 };
+                this.currentJuryFlags = data.currentJuryFlags || ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮"];
+                this.teamStandings = data.teamStandings || {};
+                this.pkTeamStandings = data.pkTeamStandings || {};
+                this.seasonYearStart = data.seasonYearStart || 2026;
+                this.seasonLabel = data.seasonLabel || `${this.seasonYearStart}/${this.seasonYearStart + 1}`;
+                this.nextJumperId = data.nextJumperId || 1000;
+                this.nationalChampionshipsPlayed = data.nationalChampionshipsPlayed || {};
+                this.activeStandingsFilter = data.activeStandingsFilter || null;
+                this.updateSeasonLabels();
+                return true;
+            }
+        } catch (e) { return false; }
+        return false;
+    }
+
+    saveGame() {
+        const gameState = {
+            selectedMode: this.selectedMode, customSelectedHills: this.customSelectedHills, jumpers: this.jumpers,
+            calendar: this.calendar, activeCompetitionIndex: this.activeCompetitionIndex, phase: this.phase,
+            currentList: this.currentList, currentIndex: this.currentIndex, currentGate: this.currentGate,
+            baseGate: this.baseGate, windSpeed: this.windSpeed, windDirectionLabel: this.windDirectionLabel,
+            currentWeatherProfile: this.currentWeatherProfile, currentJuryFlags: this.currentJuryFlags,
+            teamStandings: this.teamStandings, pkTeamStandings: this.pkTeamStandings,
+            seasonYearStart: this.seasonYearStart, seasonLabel: this.seasonLabel, nextJumperId: this.nextJumperId,
+            nationalChampionshipsPlayed: this.nationalChampionshipsPlayed,
+            activeStandingsFilter: this.activeStandingsFilter
+        };
+        try { localStorage.setItem(this.getSaveKey(this.activeSlot), JSON.stringify(gameState)); return true; }
+        catch (e) { return false; }
+    }
+
+    manualSave() {
+        if (this.saveGame()) this.showToast(`💾 Zapisano w Locie #${this.activeSlot}`, "success");
+        else this.showToast("❌ Błąd zapisu.", "error");
+    }
+
+    renderSlotSelection() {
+        const container = this.getElement("save-slots-container");
+        if (!container) return;
+        container.innerHTML = "";
+        for (let i = 1; i <= 3; i++) {
+            const raw = localStorage.getItem(this.getSaveKey(i));
+            let desc = "Pusty slot / Nowa gra";
+            let hasSave = false;
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    const finished = (parsed.calendar || []).filter(e => e.status === "finished" || e.status === "cancelled").length;
+                    const total = (parsed.calendar || []).length;
+                    const season = parsed.seasonLabel || "2026/2027";
+                    desc = `${season} · ${finished}/${total}`;
+                    hasSave = true;
+                } catch(e) {}
+            }
+            const card = document.createElement("div");
+            card.className = "save-slot-card";
+            card.innerHTML = `<div class="save-slot-info"><div class="save-slot-title">💾 Slot #${i}</div><div class="save-slot-desc">${desc}</div></div><div style="display:flex; gap:4px;">${hasSave ? `<button class="btn-small btn-success" onclick="app.loadSlot(${i})">Wczytaj</button>` : `<span style="font-size:8px;color:var(--text-muted);">Pusty</span>`}</div>`;
+            container.appendChild(card);
+        }
+    }
+
+    renderNewCareerSlots() {
+        const container = this.getElement("new-career-slots");
+        if (!container) return;
+        container.innerHTML = "";
+        for (let i = 1; i <= 3; i++) {
+            const btn = document.createElement("button");
+            btn.className = "btn-small";
+            btn.style.width = "100%";
+            btn.style.padding = "8px";
+            if (this.activeSlot === i) { btn.style.background = "var(--accent-blue)"; btn.style.border = "1px solid var(--accent-blue-light)"; }
+            else btn.style.background = "#334155";
+            btn.innerText = `Slot #${i}`;
+            btn.onclick = () => { this.activeSlot = i; this.renderNewCareerSlots(); };
+            container.appendChild(btn);
+        }
+    }
+
+    loadSlot(slot) {
+        if (this.loadGame(slot)) {
+            this.showMainAppView();
+            this.renderAll();
+            this.switchTab('home', document.querySelectorAll(".nav-item")[0]);
+            this.showToast(`Wczytano zapis #${slot}`, "success");
+        } else this.showToast("Błąd wczytywania / pusty slot.", "error");
+    }
+
+    selectMode(mode) {
+        this.selectedMode = mode;
+        const realCard = this.getElement("card-mode-real");
+        const customCard = this.getElement("card-mode-custom");
+        const builderBox = this.getElement("custom-builder-container");
+        const startBtn = this.getElement("btn-start-game");
+        if (realCard) realCard.classList.remove("selected");
+        if (customCard) customCard.classList.remove("selected");
+        if (mode === 'real') {
+            if (realCard) realCard.classList.add("selected");
+            if (builderBox) builderBox.style.display = "none";
+            if (startBtn) startBtn.disabled = false;
+        } else if (mode === 'custom') {
+            if (customCard) customCard.classList.add("selected");
+            if (builderBox) builderBox.style.display = "block";
+            this.updateCustomBuilderValidation();
+        }
+    }
+
+    renderCustomBuilderList() {
+        const poolList = this.getElement("builder-pool-list");
+        if (!poolList) return;
+        poolList.innerHTML = "";
+        this.availableHillsPool.forEach(hill => {
+            const instances = this.customSelectedHills.filter(h => h.id === hill.id);
+            const count = instances.length;
+            const item = document.createElement("div");
+            item.className = "builder-item";
+            item.innerHTML = `<div><span>${hill.flag}</span> <strong>${hill.city}</strong> (${hill.hill}) ${count > 0 ? `<span style="color:var(--success-light); font-weight:700;">(${count})</span>` : ""}</div><div style="display:flex; gap:3px;">${count > 0 ? `<button class="btn-small btn-danger" onclick="app.removeCustomHillInstance(${hill.id})">-</button>` : ""}<button class="btn-small btn-success" onclick="app.addCustomHillInstance(${hill.id}, 'PŚ', 'individual')">+PŚ</button><button class="btn-small btn-warning" onclick="app.addCustomHillInstance(${hill.id}, 'PK', 'individual')" style="color:#111827;">+PK</button><button class="btn-small btn-purple" onclick="app.addCustomHillInstance(${hill.id}, 'PŚ', 'team')">+Team</button></div>`;
+            poolList.appendChild(item);
+        });
+    }
+
+    addCustomHillInstance(id, forcedCycle, forcedType) {
+        const found = this.availableHillsPool.find(h => h.id === id);
+        if (found) {
+            let newHill = JSON.parse(JSON.stringify(found));
+            newHill.cycle = forcedCycle;
+            newHill.type = forcedType;
+            this.customSelectedHills.push(newHill);
+            this.renderCustomBuilderList();
+            this.updateCustomBuilderValidation();
+        }
+    }
+    removeCustomHillInstance(id) {
+        const idx = this.customSelectedHills.findIndex(h => h.id === id);
+        if (idx > -1) this.customSelectedHills.splice(idx, 1);
+        this.renderCustomBuilderList();
+        this.updateCustomBuilderValidation();
+    }
+    updateCustomBuilderValidation() {
+        const counter = this.getElement("builder-counter");
+        const startBtn = this.getElement("btn-start-game");
+        if (counter) counter.innerText = `Wybrano: ${this.customSelectedHills.length} (min. 3)`;
+        if (startBtn) {
+            if (this.selectedMode === 'real') startBtn.disabled = false;
+            else startBtn.disabled = this.customSelectedHills.length < 3;
+        }
+    }
+
+    initializeGameMode() {
+        if (!this.selectedMode) { this.showToast("Wybierz typ kalendarza!", "error"); return; }
+        this.resetToDefaults();
+        if (this.selectedMode === 'real') this.calendar = this.createRealCalendar();
+        else {
+            this.calendar = this.customSelectedHills.map((hill, idx) => ({
+                id: idx, city: hill.city, flag: hill.flag, country: hill.country || "", cycle: hill.cycle || "PŚ",
+                type: hill.type, hill: hill.hill, hs: hill.hs || 140,
+                defaultGate: hill.defaultGate || 12, status: "pending", results: []
+            }));
+        }
+        this.activeCompetitionIndex = 0;
+        this.teamStandings = {};
+        this.pkTeamStandings = {};
+        this.nationalChampionshipsPlayed = {};
+        this.activeStandingsFilter = null;
+        this.saveGame();
+        this.showMainAppView();
+        this.renderAll();
+        this.switchTab('home', document.querySelectorAll(".nav-item")[0]);
+        this.showToast(`🚀 Nowa gra w slocie #${this.activeSlot}! Sezon ${this.seasonLabel}`, "success");
+    }
+
+    isSeasonFinished() {
+        return this.calendar.length > 0 && this.calendar.every(e => e.status === "finished" || e.status === "cancelled");
+    }
+
+    findNextPendingEvent() {
+        for (let i = 0; i < this.calendar.length; i++) {
+            if (this.calendar[i].status === "pending") {
+                this.activeCompetitionIndex = i;
+                return;
+            }
+        }
+        this.activeCompetitionIndex = this.calendar.length;
+    }
+
+    // ========== GENEROWANIE NOWYCH SKOCZKÓW ==========
+    generateNameForCountry(countryName) {
+        const namePools = {
+            "Austria": {
+                first: ["Lukas","Jonas","Max","Felix","Niklas","Simon","David","Tobias","Paul","Jakob","Florian","Matthias","Stefan","Clemens","Philipp","Sebastian","Michael","Andreas","Thomas","Manuel","Alexander","Martin","Christian","Patrick","Daniel","Fabian","Dominik","Marcel","Raphael","Bernhard","Gerhard","Wolfgang","Gerald","Harald","Reinhard","Ernst","Karl","Franz","Josef","Anton","Leopold","Rudolf","Heinrich","Otto"],
+                last: ["Müller","Schmidt","Huber","Wagner","Steiner","Bauer","Fischer","Gruber","Hofer","Mayr","Winkler","Berger","Eder","Schwarz","Leitner","Wallner","Aigner","Pichler","Reiter","Brunner","Lang","Baumgartner","Moser","Weber","Koch","Richter","Klein","Wolf","Schröder","Neumann","Zimmermann","Braun","Krüger","Hartmann","Lange","Werner","Krause","Meier","Lehmann","Schmid","Schulze","Köhler","Herrmann","Walter","König","Mayer","Kaiser","Fuchs","Peters","Scholz","Möller","Weiß","Jung","Hahn","Vogel","Friedrich","Keller","Günther","Frank","Roth","Beck","Lorenz","Baumann","Franke","Albrecht","Schuster","Ludwig","Böhm","Winter","Kraus","Schumacher","Krämer","Vogt","Stein","Jäger","Sommer","Groß","Seidel","Heinrich","Brandt","Haas","Schreiber","Graf","Schulte","Dietrich","Ziegler","Kuhn","Pohl","Engel","Horn","Busch","Bergmann","Voigt","Sauer","Arnold","Wolff","Pfeiffer","Wendt"],
+            },
+            "Niemcy": {
+                first: ["Lukas","Jonas","Max","Felix","Niklas","Tim","Paul","Leon","Finn","Ben","Julian","Moritz","Erik","Luca","Adrian","Sebastian","Michael","Andreas","Thomas","Manuel","Alexander","Martin","Christian","Patrick","Daniel","Fabian","Dominik","Marcel","Raphael","Bernhard","Gerhard","Wolfgang","Gerald","Harald","Reinhard","Ernst","Karl","Franz","Josef","Anton","Heinrich","Otto","Friedrich","Wilhelm","Hans","Peter","Klaus","Dieter","Uwe","Jürgen","Helmut"],
+                last: ["Müller","Schmidt","Schneider","Fischer","Weber","Meyer","Wagner","Becker","Schulz","Hoffmann","Schäfer","Koch","Bauer","Richter","Klein","Wolf","Schröder","Neumann","Schwarz","Zimmermann","Braun","Krüger","Hofmann","Hartmann","Lange","Schmitt","Werner","Schmitz","Krause","Meier","Lehmann","Schmid","Schulze","Köhler","Herrmann","Walter","König","Mayer","Huber","Kaiser","Fuchs","Peters","Lang","Scholz","Möller","Weiß","Jung","Hahn","Schubert","Vogel","Friedrich","Keller","Günther","Frank","Berger","Winkler","Roth","Beck","Lorenz","Baumann","Franke","Albrecht","Schuster","Simon","Ludwig","Böhm","Winter","Kraus","Martin","Schumacher","Krämer","Vogt","Stein","Jäger","Otto","Sommer","Groß","Seidel","Heinrich","Brandt","Haas","Schreiber","Graf","Schulte","Dietrich","Ziegler","Kuhn","Pohl","Engel","Horn","Busch","Bergmann","Voigt","Sauer","Arnold","Wolff","Pfeiffer","Wendt"],
+            },
+            "Norwegia": {
+                first: ["Jonas","Marius","Halvor","Kristoffer","Fredrik","Anders","Sindre","Robin","Adrian","Bendik","Johannes","Oddvar","Isak","Benjamin","Paal","Espen","Håkon","Eirik","Magnus","Sverre","Ola","Lars","Even","Simen","Trygve","Kjetil","Øystein","Trond","Geir","Arne","Knut","Bjørn","Tor","Håvard","Jørgen","Steinar","Rune","Egil","Terje","Svein","Olav","Harald","Sigurd","Erik","Nils","Per","Jan","Odd","Ragnar","Leif","Kåre","Bård","Torbjørn","Vegard","Gaute","Eivind","Jostein","Torgeir","Hallvard","Audun"],
+                last: ["Hansen","Johansen","Olsen","Larsen","Andersen","Pedersen","Nilsen","Kristiansen","Jensen","Karlsen","Berg","Haugen","Hagen","Johannessen","Andreassen","Jacobsen","Dahl","Jørgensen","Halvorsen","Lund","Moen","Nygård","Bakken","Solberg","Iversen","Strand","Eriksen","Holm","Kristoffersen","Mathisen","Sørensen","Rasmussen","Amundsen","Danielsen","Berge","Fredriksen","Aas","Sæther","Bjerke","Gundersen","Christensen","Engebretsen","Simonsen","Svendsen","Thoresen","Tveit","Vik","Ødegård","Aasen","Bøe","Dalen","Eide","Fjeld","Gjerde","Hauge","Hovland","Kvam","Lie","Myhre","Nordby","Rød","Sande","Skogen","Torp","Ulvestad","Wold","Aune","Bråten","Ellingsen","Fossum","Gulbrandsen","Helland","Isaksen","Kolstad","Løken","Mikkelsen","Nordhagen","Opdal","Røstad","Stokke","Tangen","Vold"],
+            },
+            "Słowenia": {
+                first: ["Luka","Anže","Timi","Žiga","Rok","Enej","Maksim","Jaka","Nik","Jernej","Lovro","Žak","Matej","Jan","Nejc","Mark","David","Grega","Tomaž","Aleš","Borut","Mitja","Matjaž","Boštjan","Robert","Peter","Andrej","Igor","Sašo","Dejan","Damjan","Uroš","Jure","Gašper","Miha","Klemen","Primož","Tadej"],
+                last: ["Novak","Horvat","Kovačič","Krajnc","Zupančič","Potočnik","Mlakar","Vidmar","Kos","Golob","Kolar","Kralj","Turk","Zajc","Oblak","Rozman","Hribar","Kovač","Kmetec","Kastelic","Bevc","Božič","Mohorič","Šimenc","Puconja","Pavlin","Jereb","Kavčič","Šeruga","Vovk","Kramar","Zorman","Sedej","Kozjek","Bajc","Cesar","Debeljak","Erjavec","Ferk","Gaber","Hafner","Ivančič","Jazbec","Klančnik","Logar","Mravlje","Nemec","Oražem","Pirc","Ravnikar","Sitar","Šinkovec","Tratnik","Uršič","Vodopivec","Zajec","Žnidar","Benedik","Cerar","Dolinar","Furlan","Grm","Hvala","Iršič","Jarc","Kobal","Lah","Miklavčič","Povh","Rus","Smodiš","Tomažič","Zalar","Žagar"],
+            },
+            "Japonia": {
+                first: ["Yuki","Ren","Naoki","Tomofumi","Sakutaro","Yuto","Shinnosuke","Riki","Daimatsu","Keiichi","Go","Junshiro","Ryota","Haruto","Sota","Kaito","Riku","Takumi","Hiroto","Yamato","Sora","Daiki","Kenta","Sho","Yuma","Kazuki","Tatsuya","Masaki","Hiroki","Kazuma","Ryusei","Taiga","Itsuki","Minato","Aoto","Hinata"],
+                last: ["Kobayashi","Sato","Suzuki","Takahashi","Tanaka","Watanabe","Ito","Yamamoto","Nakamura","Saito","Kato","Yoshida","Yamada","Sasaki","Yamaguchi","Matsumoto","Inoue","Kimura","Hayashi","Shimizu","Yamazaki","Mori","Abe","Ikeda","Hashimoto","Ishikawa","Ogawa","Goto","Okada","Hasegawa","Murakami","Kondo","Ishii","Sakamoto","Endo","Aoki","Fujita","Ohno","Fukuda","Nishimura","Miura","Fujiwara","Okamoto","Matsuda","Nakagawa","Nakano","Harada","Ono","Taniguchi","Maeda","Ueda","Fujii","Nishikawa","Hirano","Kubo","Kuroda","Sano","Shibata","Tanabe","Uchida","Yamashita","Yokoyama","Sugiyama","Miyazaki","Miyamoto","Nakajima","Inagaki","Iwata","Kikuchi","Matsui","Mizuno","Morita","Nagai","Noguchi","Ohta","Sakai","Shibuya","Sugimoto","Takagi","Takeuchi","Tamura","Terada","Tsuji","Uehara","Wada","Wakabayashi","Yagi","Yoshikawa","Yoshimura"],
+            },
+            "Polska": {
+                first: ["Kacper","Piotr","Dawid","Jakub","Adam","Szymon","Bartosz","Mateusz","Maciej","Paweł","Aleksander","Klemens","Jan","Tomasz","Konrad","Michał","Marcin","Łukasz","Marek","Wojciech","Grzegorz","Krzysztof","Andrzej","Stanisław","Józef","Zbigniew","Ryszard","Tadeusz","Henryk","Kazimierz","Marian","Jerzy","Wiesław","Rafał","Dariusz","Mariusz","Jacek","Robert","Sławomir","Artur","Sebastian","Przemysław","Arkadiusz","Waldemar","Zdzisław","Bogdan","Czesław","Radosław","Norbert","Damian","Patryk","Kamil","Filip","Wiktor","Antoni","Franciszek","Leon","Ignacy","Aleks","Nikodem","Miłosz","Oskar","Fabian","Alan","Igor","Borys","Bruno","Julian","Marcel","Tymon","Natan"],
+                last: ["Kowalski","Nowak","Wiśniewski","Wójcik","Kamiński","Lewandowski","Zieliński","Szymański","Woźniak","Dąbrowski","Kozłowski","Jankowski","Mazur","Kwiatkowski","Krawczyk","Piotrowski","Grabowski","Nowakowski","Pawłowski","Michalski","Nowicki","Adamczyk","Dudek","Zając","Wieczorek","Jabłoński","Król","Majewski","Olszewski","Jaworski","Wróbel","Malinowski","Pawlak","Witkowski","Walczak","Stępień","Górski","Rutkowski","Michalak","Sikora","Ostrowski","Baran","Duda","Szewczyk","Tomaszewski","Pietrzak","Marciniak","Wróblewski","Zalewski","Jakubowski","Jasiński","Zawadzki","Bąk","Chmielewski","Włodarczyk","Borkowski","Czarnecki","Sawicki","Sokołowski","Urbański","Kubiak","Maciejewski","Szczepański","Kucharski","Wilk","Kalinowski","Lis","Mazurek","Wysocki","Adamski","Kaźmierczak","Wasilewski","Sobczak","Czerwiński","Andrzejewski","Cieślak","Głowacki","Zakrzewski","Kołodziej","Sikorski","Krupa","Ziółkowski","Baranowski","Laskowski","Brzeziński","Makowski","Zaborowski","Sadowski","Domański","Karpiński","Wnuk","Bednarek","Cieślik","Mróz","Wójtowicz","Kowalczyk","Piątek","Kaczmarek","Sobolewski","Kaczmarczyk","Górecki","Kubicki","Bielecki"],
+            },
+            "Szwajcaria": {
+                first: ["Lukas","Jonas","Simon","Felix","Remo","Juri","Yannick","Sandro","Killian","Gregor","Pascal","Marco","Fabian","Reto","Adrian","Sebastian","Michael","Andreas","Thomas","Manuel","Alexander","Martin","Christian","Patrick","Daniel","Dominik","Marcel","Raphael","Bernhard","Gerhard","Wolfgang","Gerald","Harald","Reinhard","Ernst","Karl","Franz","Josef","Anton","Heinrich","Otto","Urs","Beat","Rolf","Peter","Hans","Werner","Kurt","Bruno","Ruedi","Toni"],
+                last: ["Müller","Meier","Schmid","Keller","Weber","Huber","Schneider","Steiner","Fischer","Brunner","Gerber","Baumann","Frei","Zimmermann","Graf","Berger","Bühler","Hofer","Kaufmann","Lehmann","Lüthi","Marti","Moser","Roth","Suter","Widmer","Aebi","Bachmann","Bieri","Bolliger","Bürgi","Egger","Furrer","Gasser","Gfeller","Gisler","Grossenbacher","Gut","Häberli","Haller","Hess","Hofmann","Hug","Iten","Jäggi","Kälin","Kobel","Kohler","Kunz","Landolt","Lang","Lanz","Lüscher","Maurer","Meyer","Moor","Näf","Nussbaum","Oberli","Odermatt","Peter","Pfister","Riedo","Rufener","Rüegg","Schär","Scherrer","Schlatter","Schmutz","Schnyder","Schürch","Schwab","Siegfried","Sigrist","Sonderegger","Staub","Stauffer","Stettler","Stocker","Streit","Studer","Stucki","Thoma","Tobler","Tschumi","Vogel","Vogt","Wälchli","Wanner","Weber","Wegmüller","Weibel","Wenger","Wettstein","Widmer","Wirth","Wyss","Zaugg","Zehnder","Zemp","Zollinger","Zünd","Zwicker"],
+            },
+            "Finlandia": {
+                first: ["Antti","Niko","Eetu","Jarkko","Vilho","Paavo","Tuomas","Tomi","Henri","Ilkka","Timi","Aleksi","Joonas","Mikko","Juho","Matti","Juhani","Olavi","Antero","Tapio","Kalevi","Veikko","Ensio","Eino","Toivo","Onni","Väinö","Arvo","Sulo","Yrjö","Lauri","Kalle","Oskari","Eemeli","Joel","Niilo","Leevi","Otto","Elias"],
+                last: ["Korhonen","Virtanen","Mäkinen","Nieminen","Mäkelä","Hämäläinen","Laine","Heikkinen","Koskinen","Järvinen","Lehtonen","Salminen","Kettunen","Aalto","Rantanen","Turunen","Nurmi","Mattila","Salo","Saarinen","Lahtinen","Lehtinen","Kinnunen","Miettinen","Hiltunen","Väänänen","Pitkänen","Manninen","Räsänen","Toivonen","Karjalainen","Koponen","Ojala","Hakala","Kivelä","Ahonen","Kallio","Rissanen","Leinonen","Mustonen","Pesonen","Vainio","Hänninen","Jokinen","Mikkonen","Nurminen","Partanen","Rantala","Rautio","Savolainen","Seppänen","Sillanpää","Tuominen","Vartiainen"],
+            },
+            "Francja": {
+                first: ["Valentin","Jules","Enzo","Louis","Anoki","Ari","Alexandre","Maxime","Théo","Hugo","Léo","Nathan","Mathis","Lucas","Gabriel","Antoine","Baptiste","Clément","Damien","Étienne","Florian","Guillaume","Henri","Isaac","Jacques","Kylian","Lorenzo","Mathieu","Nicolas","Olivier","Pierre","Quentin","Romain","Sébastien","Thomas","Ulysse","Victor","William","Xavier","Yann","Zacharie","Adrien","Benoît","Charles","David","Emmanuel","François","Gaspard","Hippolyte","Ivan","Jean","Kévin","Laurent","Marcel","Noé","Oscar","Paul","Raphaël","Samuel","Tristan","Vincent"],
+                last: ["Martin","Bernard","Dubois","Thomas","Robert","Richard","Petit","Durand","Leroy","Moreau","Simon","Laurent","Lefebvre","Michel","Garcia","David","Bertrand","Roux","Vincent","Fournier","Morel","Girard","André","Lefèvre","Mercier","Dupont","Lambert","Bonnet","François","Martinez","Legrand","Garnier","Faure","Rousseau","Blanc","Guerin","Muller","Henry","Roussel","Nicolas","Perrin","Morin","Mathieu","Clément","Gauthier","Dumont","Lopez","Fontaine","Chevalier","Robin","Masson","Sanchez","Gérard","Nguyen","Boyer","Denis","Lemaire","Duval","Joly","Gautier","Roger","Roche","Roy","Noel","Meyer","Meunier","Brun","Blanchard","Giraud","Riviere","Brunet","Gaillard","Barbier","Arnaud","Renard","Schmitt","Colin","Moulin","Renaud","Baron","Lacroix","Carpentier","Menard","Fleury","Rey","Pons","Aubert","Charpentier","Philippe","Leclerc"],
+            },
+            "USA": {
+                first: ["Kevin","Jason","Tate","Andrew","Erik","Bryce","Decker","Casey","Logan","Tyler","Hunter","Cole","Ethan","Mason","Noah","Liam","Jacob","William","James","Benjamin","Lucas","Henry","Alexander","Michael","Daniel","Matthew","Joseph","David","Jackson","Samuel","Owen","Wyatt","Carter","Jayden","Gabriel","Ryan","Isaac","Nathan","Caleb","Christian","Elijah","Josiah","Levi","Isaiah","Jeremiah","Austin","Colton","Connor","Dominic","Gavin","Grayson","Ian","Jaxon","Jonah","Jordan","Julian","Justin","Kayden","Landon","Leo","Lincoln","Luke","Miles","Nathaniel","Nicholas","Oliver","Parker","Robert","Roman","Ryder","Sawyer","Sebastian","Silas","Theodore","Thomas","Tristan","Tucker","Waylon","Wesley","Weston","Zachary","Aiden","Asher","Brody","Cameron","Chase","Colin","Damian","Declan","Emmett","Everett","Finn","George","Harrison","Hudson","Jace"],
+                last: ["Smith","Johnson","Williams","Brown","Jones","Miller","Davis","Wilson","Anderson","Taylor","Thomas","Moore","Jackson","Martin","Lee","Perez","Thompson","White","Harris","Sanchez","Clark","Ramirez","Lewis","Robinson","Walker","Young","Allen","King","Wright","Scott","Torres","Nguyen","Hill","Flores","Green","Adams","Nelson","Baker","Hall","Rivera","Campbell","Mitchell","Carter","Roberts","Gomez","Phillips","Evans","Turner","Diaz","Parker","Cruz","Edwards","Collins","Reyes","Stewart","Morris","Morales","Murphy","Cook","Rogers","Gutierrez","Ortiz","Morgan","Cooper","Peterson","Bailey","Reed","Kelly","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez","Powell","Jenkins","Perry","Russell","Sullivan","Bell","Coleman","Butler"],
+            },
+            "Włochy": {
+                first: ["Giovanni","Alex","Francesco","Marco","Luca","Andrea","Matteo","Alessandro","Davide","Simone","Federico","Nicola","Riccardo","Tommaso","Lorenzo","Giuseppe","Antonio","Salvatore","Vincenzo","Gaetano","Pietro","Paolo","Stefano","Roberto","Massimo","Fabio","Claudio","Sergio","Maurizio","Cristian","Emanuele","Daniele","Michele","Giacomo","Edoardo","Leonardo","Gabriele","Filippo","Samuele","Diego","Mattia","Nicolò","Jacopo","Manuel","Cristiano","Enrico","Alberto","Gianluca","Fabrizio","Raffaele","Domenico","Pasquale","Carmine","Luigi","Rocco","Mario","Carlo","Franco","Angelo","Bruno","Mauro","Renato","Sandro","Dino","Aldo","Nino","Ugo","Renzo","Gino","Tullio","Ezio","Vito","Cosimo","Rosario","Calogero","Damiano","Mirko","Ivan","Alan","Denis","Patrick","Christian","Kevin","Jonathan","Steve","Brian"],
+                last: ["Rossi","Russo","Ferrari","Esposito","Bianchi","Romano","Colombo","Ricci","Marino","Greco","Bruno","Gallo","Conti","De Luca","Mancini","Costa","Giordano","Rizzo","Lombardi","Moretti","Barbieri","Fontana","Santoro","Mariani","Rinaldi","Caruso","Ferrara","Galli","Martini","Leone","Longo","Gentile","Martinelli","Vitale","Lombardo","Serra","Coppola","De Santis","D'Angelo","Marchetti","Parisi","Villa","Conte","Ferraro","Ferri","Fabbri","Bianco","Marini","Grasso","Valentini","Messina","Sala","De Angelis","Gatti","Pellegrini","Palumbo","Sanna","Farina","Rizzi","Monti","Cattaneo","Morelli","Amato","Silvestri","Mazza","Testa","Grassi","Pellegrino","Carbone","Giuliani","Benedetti","Barone","Rossetti","Caputo","Montanari","Guerra","Palmieri","Bernardi","Martino","Fiore","De Rosa","Ferretti","Bellini","Basile","Riva","Donati","Piras","Vitali","Battaglia","Sartori","Neri","Costantini","Fumagalli","Ruggiero","Rosi","Gentili","Pagnotta","Bianchini"],
+            },
+            "Czechy": {
+                first: ["Roman","David","Daniel","Filip","Benedikt","Jan","Tomáš","Petr","Martin","Jakub","Ondřej","Lukáš","Vojtěch","Matěj","Adam","Šimon","Jonáš","Marek","Michal","Pavel","Josef","Karel","Václav","Miroslav","Zdeněk","František","Jaroslav","Ladislav","Rudolf","Stanislav","Miloš","Bohumil","Vlastimil","Květoslav","Jiří","Antonín","Alois","Eduard","Ivan","Kamil","Lubomír","Luboš","Milan","Oldřich","Otakar","Přemysl","Radim","Radek","Richard","Robert","Rostislav","Svatopluk","Štěpán","Teodor","Vít","Vladimír","Vladislav","Zbyněk","Aleš","Bedřich","Blahoslav","Bohuslav","Boris","Ctirad","Čeněk","Dalibor","Drahomír","Emil","Hynek","Igor","Ivo","Jáchym","Jindřich","Kryštof","Leoš","Lubor","Matyáš","Norbert","Oskar","Patrik"],
+                last: ["Novák","Svoboda","Novotný","Dvořák","Černý","Procházka","Kučera","Veselý","Horák","Němec","Marek","Pokorný","Pospíšil","Hájek","Jelínek","Král","Růžička","Beneš","Fiala","Sedláček","Doležal","Zeman","Kolář","Navrátil","Čermák","Vaněk","Urban","Blažek","Kříž","Kovář","Králíček","Hruška","Šimek","Konečný","Musil","Sýkora","Vlček","Polák","Kratochvíl","Bartoš","Holub","Dostál","Kopecký","Štěpánek","Souček","Vávra","Malý","Šťastný","Kubíček","Havlíček","Kubík","Říha","Šmíd","Tichý","Vodička","Zach","Žák","Bureš","Cihlář","Doubrava","Exner","Fojtík","Gregor","Havel","Chalupa","Janda","Klíma","Linhart","Matoušek","Nedvěd","Ondráček","Pavlík","Rada","Slavík","Toman","Uhlíř","Vondra","Wagner","Zelený","Brabec","Čech","Daněk","Fischer","Hrabě","Jaroš","Kadlec","Louda","Mlčoch","Nosek","Orság","Pátek","Ryba","Sedlák","Trnka","Válek","Zapletal"],
+            },
+            "Estonia": {
+                first: ["Artti","Kaimar","Mart","Jaan","Kristjan","Andres","Markus","Rasmus","Karl","Oliver","Henri","Sander","Robert","Erik","Kevin","Tarmo","Urmas","Priit","Indrek","Margus","Toomas","Aivar","Rein","Peeter","Ants","Jüri","Mati","Enn","Heino","Vello","Ülo","Tiit","Aare","Meelis","Raivo","Tõnu","Villu","Kalju","Endel","Arvo","Henn","Ivar","Kalev","Lembit","Olev","Sulev","Valdur","Ago","Ain","Alar","Andrus","Argo","Erki","Gert","Hannes","Ivo","Jaanus","Kaarel","Kalle","Kristo","Lauri","Madis","Marko","Martin","Mihkel","Mikk","Olavi","Rauno","Riho","Siim","Taavi","Tanel","Vahur","Veiko"],
+                last: ["Tamm","Saar","Sepp","Mägi","Kask","Kukk","Rebane","Ilves","Pärn","Koppel","Kivi","Lepik","Oja","Sild","Lepp","Männik","Kuusk","Kaasik","Puu","Küngas","Jõgi","Järv","Mets","Nurm","Põld","Rand","Roos","Rätsep","Sarap","Siim","Soosaar","Talts","Toom","Tõnisson","Uibo","Vaher","Vaino","Valge","Vares","Veski","Viik","Vill","Viru","Õun","Ääremaa","Allik","Arula","Eller","Haas","Hansen","Held","Herman","Hunt","Jakobson","Jürgenson","Kalda","Kallas","Kangur","Kapp","Karu","Kase","Kelder","Kiisk","Kikas","Kirs","Klaas","Kokk","Kolk","Kont","Kruus","Kull","Kuningas","Laan","Laanemets","Laur","Liiv","Lind","Lokk","Lõhmus","Maasik","Maidla","Mandel","Metsis","Mihkelson","Möldre","Muru","Must","Nõmm","Nurk","Ojala","Oks","Ots","Paal","Paju","Palm","Parts","Peterson","Pihlak","Piir","Post","Põder"],
+            },
+            "Kazachstan": {
+                first: ["Danil","Ilya","Sergey","Nurshat","Alikhan","Dias","Timur","Ayan","Rustem","Yerlan","Askar","Nurlan","Bolat","Daniyar","Arman","Bekzat","Yerbol","Samat","Kairat","Marlen","Rinat","Marat","Ruslan","Murat","Azamat","Talant","Adil","Nurbek","Almas","Yerzhan","Kanat","Serik","Talgat","Aibek","Zhandos","Meiram","Daulet","Sanzhar","Arsen","Islam","Damir","Eldar","Ilyas","Madi","Sultan","Temirlan","Ulan","Zhanibek","Aidos","Bauyrzhan","Duman","Erlan","Galym","Kuanysh","Miras","Nurzhan","Olzhas","Rauan","Sabyr","Yerkin","Zhasulan","Aibar","Bekzod","Doszhan","Yerbolat","Zhandarbek","Asylbek","Bakyt","Ermek","Saken","Tolegen","Amanzhol","Nursultan","Rakhim","Temir","Zhanserik"],
+                last: ["Vassilyev","Mizernykh","Tkachenko","Tursunzhanov","Suleimenov","Nurgaliyev","Abdrakhmanov","Omarov","Ibragimov","Aliyev","Kadyrov","Bekov","Zhussupov","Smagulov","Tolegenov","Akhmetov","Baizhanov","Dzhakupov","Erzhanov","Faizullin","Gabbasov","Ibrayev","Ismailov","Kenzhebayev","Khamitov","Kim","Kudaibergenov","Mukhtarov","Nazarbayev","Ospanov","Rakhimov","Sagyndykov","Serikov","Sultanov","Tazhibayev","Uspanov","Yermekov","Zhumabayev","Amanzholov","Bekmuratov","Doszhanov","Zhaksylykov","Aitbayev","Beketov","Dzhaksybekov","Ergaliev","Frolov","Grebennikov","Ivanov","Kalinin","Kuznetsov","Lukyanov","Makarov","Novikov","Orlov","Petrov","Romanov","Sidorov","Sokolov","Stepanov","Titov","Volkov","Yakovlev","Zaytsev","Bekzhanov","Daniyarov","Esimov","Kairatov","Madiyarov","Nurlanov","Orazov","Rysbekov","Saparov","Uskenbayev","Zholdasov"],
+            },
+            "Kanada": {
+                first: ["Mackenzie","Tarik","Mitchell","Liam","Noah","Ethan","Lucas","Mason","Logan","Jacob","William","James","Benjamin","Henry","Alexander","Michael","Daniel","Matthew","Joseph","David","Jackson","Samuel","Owen","Wyatt","Carter","Jayden","Gabriel","Ryan","Isaac","Nathan","Caleb","Christian","Elijah","Josiah","Levi","Isaiah","Jeremiah","Austin","Colton","Connor","Dominic","Gavin","Grayson","Ian","Jaxon","Jonah","Jordan","Julian","Justin","Kayden","Landon","Leo","Lincoln","Luke","Miles","Nathaniel","Nicholas","Oliver","Parker","Robert","Roman","Ryder","Sawyer","Sebastian","Silas","Theodore","Thomas","Tristan","Tucker","Waylon","Wesley","Weston","Zachary","Aiden","Asher","Brody","Cameron","Chase","Colin","Damian","Declan","Emmett","Everett","Finn","George","Harrison","Hudson","Jace"],
+                last: ["Smith","Brown","Tremblay","Martin","Roy","Gagnon","Lee","Wilson","Johnson","Williams","Taylor","Anderson","Thomas","Jackson","White","Miller","Davis","Jones","Thompson","Moore","Clark","Lewis","Walker","Hall","Young","King","Wright","Scott","Green","Baker","Adams","Nelson","Hill","Campbell","Mitchell","Roberts","Carter","Phillips","Evans","Turner","Parker","Collins","Edwards","Stewart","Morris","Murphy","Cook","Rogers","Morgan","Cooper","Peterson","Bailey","Reed","Kelly","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","James","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez","Powell","Jenkins","Perry","Russell","Sullivan","Bell","Coleman","Butler","Bouchard","Cote","Fortin","Gagné","Gauthier","Girard","Lavoie","Leblanc","Lévesque","Morin","Ouellet","Pelletier","Poirier","Simard"],
+            },
+            "Łotwa": {
+                first: ["Kristaps","Andris","Jānis","Rihards","Mārtiņš","Edgars","Kārlis","Roberts","Artūrs","Toms","Emīls","Ralfs","Gustavs","Reinis","Oskars","Uldis","Aivars","Ilmārs","Valdis","Juris","Andrejs","Pēteris","Vladimirs","Anatolijs","Sergejs","Igors","Oļegs","Dmitrijs","Nikolajs","Aleksandrs","Viktors","Jevgeņijs","Mihails","Vitālijs","Edvīns","Aldis","Arnis","Gints","Māris","Uģis","Aigars","Dainis","Ivars","Jāzeps","Krišjānis","Laimonis","Modris","Normunds","Raimonds","Sandris","Viesturs","Zigurds","Armands","Ervīns","Gundars","Inesis","Jānis","Kārlis","Laimonis","Mārtiņš"],
+                last: ["Bērziņš","Kalniņš","Ozols","Jansons","Liepiņš","Balodis","Eglītis","Pētersons","Zariņš","Kļaviņš","Krastiņš","Lapsa","Vītols","Sproģis","Rudzītis","Bērzkalns","Cīrulis","Dzenis","Ezergailis","Gailis","Grīnbergs","Ikaunieks","Jaunzems","Kalējs","Kauliņš","Kokars","Krieviņš","Krūmiņš","Ķesteris","Lagzdiņš","Lielais","Līcis","Mucenieks","Niedra","Osis","Paegle","Priede","Puķītis","Riekstiņš","Roze","Salmiņš","Saulītis","Skujiņš","Strazdiņš","Šmits","Tauriņš","Upītis","Vagalis","Vanags","Veinbergs","Vilks","Zeltiņš","Ziedonis","Zvaigzne","Āboltiņš","Briedis","Celmins","Dūmiņš","Freimanis","Grīslis"],
+            },
+            "Litwa": {
+                first: ["Tomas","Mantas","Darius","Lukas","Matas","Rokas","Ignas","Paulius","Vytautas","Gediminas","Andrius","Marius","Dainius","Saulius","Arūnas","Jonas","Petras","Antanas","Juozas","Stasys","Kazys","Pranas","Vladas","Algirdas","Algimantas","Bronius","Romualdas","Rimantas","Gintaras","Kęstutis","Mindaugas","Rolandas","Valdas","Arvydas","Egidijus","Evaldas","Giedrius","Linas","Rytis","Sigitas","Tadas","Vaidas","Vilius","Žydrūnas","Aurimas","Deividas","Edgaras","Karolis","Laurynas","Martynas","Naglis","Orestas","Povilas","Raimundas","Šarūnas","Tauras","Ugnius","Vakaris","Žygimantas","Aistis","Benas","Dovydas","Emilis","Faustas","Gvidas","Henrikas","Irmantas","Jokūbas","Kastytis","Liudvikas","Mykolas","Nojus","Oskaras"],
+                last: ["Kazlauskas","Jankauskas","Petrauskas","Stankevičius","Vasiliauskas","Žukauskas","Butkus","Paulauskas","Urbonas","Kavaliauskas","Balčiūnas","Ramanauskas","Grigas","Sakalauskas","Vaitkus","Adomaitis","Aleksandravičius","Bagdonas","Bernotas","Brazauskas","Daukantas","Gedminas","Grigaitis","Ivanauskas","Jakštas","Jasinskas","Jonaitis","Kalvaitis","Kaminskas","Kazakevičius","Kubilius","Landsbergis","Lukšys","Maciulevičius","Malinauskas","Matulis","Mickevičius","Mikulskis","Navickas","Norkus","Paleckis","Pavlovič","Petkevičius","Pocius","Radzevičius","Rimkus","Sadauskas","Simanavičius","Smetona","Stankus","Strazdas","Šimkus","Šimėnas","Šleževičius","Tamošaitis","Tarvydas","Urbanavičius","Vaišvila","Valiukas","Venckus","Vilimas","Zabiela","Zinkevičius","Žilinskas","Žemaitis","Adomavičius","Bagdonavičius","Čeponis","Daukša","Gaidamavičius","Gustaitis","Jankūnas","Kairys","Klimas","Laurinavičius","Masiulis","Nenėnas","Petrulis"],
+            },
+            "Węgry": {
+                first: ["Bence","Márk","Dávid","Balázs","Gergő","Ádám","Levente","Zsombor","Péter","Máté","Dániel","Tamás","István","Zoltán","László","József","János","Sándor","Gábor","Ferenc","Attila","Csaba","Tibor","Imre","György","Károly","Miklós","Béla","Gyula","Lajos","Antal","Mihály","András","Barnabás","Bendegúz","Botond","Dénes","Domonkos","Előd","Endre","Gergely","Győző","Hunor","Kálmán","Krisztián","Lóránt","Márton","Mátyás","Nándor","Olivér","Ottó","Pál","Richárd","Róbert","Roland","Sámuel","Szabolcs","Tivadar","Vencel","Viktor","Vilmos","Zalán","Zsolt"],
+                last: ["Nagy","Kovács","Tóth","Szabó","Horváth","Varga","Kiss","Molnár","Németh","Farkas","Balogh","Papp","Takács","Juhász","Lakatos","Mészáros","Oláh","Simon","Rácz","Fekete","Szilágyi","Török","Fehér","Balázs","Gál","Kis","Szűcs","Kocsis","Orsós","Pintér","Fodor","Szalai","Sipos","Magyar","Lukács","Gulyás","Biró","Király","Katona","Jakab","Bogdán","Vincze","Deák","Somogyi","Borús","Fülöp","Vass","Barna","Major","Balla","Végh","Fábián","Boros","Bodnár","Halász","Pap","Székely","Antal","Budai","Hegedűs","Kelemen","Nemes","Orosz","Pásztor","Sárközi","Sebestyén","Sós","Szekeres","Váradi","Veres","Vida","Zsigmond"],
+            },
+            "Chorwacja": {
+                first: ["Ivan","Marko","Luka","Josip","Matej","Filip","Petar","Ante","Nikola","Karlo","David","Tomislav","Stjepan","Hrvoje","Dario","Damir","Goran","Zoran","Mario","Miroslav","Dražen","Krešimir","Željko","Boris","Vedran","Domagoj","Dinko","Ivica","Jure","Kristijan","Lovro","Marin","Mate","Mislav","Nikša","Ozren","Pavao","Roko","Siniša","Slaven","Šime","Tin","Vinko","Vjekoslav","Vladimir","Zdravko","Zlatko","Žarko","Borna","Bruno","Duje","Fran","Gabrijel","Ivano","Jakov","Lovre","Mateo","Mihael","Patrik","Stipe","Šimun","Toma","Tonči","Vice","Zvonimir"],
+                last: ["Horvat","Kovačević","Marić","Novak","Jurić","Kovačić","Vuković","Babić","Perić","Radić","Šimić","Božić","Blažević","Grgić","Pavlović","Barišić","Knežević","Vukić","Matić","Tomić","Marković","Filipović","Kovač","Bošnjak","Milić","Klarić","Vidović","Lovrić","Kralj","Bilić","Lukić","Mikulić","Perković","Rukavina","Šarić","Vrdoljak","Jukić","Katić","Pejić","Sabljak","Šimunović","Tadić","Vlašić","Zorić","Balen","Cindrić","Dujmović","Erceg","Franić","Galić","Hrgović","Ivanković","Jelić","Katičić","Leko","Ljubičić","Mandić","Nekić","Oreški","Prpić","Rimac","Skoko","Tolić","Ujević","Vukojević","Zovko","Živković","Antić","Buljan","Cvitković","Dragičević","Gudelj","Hrstić","Ivić","Juras","Lasić"],
+            },
+            "Serbia": {
+                first: ["Nikola","Marko","Luka","Stefan","Dušan","Miloš","Nemanja","Aleksandar","Filip","Vuk","Uroš","Đorđe","Lazar","Pavle","Mihajlo","Bogdan","Nenad","Milan","Dragan","Zoran","Goran","Dejan","Ivan","Bojan","Vladimir","Saša","Predrag","Nebojša","Slobodan","Miroslav","Radovan","Tomislav","Vojislav","Zlatko","Branislav","Bratislav","Budimir","Čedomir","Damjan","Darko","Dimitrije","Dobrica","Dragiša","Gvozden","Ilija","Jovan","Kosta","Kristijan","Ljubiša","Miloje","Miodrag","Mladen","Momčilo","Novak","Obrad","Ognjen","Petar","Rade","Radoslav","Rajko","Ranko","Ratomir","Siniša","Slavko","Srećko","Stanoje","Strahinja","Todor","Vasilije","Veljko","Vidoje","Viktor","Vladan","Vlastimir","Vojin","Zdravko","Željko","Živorad"],
+                last: ["Jovanović","Petrović","Nikolić","Ilić","Marković","Đorđević","Stojanović","Pavlović","Milić","Ristić","Simić","Popović","Todorović","Lazić","Mitrović","Kostić","Stanković","Radovanović","Đurić","Vasić","Antić","Babić","Bogdanović","Cvetković","Dimitrijević","Đukić","Filipović","Gavrilović","Gligorijević","Ivanović","Janković","Jović","Kovačević","Lukić","Maksimović","Marić","Matić","Milošević","Mladenović","Nedeljković","Nenadić","Novaković","Obradović","Pantić","Pejović","Perić","Petković","Popadić","Radosavljević","Rajić","Ranković","Savanović","Stajić","Stevanović","Stojković","Tadić","Tomić","Trajković","Veljković","Vidojević","Vukić","Vuković","Živković","Đoković","Krstić","Marinković","Milovanović","Nedić","Ognjenović","Radulović","Šarić","Urošević"],
+            },
+            "Holandia": {
+                first: ["Daan","Sem","Lars","Thijs","Bram","Jesse","Sven","Ruben","Tim","Niels","Koen","Thomas","Milan","Joris","Stijn","Jan","Pieter","Willem","Hendrik","Johannes","Cornelis","Gerrit","Jacob","Dirk","Klaas","Arie","Leen","Bas","Rick","Roy","Dennis","Kevin","Patrick","Michael","Robert","Mark","Peter","Paul","Erik","Hans","Frank","Marco","Marcel","Martin","Stefan","Sander","Jeroen","Martijn","Randy","Remco","Wouter","Rens","Luuk","Tijn","Mees","Finn","Levi","Jayden","Ties","Teun","Gijs","Joep","Guus","Pepijn","Hidde","Jelte","Jurre","Kaj","Meine","Rik","Sjoerd","Sytse","Tjeerd","Wessel","Wibe","Yannick"],
+                last: ["de Jong","Jansen","de Vries","van den Berg","van Dijk","Bakker","Janssen","Visser","Smit","Meijer","de Boer","Mulder","de Groot","Bos","Vos","Peters","Hendriks","van Leeuwen","Dekker","Brouwer","de Wit","Dijkstra","Smits","de Graaf","van der Meer","van der Linden","Kok","Jacobs","de Haan","Vermeulen","van den Heuvel","van der Veen","van den Broek","de Bruijn","de Bruin","van der Heijden","Schouten","van Beek","Willems","van Vliet","van de Ven","Hoekstra","Maas","Verhoeven","Koster","van Dam","van der Wal","Prins","Blom","Huisman","Peeters","de Jonge","Kuipers","Post","Kramer","Veenstra","van der Laan","Bosch","van der Burg","van der Meulen","van der Steen","Vink","de Kok","van Es","Boersma","van der Velde","Sanders","van der Zwaan","van der Woude","Wolters","Timmermans","Hermans","Willemsen","Driessen","van der Pas","Klaassen","Verbeek","van Dalen","van der Horst"],
+            },
+            "Belgia": {
+                first: ["Lucas","Louis","Arthur","Jules","Victor","Maxime","Thomas","Simon","Nicolas","Antoine","Quentin","Baptiste","Martin","Hugo","Romain","Jan","Pieter","Willem","Hendrik","Johannes","Cornelis","Gerrit","Jacob","Dirk","Klaas","Arie","Leen","Bas","Rick","Roy","Dennis","Kevin","Patrick","Michael","Robert","Mark","Peter","Paul","Erik","Hans","Frank","Marco","Marcel","Stefan","Sander","Jeroen","Martijn","Daan","Sem","Lars","Thijs","Bram","Jesse","Sven","Ruben","Tim","Niels","Koen","Arnaud","Loïc","Gauthier","Corentin","Florian","Jonathan","Anthony","Christophe","Frédéric","Grégory","Jean","Laurent","Olivier","Pascal","Philippe","Pierre","Sébastien","Thierry","Vincent","Xavier","Yves","Bruno","Damien"],
+                last: ["Peeters","Janssens","Maes","Jacobs","Mertens","Willems","Claes","Goossens","Wouters","De Smet","Vermeulen","Lambert","Dupont","Leclercq","Simon","Van Damme","De Clercq","De Vos","Van den Broeck","De Backer","Van Hoof","De Wit","De Meyer","De Cock","De Ridder","Van Acker","Van den Berghe","De Pauw","De Vries","Vandenberghe","Van de Velde","Van Hecke","De Waele","De Sutter","Van Dam","De Meester","Van Den Bossche","De Clerck","De Groote","De Leeuw","Van der Linden","De Coninck","De Munck","De Roo","De Schrijver","De Vriendt","De Wolf","Dumoulin","Dubois","Dupuis","Fournier","Gérard","Gilles","Gobert","Grégoire","Guillaume","Henrard","Hermans","Jacques","Janssen","Joseph","Lebrun","Lefebvre","Legrand","Leroy","Lejeune","Noël","Petit","Renard","Robert","Rousseau"],
+            },
+            "Wielka Brytania": {
+                first: ["Oliver","Harry","Jack","George","Charlie","Thomas","Oscar","Leo","Alfie","Freddie","Archie","Henry","Arthur","Theo","Max","James","William","Benjamin","Alexander","Michael","Daniel","Matthew","Joseph","David","Jackson","Samuel","Owen","Wyatt","Carter","Jayden","Gabriel","Ryan","Isaac","Nathan","Caleb","Christian","Elijah","Josiah","Levi","Isaiah","Jeremiah","Austin","Colton","Connor","Dominic","Gavin","Grayson","Ian","Jaxon","Jonah","Jordan","Julian","Justin","Kayden","Landon","Lincoln","Luke","Miles","Nathaniel","Nicholas","Parker","Robert","Roman","Ryder","Sawyer","Sebastian","Silas","Theodore","Tristan","Tucker","Waylon","Wesley","Weston","Zachary","Aiden","Asher","Brody","Cameron","Chase","Colin","Damian","Declan","Emmett","Everett","Finn"],
+                last: ["Smith","Jones","Taylor","Brown","Williams","Wilson","Johnson","Davies","Robinson","Wright","Thompson","Evans","Walker","White","Roberts","Green","Hall","Wood","Harris","Martin","Jackson","Clarke","Clark","Turner","Hill","Baker","Cooper","Morris","Ward","Bell","Watson","Bennett","Price","Cox","Gray","James","Hughes","Morgan","Russell","Foster","Powell","Barnes","Fisher","Henderson","Cole","Simpson","Holmes","Murray","Rogers","Palmer","Ellis","Marshall","Knight","Ford","Chapman","Barker","Hunt","Reid","West","Newton","Gibson","Bryant","Fox","Pearson","Barnett","Hart","Lloyd","Harrison","Wallace","Woods","Webb","Wells","Rose","Cameron","Matthews","Kennedy","Grant","Fraser","Campbell","Duncan","Stewart"],
+            },
+            "Szwecja": {
+                first: ["Erik","Lars","Karl","Anders","Johan","Magnus","Nils","Oskar","Gustav","Axel","Filip","Viktor","Hugo","Anton","Elias","Sven","Per","Jan","Bo","Bengt","Ulf","Kjell","Stig","Rolf","Leif","Göran","Håkan","Mats","Stefan","Peter","Mikael","Fredrik","Andreas","Daniel","Henrik","Martin","Jonas","Robert","Patrik","Tobias","Marcus","Niklas","Mattias","Simon","Emil","Lucas","Liam","Noah","William","Alexander","Oscar","Adam","Arvid","Casper","Edvin","Elliot","Folke","Hampus","Hannes","Isak","Ivar","Joel","Jonatan","Kalle","Kasper","Leo","Linus","Ludvig","Malte","Melker","Milton","Noel","Olle","Otto","Pontus","Rasmus","Sixten","Teodor","Vidar","Vilhelm"],
+                last: ["Andersson","Johansson","Karlsson","Nilsson","Eriksson","Larsson","Olsson","Persson","Svensson","Gustafsson","Pettersson","Jonsson","Jansson","Hansson","Bengtsson","Berg","Lindberg","Lindqvist","Lund","Lindström","Lundberg","Bergström","Eklund","Holm","Björk","Berglund","Sundberg","Sjöberg","Nyberg","Engström","Hedlund","Forsberg","Sandberg","Wallin","Danielsson","Nyström","Holmberg","Fredriksson","Löfgren","Bergman","Månsson","Norberg","Åberg","Öberg","Söderberg","Hermansson","Håkansson","Isaksson","Jonasson","Karlsen","Magnusson","Mattsson","Nilson","Norén","Palm","Rydberg","Sandström","Söderström","Strand","Ström","Sundin","Sundqvist","Thorsell","Wikström","Åkesson","Åström","Östlund"],
+            },
+            "Dania": {
+                first: ["Magnus","Mikkel","Rasmus","Frederik","Emil","Oliver","Lucas","Malthe","Noah","William","Alfred","Viggo","Carl","Valdemar","Anton","Jens","Niels","Peter","Lars","Henrik","Anders","Søren","Mads","Thomas","Martin","Jesper","Morten","Kasper","Christian","Nikolaj","Simon","Andreas","Daniel","Jonas","Mathias","Victor","Alexander","Benjamin","August","Bertram","Elias","Felix","Gustav","Hugo","Ivan","Johan","Karl","Laurits","Ludvig","Marius","Oskar","Otto","Philip","Silas","Storm","Theodor","Villads","Villum"],
+                last: ["Nielsen","Jensen","Hansen","Pedersen","Andersen","Christensen","Larsen","Sørensen","Rasmussen","Jørgensen","Petersen","Madsen","Kristensen","Olsen","Thomsen","Christiansen","Poulsen","Johansen","Møller","Mortensen","Knudsen","Jakobsen","Mikkelsen","Frederiksen","Laursen","Holm","Henriksen","Lund","Schmidt","Eriksen","Clausen","Simonsen","Svendsen","Andreasen","Iversen","Bech","Dahl","Danielsen","Ellingsen","Frandsen","Gregersen","Hedegaard","Ibsen","Jeppesen","Kjeldsen","Lassen","Mathiesen","Nørgaard","Overgaard","Paulsen","Ravn","Riis","Skov","Steffensen","Toft","Ussing","Vestergaard","Winther","Østergaard","Aagaard","Bjerre","Christoffersen","Damsgaard","Enevoldsen","Fogh","Gade","Hjort","Ilsøe","Juhl","Krogh","Lyng","Munk","Nørregaard","Olesen","Præst","Qvist","Rask","Skovgaard","Thygesen","Uggerhøj","Vinther","Wagner","Zachariassen"],
+            },
+            "Argentyna": {
+                first: ["Santiago","Matías","Juan","Lautaro","Tomás","Facundo","Agustín","Nicolás","Franco","Joaquín","Bruno","Thiago","Bautista","Valentino","Benjamín","Alejandro","Andrés","Carlos","Daniel","Diego","Eduardo","Emiliano","Enzo","Esteban","Federico","Felipe","Fernando","Gabriel","Gastón","Gonzalo","Guillermo","Gustavo","Héctor","Hernán","Ignacio","Iván","Javier","Jorge","José","Lucas","Luis","Manuel","Marcelo","Mariano","Martín","Mateo","Mauricio","Maximiliano","Miguel","Nahuel","Norberto","Oscar","Pablo","Pedro","Rafael","Ramón","Raúl","Ricardo","Roberto","Rodrigo","Rubén","Salvador","Sergio","Simón","Víctor","Walter","Ariel","Cristian","Damián","Ezequiel","Jonathan","Leonardo","Leandro","Mauro","Néstor","Ramiro","Rogelio","Silvio"],
+                last: ["González","Rodríguez","Gómez","Fernández","López","Díaz","Martínez","Pérez","García","Sánchez","Romero","Sosa","Torres","Álvarez","Benítez","Acosta","Aguirre","Alonso","Arias","Ávila","Baez","Blanco","Bogado","Bravo","Bustos","Cabrera","Cáceres","Campos","Cardozo","Carrizo","Castillo","Castro","Chávez","Contreras","Coronel","Correa","Cortés","Cruz","Cuello","Dominguez","Duarte","Escobar","Esquivel","Ferreyra","Figueroa","Flores","Franco","Funes","Gaitán","Gallardo","Giménez","Godoy","Gutiérrez","Herrera","Ibarra","Juárez","Leiva","Ledesma","Leguizamón","Luna","Maldonado","Mansilla","Marchetti","Medina","Méndez","Molina","Montenegro","Morales","Moreno","Moyano","Muñoz","Navarro","Núñez","Ojeda","Olivera","Ortega","Ortiz","Paz","Peralta","Pereyra","Quiroga","Ramírez","Ramos","Reyes","Ríos","Rivero","Rojas","Rosales","Ruiz","Salazar","Silva","Suárez","Toledo","Vargas","Vega","Velázquez","Vera","Villalba","Zárate"],
+            },
+            "Australia": {
+                first: ["Jack","Oliver","William","Noah","Thomas","Liam","James","Ethan","Lucas","Mason","Logan","Hunter","Cooper","Riley","Harrison","Xavier","Jacob","Henry","Alexander","Michael","Daniel","Matthew","Joseph","David","Jackson","Samuel","Owen","Wyatt","Carter","Jayden","Gabriel","Ryan","Isaac","Nathan","Caleb","Christian","Elijah","Josiah","Levi","Isaiah","Jeremiah","Austin","Colton","Connor","Dominic","Gavin","Grayson","Ian","Jaxon","Jonah","Jordan","Julian","Justin","Kayden","Landon","Lincoln","Luke","Miles","Nathaniel","Nicholas","Parker","Robert","Roman","Ryder","Sawyer","Sebastian","Silas","Theodore","Tristan","Tucker","Waylon","Wesley","Weston","Zachary","Aiden","Asher","Brody","Cameron","Chase","Colin","Damian","Declan","Emmett","Everett","Finn"],
+                last: ["Smith","Jones","Williams","Brown","Wilson","Taylor","Johnson","Martin","White","Anderson","Thompson","Nguyen","Thomas","Walker","Harris","Lee","Ryan","Robinson","Kelly","King","Young","Wright","Scott","Green","Baker","Adams","Nelson","Hill","Campbell","Mitchell","Roberts","Carter","Phillips","Evans","Turner","Parker","Collins","Edwards","Stewart","Morris","Murphy","Cook","Rogers","Morgan","Cooper","Peterson","Bailey","Reed","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","James","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez","Powell","Jenkins","Perry","Russell","Sullivan","Bell","Coleman","Butler","Hughes","Ward","Murray","Fraser","McDonald","Hunter","Davidson","Gibson","Wallace","Hamilton","Webb","Simpson","Cameron","Duncan"],
+            },
+            "Brazylia": {
+                first: ["João","Pedro","Lucas","Gabriel","Matheus","Rafael","Bruno","Felipe","Gustavo","Thiago","Vinícius","Leonardo","Daniel","Eduardo","Igor","Alexandre","André","Antônio","Augusto","Bernardo","Caio","Carlos","César","Davi","Diego","Diogo","Douglas","Éderson","Emerson","Enzo","Fábio","Fernando","Filipe","Flávio","Guilherme","Heitor","Henrique","Hugo","Ícaro","Isaac","Ivan","Joaquim","Jorge","José","Juan","Júlio","Kauã","Leandro","Léo","Lorenzo","Luan","Luiz","Marcelo","Márcio","Marco","Marcos","Mateus","Maurício","Miguel","Murilo","Nicolas","Otávio","Paulo","Raul","Renan","Ricardo","Roberto","Rodrigo","Samuel","Sérgio","Thales","Théo","Tiago","Tomás","Vicente","Victor","Vitor","Wesley","Yuri"],
+                last: ["Silva","Santos","Oliveira","Souza","Rodrigues","Ferreira","Alves","Pereira","Lima","Gomes","Costa","Ribeiro","Martins","Carvalho","Almeida","Lopes","Soares","Fernandes","Vieira","Barbosa","Rocha","Dias","Nascimento","Andrade","Moreira","Nunes","Marques","Machado","Mendes","Freitas","Cardoso","Ramos","Gonçalves","Santana","Teixeira","Araújo","Correia","Cavalcanti","Monteiro","Moura","Batista","Campos","Castro","Cunha","Duarte","Farias","Fonseca","Guimarães","Leite","Macedo","Maia","Miranda","Moraes","Neves","Peixoto","Pinto","Queiroz","Rezende","Sales","Sampaio","Siqueira","Tavares","Vasconcelos","Veloso","Viana","Xavier","Zanetti","Bastos","Borges","Braga","Brito","Caldas","Camargo","Coelho","Furtado","Godoy","Lacerda","Magalhães","Mello","Paiva","Pires","Porto","Rangel","Reis","Rios","Salgado","Serra","Silveira","Valente"],
+            },
+            "Hiszpania": {
+                first: ["Pablo","Álvaro","Javier","Sergio","Adrián","Carlos","Daniel","David","Diego","Iván","Jorge","Marcos","Mario","Rubén","Víctor","Alejandro","Andrés","Ángel","Antonio","Arturo","Borja","Bruno","César","Cristian","Eduardo","Emilio","Enrique","Ernesto","Esteban","Federico","Felipe","Fernando","Francisco","Gabriel","Gonzalo","Guillermo","Gustavo","Héctor","Hugo","Ignacio","Isaac","Jaime","Jesús","Joaquín","José","Juan","Julián","Leandro","Lorenzo","Lucas","Luis","Manuel","Marc","Marco","Martín","Mateo","Matías","Mauricio","Miguel","Nicolás","Óscar","Pedro","Rafael","Ramón","Raúl","Ricardo","Roberto","Rodrigo","Salvador","Samuel","Santiago","Saúl","Sebastián","Simón","Tomás","Valentín","Vicente","Xavier"],
+                last: ["García","Rodríguez","González","Fernández","López","Martínez","Sánchez","Pérez","Gómez","Martín","Jiménez","Ruiz","Hernández","Díaz","Moreno","Muñoz","Álvarez","Romero","Alonso","Gutiérrez","Navarro","Torres","Domínguez","Vázquez","Ramos","Gil","Ramírez","Serrano","Blanco","Molina","Morales","Suárez","Ortega","Delgado","Castro","Ortiz","Rubio","Marín","Sanz","Núñez","Iglesias","Medina","Garrido","Cortés","Castillo","Santos","Lozano","Guerrero","Cano","Prieto","Méndez","Cruz","Calvo","Gallego","Vidal","León","Herrera","Márquez","Peña","Flores","Cabrera","Campos","Vega","Fuentes","Carrasco","Díez","Reyes","Caballero","Nieto","Aguilar","Pascual","Herrero","Montero","Lorenzo","Hidalgo","Giménez","Ibáñez","Ferrer","Duran","Benítez","Vargas","Mora","Arias","Carmona","Crespo","Román","Pastor","Soto","Velasco","Moya","Soler","Parra","Esteban","Bravo","Gallardo","Rojas"],
+            },
+            "Grecja": {
+                first: ["Giorgos","Nikos","Dimitris","Kostas","Yannis","Vasilis","Panagiotis","Christos","Thanasis","Michalis","Petros","Stavros","Alexis","Andreas","Manolis","Antonis","Apostolos","Aris","Charalampos","Dionysis","Efthymios","Evangelos","Fotios","Grigoris","Ilias","Ioannis","Kleanthis","Lambros","Leonidas","Loukas","Marios","Markos","Miltiadis","Nikolaos","Odysseas","Pavlos","Periklis","Polychronis","Sotirios","Spyridon","Stefanos","Theodoros","Thomas","Vangelis","Vasileios","Viktoras","Xenofon","Zisis","Anastasios","Athanasios","Christoforos","Konstantinos","Kyriakos","Lefteris","Makis","Mihalis","Nektarios","Pantelis","Paris","Stelios","Tasos","Thodoris","Tolis","Tzanis","Vaggelis","Yiannis","Zaharias"],
+                last: ["Papadopoulos","Georgiou","Dimitriou","Nikolaou","Ioannou","Vasileiou","Antoniou","Christou","Petrou","Karagiannis","Oikonomou","Makris","Athanasiou","Pappas","Konstantinidis","Alexiou","Anagnostou","Andreou","Angelopoulos","Apostolou","Arvanitis","Bakas","Chatzis","Diamantis","Doukas","Economou","Fotiadis","Galanis","Georgiadis","Giannopoulos","Hatzis","Iliadis","Kalogeropoulos","Kanellopoulos","Katsaros","Kazantzis","Kollias","Kostas","Kouris","Kyriakidis","Lambropoulos","Laskaris","Lekkas","Liakos","Manolopoulos","Markopoulos","Mavridis","Mihailidis","Mitsis","Moraitis","Nikolaidis","Oikonomidis","Papanikolaou","Papas","Papazoglou","Pavlidis","Petridis","Politis","Raptis","Roussos","Samaras","Sideris","Spyropoulos","Stavros","Stefanidis","Tsiaras","Tsoukalas","Vasilakis","Vlachos","Vrettos","Xenakis","Zachariadis","Zervas","Zisis"],
+            },
+            "Islandia": {
+                first: ["Jón","Sigurður","Guðmundur","Ólafur","Einar","Kristján","Magnús","Björn","Árni","Stefán","Þór","Hafþór","Arnar","Baldur","Egill","Ari","Ásgeir","Benedikt","Birgir","Bjarni","Bragi","Eiríkur","Elías","Eyjólfur","Fannar","Friðrik","Gísli","Grétar","Guðjón","Gunnar","Halldór","Hannes","Haraldur","Haukur","Helgi","Hermann","Hilmar","Hjalti","Hrafn","Ingi","Ingólfur","Jakob","Jóhann","Jóhannes","Jónas","Karl","Ketill","Kjartan","Kolbeinn","Leifur","Logi","Marinó","Njáll","Oddur","Óttar","Páll","Pétur","Ragnar","Rúnar","Sigmundur","Sigurjón","Skúli","Snorri","Sveinn","Tómas","Tryggvi","Valur","Víðir","Vignir","Vilhjálmur","Þórarinn","Þórður","Þorsteinn","Þorvaldur"],
+                last: ["Jónsson","Sigurðsson","Guðmundsson","Ólafsson","Einarsson","Kristjánsson","Magnússon","Björnsson","Árnason","Stefánsson","Þórðarson","Hafsteinsson","Arnarsson","Baldursson","Egilsson","Aðalsteinsson","Ágústsson","Andrésson","Antonsson","Benediktsson","Birgisson","Bjarnason","Bragason","Eiríksson","Elíasson","Eyjólfsson","Fannarsson","Friðriksson","Gíslason","Grétarsson","Guðjónsson","Gunnarsson","Halldórsson","Hannesson","Haraldsson","Haukssson","Helgason","Hermannsson","Hilmasson","Hjaltason","Hrafnsson","Ingason","Ingólfsson","Jakobsson","Jóhannsson","Jóhannesson","Jónasson","Karlsson","Ketilsson","Kjartansson","Kolbeinsson","Leifsson","Logason","Marinósson","Njálsson","Oddsson","Óttarsson","Pálsson","Pétursson","Ragnarsson","Rúnarsson","Sigmundsson","Sigurjónsson","Skúlason","Snorrason","Sveinsson","Tómasson","Tryggvason","Valsson","Víðirsson","Vignisson","Vilhjálmsson","Þórarinsson","Þorsteinsson","Þorvaldsson"],
+            },
+            "Irlandia": {
+                first: ["Jack","Seán","Conor","Cian","Oisín","Liam","Fionn","Cillian","Darragh","Eoin","Ronan","Niall","Padraig","Cathal","Tadhg","Aidan","Aonghus","Barra","Brendan","Brian","Ciaran","Colm","Cormac","Dáire","Declan","Dermot","Diarmuid","Donnacha","Eamon","Eoghan","Fergal","Fiachra","Finbar","Gearóid","Lorcan","Mairtín","Micheál","Naoise","Oscar","Peadar","Piaras","Rían","Ruairí","Seamus","Senan","Shane","Tiarnán","Tomás","Ultan"],
+                last: ["Murphy","Kelly","O'Sullivan","Walsh","Smith","O'Brien","Byrne","Ryan","O'Connor","O'Neill","O'Reilly","Doyle","McCarthy","Gallagher","Kennedy","Lynch","Murray","Quinn","Moore","McLoughlin","Brennan","Carroll","Connolly","Daly","Duffy","Fitzgerald","Fitzpatrick","Flanagan","Flynn","Griffin","Hayes","Hogan","Kavanagh","Keane","Kelleher","Kenny","Kinsella","Leahy","MacCarthy","Madden","Maguire","Maher","Malone","McBride","McCartney","McDonnell","McGrath","McGuinness","McLaughlin","McMahon","McNamara","Molloy","Moloney","Moran","Moriarty","Morrissey","Mulligan","Nolan","O'Callaghan","O'Connell","O'Donnell","O'Donoghue","O'Driscoll","O'Farrell","O'Grady","O'Hara","O'Keeffe","O'Leary","O'Mahony","O'Meara","O'Rourke","O'Shea","O'Toole","Power","Prendergast","Quigley","Regan","Sheehan","Sheridan","Slattery","Sullivan","Tobin","Whelan"],
+            },
+            "Nowa Zelandia": {
+                first: ["Jack","Liam","Oliver","William","Noah","James","Lucas","Ethan","Mason","Logan","Hunter","Cooper","Riley","Toby","Finn","Xavier","Jacob","Henry","Alexander","Michael","Daniel","Matthew","Joseph","David","Jackson","Samuel","Owen","Wyatt","Carter","Jayden","Gabriel","Ryan","Isaac","Nathan","Caleb","Christian","Elijah","Josiah","Levi","Isaiah","Jeremiah","Austin","Colton","Connor","Dominic","Gavin","Grayson","Ian","Jaxon","Jonah","Jordan","Julian","Justin","Kayden","Landon","Lincoln","Luke","Miles","Nathaniel","Nicholas","Parker","Robert","Roman","Ryder","Sawyer","Sebastian","Silas","Theodore","Tristan","Tucker","Waylon","Wesley","Weston","Zachary","Aiden","Asher","Brody","Cameron","Chase","Colin","Damian","Declan","Emmett","Everett","Finn"],
+                last: ["Smith","Wilson","Williams","Brown","Taylor","Thompson","Clark","Walker","Hall","Wright","Martin","Anderson","Harris","Lee","White","Davis","Jones","Miller","Johnson","Moore","Jackson","Thomas","Robinson","Lewis","Young","King","Scott","Green","Baker","Adams","Nelson","Hill","Campbell","Mitchell","Roberts","Carter","Phillips","Evans","Turner","Parker","Collins","Edwards","Stewart","Morris","Murphy","Cook","Rogers","Morgan","Cooper","Peterson","Bailey","Reed","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","James","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez","Powell","Jenkins","Perry","Russell","Sullivan","Bell","Coleman","Butler","Hughes","Ward","Murray","Fraser","McDonald","Hunter","Davidson","Gibson","Wallace","Hamilton","Webb","Simpson","Cameron","Duncan"],
+            },
+            "RPA": {
+                first: ["Pieter","Jan","Jacobus","Willem","Hendrik","Danie","Francois","Christiaan","Stefan","Ruan","Tiaan","Dylan","Ethan","Luke","Connor","Andries","Barend","Cornelius","Dawid","Dirk","Frans","Gerhard","Gert","Herman","Izak","Jacob","Johan","Johannes","Kobus","Lourens","Lucas","Marthinus","Michiel","Nico","Nicolaas","Petrus","Riaan","Roelof","Rudolf","Sarel","Schalk","Stephan","Theunis","Werner","Wessel","Wynand","Abel","Adam","Adriaan","Albert","Alwyn","Andre","Anton","Ben","Bernard","Bongani","Casper","Cobus","Danie","David","Dennis","Dewald","Eddie","Eugene","Fanie","Frik","Gawie","Gideon","Hannes","Hugo","Ivan","Jaco","Jannie","Karel","Klaas","Kobus","Leon","Lourens","Lukas","Marius","Martin","Matthys","Ockert","Paul","Petrus","Riaan","Rudolf","Sarel","Schalk","Stefan","Stephan","Theunis","Werner"],
+                last: ["van der Merwe","Botha","Pretorius","Coetzee","du Plessis","Venter","Kruger","Nel","Joubert","Smit","van Wyk","Meyer","Erasmus","Fourie","Swanepoel","van Niekerk","van der Walt","van den Berg","Malan","Olivier","Steyn","Kotze","du Toit","Jansen","van Zyl","Grobler","Mokoena","Naidoo","Pillay","Nkosi","Dlamini","Ndlovu","Khumalo","Mahlangu","Mthembu","Zulu","Sithole","Moyo","Nkomo","Mabaso","van Rooyen","Marais","Bezuidenhout","Jordaan","Roux","Strydom","Prinsloo","Oosthuizen","Viljoen","Gouws","Human","Lategan","Louw","Moolman","Muller","Myburgh","Naude","Oberholzer","Otto","Pienaar","Potgieter","Rautenbach","Rossouw","Scheepers","Scholtz","Schoeman","Steenkamp","Terblanche","Theron","Uys","van der Linde","van der Westhuizen","van Deventer","van Heerden","van Rensburg","van Vuuren","Vermeulen","Visser","Vlok","Vorster","Wessels","Wolmarans"],
+            },
+            "Ukraina": {
+                first: ["Yevhen","Vitaliy","Oleksandr","Dmytro","Serhiy","Andriy","Volodymyr","Mykola","Ihor","Taras","Bohdan","Maksym","Denys","Roman","Artem","Anatoliy","Borys","Valeriy","Vasyl","Viktor","Vladyslav","Hryhoriy","Danylo","Yaroslav","Yuriy","Ivan","Kyrylo","Kostiantyn","Leonid","Lubomyr","Marko","Mykhailo","Nazar","Oleh","Ostap","Pavlo","Petro","Pylyp","Rostyslav","Ruslan","Stanislav","Stepan","Sviatoslav","Tymur","Valentyn","Vlad","Vyacheslav","Zakhar","Zinoviy"],
+                last: ["Marusiak","Kalinichenko","Shevchenko","Kovalenko","Bondarenko","Tkachenko","Kravchenko","Melnyk","Boyko","Kovalchuk","Lysenko","Savchenko","Rudenko","Polishchuk","Havryliuk","Koval","Shevchuk","Kravets","Moroz","Tkachuk","Marchenko","Lysak","Romanenko","Kovalov","Petrenko","Klymenko","Pavlenko","Lytvynenko","Levchenko","Volkov","Sokolov","Popov","Lebedev","Kozlov","Novikov","Morozov","Petrov","Vasiliev","Zaytsev","Fedorov","Mikhailov","Belyaev","Tarasov","Belov","Komarov","Orlov","Kiselev","Makarov","Andreev","Kovalev","Ilin","Gusev","Titov","Kudryavtsev","Baranov","Kulikov","Alekseev","Stepanov","Yakovlev","Sorokin","Sergeev","Romanov","Zakharov","Borisov","Korolev","Gerasimov","Ponomarev","Grigorev","Lazarev","Medvedev","Ershov","Nikitin","Sobolev","Ryabov","Polyakov","Tsvetkov","Danilov","Zhukov","Frolov","Krylov","Alexandrov","Semenov","Egorov","Pavlov","Nikolaev"],
+            },
+            "Słowacja": {
+                first: ["Jakub","Tomáš","Martin","Peter","Michal","Ján","Marek","Lukáš","Filip","Adam","Samuel","Matúš","Patrik","Šimon","Dávid","Andrej","Anton","Boris","Branislav","Drahoslav","Dušan","Eduard","Emil","František","Gabriel","Gustáv","Igor","Ivan","Jozef","Juraj","Kamil","Karol","Kazimír","Ladislav","Luboš","Marián","Matej","Milan","Miroslav","Ondrej","Pavol","Radovan","Radoslav","Rastislav","Róbert","Roman","Rudolf","Stanislav","Štefan","Svätopluk","Tibor","Vladimír","Vojtech","Zdenko","Zoltán","Alexander"],
+                last: ["Horváth","Kováč","Varga","Tóth","Nagy","Baláž","Szabó","Molnár","Lukáč","Gajdoš","Hudák","Kollár","Mészáros","Šimko","Országh","Bartko","Bednár","Benc","Beňo","Blaho","Blažek","Boháč","Brezina","Bukovský","Cibuľa","Čech","Černák","Danko","Dobiaš","Dubovský","Ďurica","Fabian","Ferenc","Filip","Filo","Gális","Gašpar","Gregor","Hanzel","Hanák","Hlaváč","Hlavatý","Holub","Hrabovský","Hric","Hruška","Chovanec","Jakubec","Janík","Jánoš","Jánošík","Kalinčiak","Karas","Kmeť","Kolesár","Konečný","Kopecký","Kováčik","Kozák","Krajčí","Král","Kráľ","Križan","Kubica","Kubík","Kuchar","Kuchár","Lacko","Lehotský","Lipták","Mach","Macek","Majer","Marček","Masár","Mihálik","Michalík","Mikuláš","Mináč","Mráz","Mrázik","Nemec","Novák","Oravec","Pavlík","Petráš","Poliak","Polák","Porubský","Rusnák","Sedlák","Slovák","Sokol","Straka","Škriniar","Štefánik","Šulc","Valko","Vavro","Zeman","Žiak"],
+            },
+            "Rumunia": {
+                first: ["Andrei","Mihai","Alexandru","Cristian","Daniel","Ionuț","Bogdan","Vlad","Ștefan","George","Robert","Raul","Darius","Denis","David","Adrian","Alin","Anton","Cătălin","Cezar","Claudiu","Constantin","Cornel","Cosmin","Cristi","Doru","Dragoș","Dumitru","Emil","Eugen","Florin","Gabi","Gelu","Gheorghe","Grigore","Ilie","Ioan","Ion","Laurențiu","Liviu","Lucian","Marian","Marius","Mihail","Mircea","Nicolae","Octavian","Petre","Radu","Răzvan","Remus","Sergiu","Silviu","Sorin","Teodor","Traian","Valentin","Vasile","Viorel","Virgil"],
+                last: ["Popescu","Ionescu","Popa","Stan","Dumitru","Stoica","Gheorghe","Constantin","Marin","Voicu","Florea","Dobre","Munteanu","Călin","Cacina","Pop","Radu","Matei","Barbu","Nistor","Rusu","Roman","Moldovan","Lungu","Cristea","Ivan","Toma","Ștefan","Preda","Anghel","Enache","Sava","Nicolae","Diaconu","Dumitrescu","Georgescu","Marinescu","Mihai","Neagu","Oprea","Pavel","Petrescu","Sandu","Tudor","Vasile","Zamfir","Bălan","Bogdan","Bucur","Ciobanu","Cojocaru","Danciu","Dobre","Dumitrache","Filip","Grigore","Iancu","Ilie","Iordache","Lazăr","Manole","Mihalache","Moise","Moldoveanu","Moraru","Năstase","Olaru","Panaite","Pascu","Păun","Petre","Pintea","Popovici","Sava","Sorin","Stancu","Tănase","Toader","Ungureanu","Vasilescu","Zaharia"],
+            },
+            "Turcja": {
+                first: ["Fatih","Muhammed","Emre","Ahmet","Mert","Burak","Cem","Barış","Efe","Kaan","Onur","Serkan","Tolga","Umuthan","Yiğit","Abdullah","Adem","Adnan","Ali","Alper","Arda","Arif","Aslan","Atakan","Aykut","Ayhan","Baran","Batuhan","Bekir","Berat","Berk","Bilal","Bora","Cemal","Cengiz","Cihat","Çağlar","Çetin","Deniz","Doğan","Doruk","Ege","Ekrem","Emir","Emrah","Engin","Enes","Erdal","Erdem","Eren","Erkan","Erol","Ertuğrul","Faruk","Ferdi","Ferhat","Fevzi","Fırat","Gökhan","Gürkan","Hakan","Halil","Hamza","Hasan","Hayri","Hikmet","Hüseyin","İbrahim","İlhan","İsmail","Kadir","Kemal","Kerem","Koray","Kubilay","Levent","Mahmut","Mehmet","Melih","Mete","Metin","Mithat","Murat","Mustafa","Necati","Nuri","Oğuz","Okan","Orhan","Osman","Ömer","Özgür","Ramazan","Recep","Rıza","Sabri","Sadık","Salih","Sedat","Selim","Serdar","Sinan","Süleyman","Şahin","Şükrü","Tahir","Tarık","Tayfun","Tufan","Tuncay","Turgut","Uğur","Ufuk","Volkan","Yasin","Yavuz","Yusuf","Zeki","Ziya"],
+                last: ["İpcioğlu","Bedir","Yılmaz","Demir","Kaya","Çelik","Şahin","Yıldız","Aydın","Öztürk","Arslan","Doğan","Kılıç","Aslan","Koç","Kurt","Özdemir","Erdoğan","Yıldırım","Özkan","Aksoy","Ateş","Avcı","Bal","Balcı","Başar","Bayram","Bozkurt","Bulut","Büyük","Çakır","Çetin","Çiftçi","Demirci","Deniz","Duman","Ekinci","Erdem","Ergün","Eroğlu","Gül","Güler","Güneş","Güngör","Gürbüz","Işık","Kahraman","Kaplan","Kara","Karaca","Karagöz","Karataş","Keskin","Koca","Koçak","Korkmaz","Köse","Küçük","Mutlu","Öz","Özcan","Özden","Özer","Polat","Sarı","Şen","Şimşek","Taş","Tekin","Toprak","Turan","Türk","Uçar","Ulusoy","Ünal","Ünlü","Yalçın","Yavuz","Yücel","Yüksel"],
+            },
+            "Korea Południowa": {
+                first: ["Sunwoong","Heung Chul","Min-Kyu","Ji-Won","Seong-Hoon","Dong-Hyun","Jun-Ho","Yong-Jin","Ho-Seong","Chang-Min","Tae-Hwan","Sung-Bin","Jae-Hyun","Woo-Jin","Hyun-Woo","Min-Jun","Ji-Hoon","Seung-Min","Dong-Wook","Jin-Woo","Sang-Hoon","Young-Ho","Kyung-Min","Sung-Min","Tae-Yang","Jae-Min","Seok-Hyun","Dae-Hyun","Byung-Ho","Jong-Su","Hyun-Jin","Chang-Ho","Won-Ho","Jae-Won","Sung-Ho","Dong-Jin","Kyung-Ho","Young-Jun","Tae-Woo","Seung-Hyun","Jin-Ho","Sang-Woo","Min-Ho","Ji-Ho","Dong-Ha","Yong-Ho","Seong-Min","Jae-Ho","Tae-Ho","Sung-Woo","Hyun-Seok","Ji-Min","Woo-Sung","Seung-Jae","Jun-Young","Yong-Joon","Ho-Jin","Chang-Woo","Tae-Jun","Sung-Jae","Jae-Sung","Min-Seok","Ji-Sung","Hyun-Tae","Woo-Hyuk","Seung-Woo","Dong-Ho","Jin-Woong","Sang-Hyun","Young-Min","Kyung-Soo","Sung-Jin","Tae-Hyun"],
+                last: ["Kim","Lee","Park","Choi","Jung","Kang","Cho","Yoon","Jang","Lim","Han","Oh","Seo","Shin","Kwon","Hwang","Ahn","Song","Yoo","Hong","Jeon","Ko","Moon","Yang","Son","Baek","Bae","Cha","Chae","Chin","Chu","Ha","Heo","Hyun","Jin","Joo","Ki","Koo","Ku","Kwak","Kye","Ma","Min","Myung","Nam","Noh","Paek","Pyo","Ryu","Shim","Sim","Sin","So","Suh","Tak","Won","Yeom","Yeon","Yim","Yun","Chung","Chun","Do","Gil","Gim","Goo","Gwon","Huh","Hyeon","Jeong","Ji","Jo","Ju","Kil","Kyung","Myung","Paek","Pyo","Shim","Sin","Suh","Tak","Yeom","Yeon","Yim"],
+            },
+            "Chiny": {
+                first: ["Qiwu","Weijie","Jian","Wei","Hao","Lei","Yang","Feng","Ming","Jun","Peng","Tao","Xin","Bo","Chao","An","Bai","Bing","Chang","Cheng","Chi","Chong","Da","Dan","Dong","Fang","Gang","Guang","Gui","Guo","Hai","Han","Heng","Hong","Hua","Huan","Hui","Ji","Jia","Jin","Jing","Kai","Kang","Ke","Kun","Liang","Lin","Long","Meng","Ning","Ping","Qi","Qian","Qiang","Qing","Quan","Rui","Shan","Shang","Shao","Shen","Sheng","Shi","Shu","Shun","Tian","Ting","Wan","Wen","Wu","Xi","Xia","Xian","Xiang","Xiao","Xie","Xing","Xiong","Xu","Xuan","Xun","Yan","Yao","Yi","Yin","Ying","Yong","You","Yu","Yuan","Yue","Yun","Zan","Zeng","Zhan","Zhen","Zheng","Zhi","Zhong","Zhou","Zhu","Zhuang","Zi","Zong","Zuo"],
+                last: ["Song","Zhen","Wang","Li","Zhang","Liu","Chen","Yang","Huang","Zhao","Wu","Zhou","Xu","Sun","Ma","Zhu","Hu","Guo","He","Gao","Lin","Luo","Zheng","Liang","Xie","Tang","Han","Feng","Deng","Cao","Peng","Zeng","Xiao","Tian","Dong","Pan","Yuan","Cai","Jiang","Du","Ye","Cheng","Su","Lu","Ding","Ren","Shen","Yao","Jiang","Cui","Zhong","Tan"],
+            }
+        };
+        const pool = namePools[countryName] || namePools["Austria"];
+        const fn = pool.first[Math.floor(Math.random() * pool.first.length)];
+        const ln = pool.last[Math.floor(Math.random() * pool.last.length)];
+        return `${fn} ${ln}`;
+    }
+
+    getPointsTable(cycle) {
+        if (cycle === 'PK') {
+            return [100, 80, 60, 50, 45, 40, 36, 32, 29, 26, 24, 22, 20, 18, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,1];
+        } else {
+            return [100, 80, 60, 50, 45, 40, 36, 32, 29, 26, 24, 22, 20, 18, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+        }
+    }
+
+    processEndOfSeason() {
+        const retired = [];
+        const newJumpers = [];
+        const formChanges = [];
+
+        this.jumpers.forEach(j => {
+            if (j.retired) return;
+            j.age = (j.age || 20) + 1;
+            let retireChance = 0.003;
+            if (j.age >= 38) retireChance += 0.20;
+            else if (j.age >= 36) retireChance += 0.10;
+            else if (j.age >= 34) retireChance += 0.05;
+            else if (j.age >= 32) retireChance += 0.02;
+            else if (j.age <= 24) retireChance += 0.002;
+            if (j.form < 0.84) retireChance += 0.025;
+            if (j.skillBase < 64 && j.age > 29) retireChance += 0.03;
+            if (j.injurySeverity === "poważna") retireChance += 0.07;
+            const legends = ["Stefan Kraft", "Ryōyū Kobayashi", "Piotr Żyła", "Dawid Kubacki", "Andreas Wellinger", "Karl Geiger", "Simon Ammann", "Domen Prevc"];
+            if (legends.includes(j.name) && j.age < 37) retireChance *= 0.4;
+            if (Math.random() < retireChance) {
+                j.retired = true;
+                j.active = false;
+                j.squadPK = false;
+                j.squadTeam = false;
+                let reason;
+                if (j.age >= 36) reason = `Naturalne zakończenie kariery w wieku ${j.age} lat`;
+                else if (j.injurySeverity === "poważna") reason = "Poważna kontuzja uniemożliwiająca kontynuację";
+                else if (j.form < 0.84) reason = "Długotrwały spadek formy i motywacji";
+                else if (j.age <= 25) reason = "Wczesne zakończenie (kontuzje / decyzja osobista)";
+                else reason = "Chęć skupienia się na życiu prywatnym i rodzinie";
+                j.retirementReason = reason;
+                retired.push({ name: j.name, flag: j.flag, age: j.age, reason: j.retirementReason, skill: j.skillBase });
+            }
+        });
+
+        this.jumpers.forEach(j => {
+            if (j.retired) return;
+            const oldForm = j.form;
+            const change = (Math.random() - 0.48) * 0.16;
+            j.form = Math.max(0.78, Math.min(1.22, Number((j.form + change).toFixed(2))));
+            if (j.age >= 32 && Math.random() < 0.30) j.skillBase = Math.max(55, j.skillBase - (1 + Math.floor(Math.random() * 2)));
+            else if (j.age <= 22 && Math.random() < 0.25) j.skillBase = Math.min(96, j.skillBase + (1 + Math.floor(Math.random() * 2)));
+            if (Math.abs(j.form - oldForm) > 0.04) {
+                formChanges.push({ name: j.name, flag: j.flag, old: (oldForm * 100).toFixed(0), neu: (j.form * 100).toFixed(0), better: j.form > oldForm });
+            }
+        });
+
+        const newCount = 4 + Math.floor(Math.random() * 5);
+
+        const coreCountries = [
+            { country: "Austria", flag: "🇦🇹", weight: 10 }, { country: "Niemcy", flag: "🇩🇪", weight: 10 },
+            { country: "Norwegia", flag: "🇳🇴", weight: 10 }, { country: "Słowenia", flag: "🇸🇮", weight: 10 },
+            { country: "Japonia", flag: "🇯🇵", weight: 9 }, { country: "Polska", flag: "🇵🇱", weight: 9 },
+            { country: "Szwajcaria", flag: "🇨🇭", weight: 8 }, { country: "Finlandia", flag: "🇫🇮", weight: 8 },
+            { country: "Francja", flag: "🇫🇷", weight: 7 }, { country: "USA", flag: "🇺🇸", weight: 7 },
+            { country: "Włochy", flag: "🇮🇹", weight: 6 }, { country: "Czechy", flag: "🇨🇿", weight: 6 },
+            { country: "Estonia", flag: "🇪🇪", weight: 5 }, { country: "Kazachstan", flag: "🇰🇿", weight: 4 },
+            { country: "Kanada", flag: "🇨🇦", weight: 5 }
+        ];
+        // Zmniejszone wagi dla egzotycznych krajów (rzadsze pojawianie)
+        const exoticCountries = [
+            { country: "Łotwa", flag: "🇱🇻", weight: 1 }, { country: "Litwa", flag: "🇱🇹", weight: 1 },
+            { country: "Węgry", flag: "🇭🇺", weight: 1 }, { country: "Chorwacja", flag: "🇭🇷", weight: 1 },
+            { country: "Serbia", flag: "🇷🇸", weight: 1 }, { country: "Holandia", flag: "🇳🇱", weight: 1 },
+            { country: "Belgia", flag: "🇧🇪", weight: 1 }, { country: "Wielka Brytania", flag: "🇬🇧", weight: 1 },
+            { country: "Szwecja", flag: "🇸🇪", weight: 2 }, { country: "Dania", flag: "🇩🇰", weight: 1 },
+            { country: "Argentyna", flag: "🇦🇷", weight: 1 }, { country: "Australia", flag: "🇦🇺", weight: 1 },
+            { country: "Brazylia", flag: "🇧🇷", weight: 1 }, { country: "Hiszpania", flag: "🇪🇸", weight: 1 },
+            { country: "Grecja", flag: "🇬🇷", weight: 1 }, { country: "Islandia", flag: "🇮🇸", weight: 1 },
+            { country: "Irlandia", flag: "🇮🇪", weight: 1 }, { country: "Nowa Zelandia", flag: "🇳🇿", weight: 1 },
+            { country: "RPA", flag: "🇿🇦", weight: 1 }, { country: "Ukraina", flag: "🇺🇦", weight: 1 },
+            { country: "Słowacja", flag: "🇸🇰", weight: 1 }, { country: "Rumunia", flag: "🇷🇴", weight: 1 },
+            { country: "Turcja", flag: "🇹🇷", weight: 1 }, { country: "Korea Południowa", flag: "🇰🇷", weight: 1 },
+            { country: "Chiny", flag: "🇨🇳", weight: 1 }
+        ];
+
+        const pickCountry = () => {
+            // Zmniejszone prawdopodobieństwo egzotycznego kraju z 20% do 8%
+            const useExotic = Math.random() < 0.08;
+            let pool = useExotic ? [...exoticCountries] : [...coreCountries];
+            pool.forEach(c => {
+                const countryJumpers = this.jumpers.filter(j => j.countryName === c.country && !j.retired);
+                if (countryJumpers.length > 0) {
+                    const bestJumper = countryJumpers.reduce((best, j) => j.pointsWC > best.pointsWC ? j : best, countryJumpers[0]);
+                    if (bestJumper.pointsWC > 200) c.weight *= 2.5;
+                    else if (bestJumper.pointsWC > 100) c.weight *= 1.8;
+                    else if (bestJumper.pointsWC > 50) c.weight *= 1.3;
+                    if (useExotic && bestJumper.pointsWC > 50) c.weight *= 1.5;
+                }
+            });
+            const totalWeight = pool.reduce((s, c) => s + c.weight, 0);
+            let r = Math.random() * totalWeight;
+            for (const c of pool) {
+                r -= c.weight;
+                if (r <= 0) return c;
+            }
+            return pool[0];
+        };
+
+        for (let i = 0; i < newCount; i++) {
+            const c = pickCountry();
+            const name = this.generateNameForCountry(c.country);
+            const isExotic = exoticCountries.some(e => e.country === c.country);
+            let skill;
+            const roll = Math.random();
+            if (isExotic) {
+                // Skoczkowie z egzotycznych krajów są słabsi
+                if (roll < 0.01) skill = 75 + Math.floor(Math.random() * 8);
+                else if (roll < 0.06) skill = 65 + Math.floor(Math.random() * 8);
+                else if (roll < 0.30) skill = 55 + Math.floor(Math.random() * 8);
+                else skill = 45 + Math.floor(Math.random() * 10);
+            } else {
+                if (roll < 0.04) skill = 86 + Math.floor(Math.random() * 8);
+                else if (roll < 0.16) skill = 76 + Math.floor(Math.random() * 7);
+                else if (roll < 0.45) skill = 67 + Math.floor(Math.random() * 7);
+                else skill = 58 + Math.floor(Math.random() * 8);
+            }
+            const age = 17 + Math.floor(Math.random() * 6);
+            const chars = this.getJumperCharacteristics(name);
+            const pb = this.getDefaultPersonalBest(name, skill);
+            const newJ = {
+                id: this.nextJumperId++,
+                name: name,
+                country: `${c.flag} ${c.country}`,
+                countryName: c.country,
+                flag: c.flag,
+                active: false,
+                squadPK: true,
+                squadTeam: false,
+                pointsWC: 0,
+                pointsPK: 0,
+                skillBase: skill,
+                form: Number((0.90 + Math.random() * 0.16).toFixed(2)),
+                age: age,
+                retired: false,
+                retirementReason: null,
+                injuryWeeks: 0,
+                injuryName: null,
+                injurySeverity: null,
+                chars: chars,
+                personalBest: pb,
+                history: [],
+                generated: true
+            };
+            this.jumpers.push(newJ);
+            newJumpers.push({ name: newJ.name, flag: newJ.flag, age: newJ.age, skill: newJ.skillBase, country: newJ.countryName });
+        }
+
+        this.jumpers.forEach(j => {
+            j.pointsWC = 0;
+            j.pointsPK = 0;
+            j.history = [];
+            if (j.injuryWeeks > 0) {
+                j.injuryWeeks = Math.max(0, j.injuryWeeks - 8);
+                if (j.injuryWeeks <= 0) { j.injuryName = null; j.injurySeverity = null; }
+            }
+        });
+        this.teamStandings = {};
+        this.pkTeamStandings = {};
+
+        this.seasonYearStart += 1;
+        this.seasonLabel = `${this.seasonYearStart}/${this.seasonYearStart + 1}`;
+        this.updateSeasonLabels();
+        this.nationalChampionshipsPlayed = {};
+
+        if (this.selectedMode === 'real') this.calendar = this.createRealCalendar();
+        else {
+            this.calendar = this.customSelectedHills.map((hill, idx) => ({
+                id: idx, city: hill.city, flag: hill.flag, country: hill.country || "", cycle: hill.cycle || "PŚ",
+                type: hill.type, hill: hill.hill, hs: hill.hs || 140,
+                defaultGate: hill.defaultGate || 12, status: "pending", results: []
+            }));
+        }
+        this.activeCompetitionIndex = 0;
+        this.phase = "QUAL";
+        this.currentList = [];
+        this.currentIndex = 0;
+
+        this.saveGame();
+        this.showSeasonEndModal(retired, newJumpers, formChanges);
+    }
+
+    showSeasonEndModal(retired, newJumpers, formChanges) {
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+
+        let retiredHtml = retired.length === 0
+            ? `<div style="color:var(--text-muted); padding:4px 0;">Nikt nie zakończył kariery.</div>`
+            : retired.map(r => `<div class="season-end-item"><strong>${r.flag} ${r.name}</strong> (${r.age} lat, skill ${r.skill})<br><span style="color:var(--danger);">→ ${r.reason}</span></div>`).join("");
+
+        let newHtml = newJumpers.length === 0
+            ? `<div style="color:var(--text-muted); padding:4px 0;">Brak nowych skoczków.</div>`
+            : newJumpers.map(n => `<div class="season-end-item"><strong>${n.flag} ${n.name}</strong> · ${n.age} lat · skill <strong style="color:var(--accent-blue-light);">${n.skill}</strong> (${n.country})</div>`).join("");
+
+        let formHtml = formChanges.slice(0, 10).map(f => `<div class="season-end-item">${f.flag} ${f.name}: ${f.old}% → <strong style="color:${f.better ? 'var(--success-light)' : 'var(--danger)'};">${f.neu}%</strong></div>`).join("") || `<div style="color:var(--text-muted);">Forma stabilna u większości.</div>`;
+
+        content.innerHTML = `
+            <div class="modal-title">🏁 Koniec sezonu ${this.seasonYearStart - 1}/${this.seasonYearStart}</div>
+            <div class="modal-text">Witamy w sezonie <strong>${this.seasonLabel}</strong>!</div>
+            <div style="font-size:8px; font-weight:800; color:var(--text-muted); margin-bottom:3px;">🏁 ZAKOŃCZENIA KARIER</div>
+            <div class="season-end-list">${retiredHtml}</div>
+            <div style="font-size:8px; font-weight:800; color:var(--text-muted); margin-bottom:3px;">🌟 NOWI SKOCZKOWIE</div>
+            <div class="season-end-list">${newHtml}</div>
+            <div style="font-size:8px; font-weight:800; color:var(--text-muted); margin-bottom:3px;">📈 ZMIANY FORMY (przykłady)</div>
+            <div class="season-end-list" style="max-height:16vh;">${formHtml}</div>
+            <div class="modal-buttons">
+                <button class="modal-btn" style="background:var(--accent-blue); color:white;" onclick="app.closeGeneralModal(); app.renderAll(); app.switchTab('home', document.querySelectorAll('.nav-item')[0]);">
+                    ▶ ROZPOCZNIJ SEZON ${this.seasonLabel}
+                </button>
+            </div>
+        `;
+        modal.classList.add("show");
+    }
+
+    switchTab(tabId, element) {
+        document.querySelectorAll(".view-section").forEach(el => el.classList.remove("active"));
+        const target = this.getElement(`view-${tabId}`);
+        if (target) target.classList.add("active");
+        document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+        if (element) element.classList.add("active");
+        if (tabId === "standings") this.renderStandings();
+        if (tabId === "squads") this.renderSquadsManagement();
+        if (tabId === "home") { this.renderCalendar(); this.updateHomeCard(); }
+        if (tabId === "live") this.updateLiveInterface();
+    }
+
+    switchStandingsTab(tabType) {
+        this.currentStandingsTab = tabType;
+        const btnInd = this.getElement("tab-btn-individual");
+        const btnTeam = this.getElement("tab-btn-team");
+        const btnPkInd = this.getElement("tab-btn-pk-ind");
+        const btnPkTeam = this.getElement("tab-btn-pk-team");
+        const viewInd = this.getElement("standings-individual-view");
+        const viewTeam = this.getElement("standings-team-view");
+        const viewPkInd = this.getElement("standings-pk-individual-view");
+        const viewPkTeam = this.getElement("standings-pk-team-view");
+        const hint = this.getElement("standings-hint");
+        [btnInd, btnTeam, btnPkInd, btnPkTeam].forEach(b => { if(b) b.classList.remove("active"); });
+        [viewInd, viewTeam, viewPkInd, viewPkTeam].forEach(v => { if(v) v.style.display = "none"; });
+        if (tabType === 'individual') { if (btnInd) btnInd.classList.add("active"); if (viewInd) viewInd.style.display = "block"; if (hint) hint.style.display = "block"; }
+        else if (tabType === 'team') { if (btnTeam) btnTeam.classList.add("active"); if (viewTeam) viewTeam.style.display = "block"; if (hint) hint.style.display = "none"; }
+        else if (tabType === 'pk_individual') { if (btnPkInd) btnPkInd.classList.add("active"); if (viewPkInd) viewPkInd.style.display = "block"; if (hint) hint.style.display = "block"; }
+        else if (tabType === 'pk_team') { if (btnPkTeam) btnPkTeam.classList.add("active"); if (viewPkTeam) viewPkTeam.style.display = "block"; if (hint) hint.style.display = "none"; }
+        this.renderStandings();
+    }
+
+    renderAll() {
+        this.renderCalendar();
+        this.renderSquadsManagement();
+        this.renderStandings();
+        this.updateHomeCard();
+        this.updateHomeStats();
+        this.updateLiveInterface();
+        this.updateSeasonLabels();
+    }
+
+    updateHomeStats() {
+        const finished = this.calendar.filter(e => e.status === "finished" || e.status === "cancelled").length;
+        const totalPoints = this.jumpers.reduce((sum, j) => sum + Number(j.pointsWC || 0), 0);
+        const active = this.jumpers.filter(j => j.active && !j.retired && j.injuryWeeks === 0).length;
+        const evEl = this.getElement("home-stat-events");
+        const ptEl = this.getElement("home-stat-points");
+        const actEl = this.getElement("home-stat-active");
+        if (evEl) evEl.innerText = finished;
+        if (ptEl) ptEl.innerText = totalPoints;
+        if (actEl) actEl.innerText = active;
+    }
+
+    renderCalendar() {
+        const tbody = this.getElement("calendar-table-body");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        this.calendar.forEach((event, index) => {
+            const tr = document.createElement("tr");
+            if (index === this.activeCompetitionIndex) tr.classList.add("active-event");
+            let actionHtml = "";
+            if (event.status === "finished") {
+                tr.classList.add("calendar-clickable");
+                tr.onclick = () => app.openArchivedResultsModal(index);
+                actionHtml = `<span class="badge-finished"><span>🏆</span> Wyniki</span>`;
+            } else if (event.status === "cancelled") {
+                tr.classList.add("calendar-clickable");
+                tr.onclick = () => app.openArchivedResultsModal(index);
+                actionHtml = `<span class="badge-cancelled"><span>🚫</span> Odwołany</span>`;
+            } else if (index === this.activeCompetitionIndex) {
+                actionHtml = `<button class="btn-small" onclick="event.stopPropagation(); app.startCompetition(${index})">START</button>`;
+            } else actionHtml = `<span style="font-size:7px; color:var(--text-muted);">Oczekuje</span>`;
+            let cycleBadge = `<span class="badge-cykl">PŚ</span>`;
+            if (event.cycle === 'PK') cycleBadge = `<span class="badge-pk">PK</span>`;
+            if (event.cycle === 'TCS') cycleBadge = `<span class="badge-cykl" style="background:rgba(139,92,246,.2); color:#c084fc;">TCS</span>`;
+            if (event.cycle === 'MK') cycleBadge = `<span class="badge-nat">MK</span>`;
+            if (event.type === 'team') cycleBadge += ` <span class="badge-team">Team</span>`;
+            tr.innerHTML = `<td><span>${event.flag || '📍'}</span> <strong>${event.city}</strong></td><td>${cycleBadge}</td><td>${event.hill}</td><td>${actionHtml}</td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    openArchivedResultsModal(index) {
+        const ev = this.calendar[index];
+        if (!ev) return;
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+        if (ev.status === "cancelled") {
+            content.innerHTML = `<div class="modal-title">🚫 Konkurs Odwołany: ${ev.flag || ''} ${ev.city} (${ev.hill})</div><div class="modal-text">Konkurs odwołany przez jury. Brak punktów.</div><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button></div>`;
+            modal.classList.add("show");
+            return;
+        }
+        const isTeam = ev.type === 'team';
+        let rowsHtml = "";
+        (ev.results || []).forEach((res, i) => {
+            if (isTeam) {
+                rowsHtml += `<div style="padding:6px 0; border-bottom:1px solid rgba(51,65,85,.3); font-size:8px;"><div style="display:flex; justify-content:space-between; align-items:flex-start;"><div style="flex:1;"><strong>${i + 1}. ${res.flag || ''} ${res.name}</strong><div style="margin-top:3px; color:var(--text-muted); font-size:7px; line-height:1.4;">${res.distance || '-'}</div></div><span style="font-weight:800; color:var(--accent-blue-light); white-space:nowrap; margin-left:8px;">${res.totalScore} pkt</span></div></div>`;
+            } else {
+                rowsHtml += `<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding:4px 0; border-bottom:1px solid rgba(51,65,85,.3); font-size:8px; align-items:center;"><span style="font-weight:800;">${i + 1}.</span><span>${res.flag || ''} ${res.name}</span><span style="color:var(--text-muted);">${res.distance || '-'}</span><span style="text-align:right; font-weight:800; color:var(--accent-blue-light);">${res.totalScore} pkt</span></div>`;
+            }
+        });
+        content.innerHTML = `<div class="modal-title">🏆 Wyniki: ${ev.flag || ''} ${ev.city} (${ev.hill}) [${ev.cycle}]${isTeam ? ' · Drużynowy' : ''}</div><div class="modal-text">Oficjalne końcowe rezultaty.</div><div style="max-height: 45vh; overflow-y: auto; margin-bottom: 8px; background:var(--bg-input); padding:6px; border-radius:5px;">${!isTeam ? `<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding-bottom:4px; border-bottom:1px solid var(--border-color); font-size:7px; font-weight:800; color:var(--text-muted);"><span>#</span><span>Skoczek</span><span>Odległość</span><span style="text-align:right;">Nota</span></div>` : ''}${rowsHtml}</div><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button></div>`;
+        modal.classList.add("show");
+    }
+
+    openJumperHistoryModal(jumperId) {
+        const jumper = this.jumpers.find(j => j.id === jumperId);
+        if (!jumper) return;
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+        const chars = jumper.chars || this.getJumperCharacteristics(jumper.name);
+        const pb = jumper.personalBest ? jumper.personalBest.toFixed(1) : "Brak";
+        const genTag = jumper.generated ? `<span class="generated-tag">SKOCZEK WYGENEROWANY</span>` : "";
+        let historyRows = "";
+        if (!jumper.history || jumper.history.length === 0) historyRows = `<div style="text-align:center; padding: 10px; color:var(--text-muted); font-size:8px;">Brak ukończonych konkursów.</div>`;
+        else {
+            jumper.history.forEach(h => {
+                const ptsDisplay = h.points > 0 ? `+${h.points} pkt` : "0 pkt";
+                historyRows += `<div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding:4px 0; border-bottom:1px solid rgba(51,65,85,.3); font-size:8px; align-items:center;"><span style="font-weight:800; color:var(--accent-blue-light);">${h.rank}.</span><span>${h.flag || ''} <strong>${h.city}</strong> (${h.cycle})</span><span style="color:var(--text-muted); text-align:right;">${h.rank}.</span><span style="text-align:right; font-weight:800; color:${h.points > 0 ? 'var(--success-light)' : 'var(--text-muted)'};">${ptsDisplay}</span></div>`;
+            });
+        }
+        let injuryInfo = "";
+        if (jumper.injuryWeeks > 0 && jumper.injuryName) injuryInfo = `<div style="margin-top:4px; color:var(--danger); font-weight:700;">🏥 ${jumper.injuryName} (${jumper.injurySeverity || '?'}) · pauza ${jumper.injuryWeeks} kon.</div>`;
+        let retiredInfo = "";
+        if (jumper.retired) retiredInfo = `<div style="margin-top:4px; color:var(--danger); font-weight:700;">🏁 Zakończył karierę (${jumper.age} lat): ${jumper.retirementReason || "—"}</div>`;
+        content.innerHTML = `<div class="modal-title">📊 ${jumper.flag} ${jumper.name}${genTag}</div><div class="modal-text" style="margin-bottom:6px;">Wiek: ${jumper.age || "?"} · Skill: ${jumper.skillBase} · Forma: ${(jumper.form * 100).toFixed(0)}%${injuryInfo}${retiredInfo}</div><div style="background: rgba(37,99,235,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: 5px; padding: 5px 7px; margin-bottom: 6px; font-size: 7.5px;"><div style="display:flex; justify-content:space-between; margin-bottom: 3px; border-bottom:1px solid rgba(59,130,246,0.15); padding-bottom:3px;"><span>🚀 <strong style="color:var(--accent-blue-light);">Rekord życiowy:</strong></span><strong style="color:var(--warning-light);">${pb} m</strong></div><div style="margin-bottom: 2px;">✅ <strong style="color:var(--success-light);">Zalety:</strong> ${chars.pos}</div><div>❌ <strong style="color:var(--danger);">Wady:</strong> ${chars.neg}</div></div><div style="font-size: 8px; font-weight: 800; margin-bottom: 4px; color:var(--text-muted);">HISTORIA:</div><div style="max-height: 30vh; overflow-y: auto; margin-bottom: 8px; background:var(--bg-input); padding:6px; border-radius:5px;"><div style="display:grid; grid-template-columns: 24px 1fr 50px 50px; padding-bottom:4px; border-bottom:1px solid var(--border-color); font-size:7px; font-weight:800; color:var(--text-muted);"><span>Poz</span><span>Konkurs</span><span style="text-align:right;">Lokata</span><span style="text-align:right;">Pkt</span></div>${historyRows}</div><div style="font-size:8px; color:var(--text-muted); margin-bottom: 6px; display:flex; justify-content:space-between;"><span>PŚ: <strong style="color:var(--accent-blue-light);">${jumper.pointsWC}</strong></span><span>PK: <strong style="color:var(--warning-light);">${jumper.pointsPK}</strong></span></div><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button></div>`;
+        modal.classList.add("show");
+    }
+
+    closeGeneralModal() {
+        const modal = document.getElementById("general-modal");
+        if (modal) modal.classList.remove("show");
+    }
+
+    // === ŁADNIEJSZY FILTR KRAJÓW ===
+    openFilterModal() {
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+        // Zbierz unikalne kraje z liczbą skoczków
+        const countryMap = {};
+        this.jumpers.filter(j => !j.retired).forEach(j => {
+            if (!countryMap[j.countryName]) countryMap[j.countryName] = { flag: j.flag, count: 0, activeCount: 0 };
+            countryMap[j.countryName].count++;
+            if (j.active && j.injuryWeeks === 0) countryMap[j.countryName].activeCount++;
+        });
+        const countries = Object.keys(countryMap).sort((a, b) => a.localeCompare(b));
+        let cardsHtml = "";
+        countries.forEach(c => {
+            const data = countryMap[c];
+            const isSelected = this.activeStandingsFilter === c;
+            cardsHtml += `<div class="filter-country-card ${isSelected ? 'selected' : ''}" onclick="app.setFilter('${c}')">
+                <div class="filter-country-flag">${data.flag}</div>
+                <div class="filter-country-info">
+                    <div class="filter-country-name">${c}</div>
+                    <div class="filter-country-count">${data.count} skoczków · ${data.activeCount} PŚ</div>
+                </div>
+            </div>`;
+        });
+        const allActive = !this.activeStandingsFilter;
+        content.innerHTML = `
+            <div class="filter-modal-header">
+                <div class="filter-modal-title">🌍 Filtruj po kraju</div>
+                <button class="filter-modal-close" onclick="app.closeGeneralModal()">✕</button>
+            </div>
+            <button class="filter-clear-btn ${allActive ? 'active' : ''}" onclick="app.setFilter(null)">${allActive ? '✓ ' : ''}Wszystkie kraje</button>
+            <div class="filter-countries-grid">${cardsHtml}</div>
+        `;
+        modal.classList.add("show");
+    }
+
+    setFilter(countryName) {
+        this.activeStandingsFilter = countryName;
+        this.saveGame();
+        this.closeGeneralModal();
+        this.renderStandings();
+    }
+
+    clearFilter() {
+        this.activeStandingsFilter = null;
+        this.saveGame();
+        this.renderStandings();
+    }
+
+    updateHomeCard() {
+        if (!this.isSeasonFinished()) {
+            const currentStatus = this.calendar[this.activeCompetitionIndex]?.status;
+            if (currentStatus !== "pending") {
+                this.findNextPendingEvent();
+            }
+        }
+        
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        const title = this.getElement("home-event-title");
+        const name = this.getElement("home-event-name");
+        const desc = this.getElement("home-event-desc");
+        const button = this.getElement("home-main-btn");
+        const hill = this.getElement("home-hill");
+        const cycle = this.getElement("home-cycle");
+        const weather = this.getElement("home-weather");
+
+        if (this.isSeasonFinished()) {
+            if (title) title.innerHTML = `<span>🏁</span><span>Koniec sezonu ${this.seasonLabel}</span>`;
+            if (name) name.innerText = "Wszystkie konkursy rozegrane";
+            if (desc) desc.innerText = "Przejdź do kolejnego sezonu.";
+            if (button) { button.innerText = "▶ PRZEJDŹ DO KOLEJNEGO SEZONU"; button.disabled = false; button.onclick = () => this.processEndOfSeason(); }
+            if (hill) hill.innerText = "—";
+            if (cycle) cycle.innerText = "Koniec";
+            if (weather) weather.innerText = "—";
+            return;
+        }
+        if (!currentEv || currentEv.status === "finished" || currentEv.status === "cancelled") {
+            if (title) title.innerHTML = `<span>🏆</span><span>Koniec Sezonu</span>`;
+            if (name) name.innerText = "Wszystkie konkursy rozegrane";
+            if (desc) desc.innerText = "Sprawdź klasyfikację generalną.";
+            if (button) { button.innerText = "ZAWODY ZAKOŃCZONE"; button.disabled = true; button.onclick = () => this.startCompetition(); }
+            if (hill) hill.innerText = "—";
+            if (cycle) cycle.innerText = "Koniec";
+            if (weather) weather.innerText = "—";
+            return;
+        }
+        const isTeam = currentEv.type === 'team';
+        if (title) title.innerHTML = `<span>${currentEv.flag || '📍'}</span><span>${currentEv.city} · ${currentEv.hill}</span>`;
+        if (desc) desc.innerText = isTeam ? "Konkurs Drużynowy · 2 serie (top 8 do finału)" : `Cykl: ${currentEv.cycle} · Kwalifikacje + Finał`;
+        if (button) { button.innerText = "▶ ROZPOCZNIJ ZAWODY NA ŻYWO"; button.disabled = false; button.onclick = () => this.startCompetition(); }
+        if (hill) hill.innerText = currentEv.hill;
+        if (cycle) cycle.innerText = isTeam ? "PŚ Drużynowy" : `${currentEv.cycle} Indywidualny`;
+        if (weather) weather.innerText = currentEv.weatherName || "☀️ Stabilne";
+    }
+
+    // ===== POWOŁANIA KADROWE =====
+    renderSquadsManagement() {
+        const container = this.getElement("squads-container");
+        if (!container) return;
+        container.innerHTML = "";
+        const countries = {};
+        this.jumpers.filter(j => !j.retired).forEach(j => {
+            if (!countries[j.country]) countries[j.country] = [];
+            countries[j.country].push(j);
+        });
+        Object.keys(countries).forEach(country => {
+            const list = countries[country];
+            const activeCount = list.filter(j => j.active && j.injuryWeeks === 0).length;
+            const pkCount = list.filter(j => j.squadPK && j.injuryWeeks === 0).length;
+            const teamCount = list.filter(j => j.squadTeam && j.injuryWeeks === 0).length;
+            if (this.openCountriesState[country] === undefined) this.openCountriesState[country] = country.includes("Polska");
+            const isOpen = this.openCountriesState[country];
+            const accordion = document.createElement("div");
+            accordion.className = `country-accordion ${isOpen ? "open" : ""}`;
+            const header = document.createElement("div");
+            header.className = "country-accordion-header";
+            header.onclick = () => { this.openCountriesState[country] = !this.openCountriesState[country]; this.renderSquadsManagement(); };
+            header.innerHTML = `<div class="country-title-area"><span>${country}</span></div><div class="country-meta-badges"><span class="country-count">PŚ: ${activeCount} · PK: ${pkCount} · Team: <strong style="color:${teamCount >= 4 ? 'var(--success-light)' : 'var(--danger)'};">${teamCount}/4</strong></span><span class="accordion-arrow">▼</span></div>`;
+            accordion.appendChild(header);
+            const body = document.createElement("div");
+            body.className = "country-accordion-body";
+            list.forEach(jumper => {
+                let formIcon = jumper.form > 1.08 ? "🔥" : (jumper.form < 0.92 ? "🌧️" : "☀️");
+                let injuryText;
+                if (jumper.injuryWeeks > 0) {
+                    const sevColor = jumper.injurySeverity === "poważna" ? "var(--danger)" : (jumper.injurySeverity === "średnia" ? "var(--warning-light)" : "var(--text-muted)");
+                    injuryText = `<span style="color:${sevColor}; font-weight:800;">🏥 ${jumper.injuryName || "Kontuzja"} (${jumper.injurySeverity || "?"}) · pauza ${jumper.injuryWeeks} kon.</span>`;
+                } else injuryText = `Wiek: ${jumper.age || "?"} · Skill: ${jumper.skillBase} · PB: ${jumper.personalBest ? jumper.personalBest.toFixed(1) : '-'}m`;
+                const item = document.createElement("div");
+                item.className = "jumper-list-item";
+                // Kliknięcie w lewą część (nazwisko) otwiera historię
+                item.innerHTML = `<div class="jumper-left" onclick="app.openJumperHistoryModal(${jumper.id})" title="Kliknij, aby zobaczyć historię"><span class="jumper-number">#${jumper.id}</span><div class="jumper-meta-info"><span class="jumper-name-text">${formIcon} ${jumper.name}</span><span class="jumper-pot-text">${injuryText}</span></div></div><div class="jumper-toggles-group"><span class="toggle-switch ${jumper.active && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}" onclick="app.toggleJumperActive(${jumper.id}, event)">${jumper.injuryWeeks > 0 ? "🏥" : "PŚ"}</span><span class="toggle-switch toggle-pk ${jumper.squadPK && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}" onclick="app.toggleJumperPK(${jumper.id}, event)">PK</span><span class="toggle-switch toggle-team ${jumper.squadTeam && jumper.injuryWeeks === 0 ? "toggle-on" : "toggle-off"}" onclick="app.toggleJumperTeam(${jumper.id}, event)">Team</span></div>`;
+                body.appendChild(item);
+            });
+            accordion.appendChild(body);
+            container.appendChild(accordion);
+        });
+    }
+
+    toggleJumperActive(id, event) {
+        if(event) event.stopPropagation();
+        const jumper = this.jumpers.find(item => item.id === id);
+        if (!jumper || jumper.retired || jumper.injuryWeeks > 0) {
+            if (jumper && jumper.injuryWeeks > 0) this.showToast("Zawodnik jest kontuzjowany!", "error");
+            if (jumper && jumper.retired) this.showToast("Zawodnik zakończył karierę!", "error");
+            return;
+        }
+        jumper.active = !jumper.active;
+        this.renderSquadsManagement();
+        this.updateHomeStats();
+        this.saveGame();
+    }
+    toggleJumperPK(id, event) {
+        if(event) event.stopPropagation();
+        const jumper = this.jumpers.find(item => item.id === id);
+        if (!jumper || jumper.retired || jumper.injuryWeeks > 0) return;
+        jumper.squadPK = !jumper.squadPK;
+        this.renderSquadsManagement();
+        this.saveGame();
+    }
+    toggleJumperTeam(id, event) {
+        if(event) event.stopPropagation();
+        const jumper = this.jumpers.find(item => item.id === id);
+        if (!jumper || jumper.retired || jumper.injuryWeeks > 0) return;
+        jumper.squadTeam = !jumper.squadTeam;
+        this.renderSquadsManagement();
+        this.saveGame();
+    }
+
+    // ===== MISTRZOSTWA KRAJU =====
+    getCountriesWithAtLeastTwoJumpers() {
+        const counts = {};
+        this.jumpers.forEach(j => {
+            if (!j.retired && !j.injuryWeeks) {
+                if (!counts[j.countryName]) counts[j.countryName] = { flag: j.flag, count: 0 };
+                counts[j.countryName].count++;
+            }
+        });
+        return Object.keys(counts).filter(c => counts[c].count >= 2).map(c => ({ name: c, flag: counts[c].flag, count: counts[c].count }));
+    }
+
+    getHillsForCountry(countryName) {
+        const ownHills = this.availableHillsPool.filter(h => h.country === countryName);
+        if (ownHills.length > 0) {
+            return { hills: ownHills, hasOwn: true };
+        }
+        return { hills: [...this.availableHillsPool], hasOwn: false };
+    }
+
+    openNationalChampionshipsModal() {
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+        const countries = this.getCountriesWithAtLeastTwoJumpers();
+        if (countries.length === 0) {
+            this.showToast("Brak krajów z min. 2 zdrowymi skoczkami!", "error");
+            return;
+        }
+        let countryButtons = countries.map(c => {
+            const playedZima = this.nationalChampionshipsPlayed[`${c.name}_zima`];
+            const playedLato = this.nationalChampionshipsPlayed[`${c.name}_lato`];
+            return `<div style="margin-bottom:6px; padding:6px; background:var(--bg-input); border-radius:5px; border:1px solid var(--border-color);">
+                <div style="font-weight:800; font-size:9px; margin-bottom:4px;">${c.flag} ${c.name} (${c.count} skoczków)</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+                    <button class="nat-champ-btn ${playedZima ? 'played' : ''}" onclick="app.startNationalChampionship('${c.name}', 'zima')" ${playedZima ? 'disabled' : ''}>${playedZima ? '✅ Zima' : '❄️ Zima'}</button>
+                    <button class="nat-champ-btn ${playedLato ? 'played' : ''}" onclick="app.startNationalChampionship('${c.name}', 'lato')" ${playedLato ? 'disabled' : ''}>${playedLato ? '✅ Lato' : '☀️ Lato'}</button>
+                </div>
+            </div>`;
+        }).join("");
+        content.innerHTML = `<div class="modal-title">🏆 Mistrzostwa Kraju</div>
+            <div class="modal-text">Wybierz kraj i porę roku. Mistrzostwa można rozegrać <strong>raz w sezonie zimowym</strong> i <strong>raz w sezonie letnim</strong> dla każdego kraju. Wymaganych jest min. 2 zdrowych skoczków z danego kraju.</div>
+            <div style="max-height:50vh; overflow-y:auto; margin-bottom:8px;">${countryButtons}</div>
+            <div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ZAMKNIJ</button></div>`;
+        modal.classList.add("show");
+    }
+
+    startNationalChampionship(countryName, seasonType) {
+        const key = `${countryName}_${seasonType}`;
+        if (this.nationalChampionshipsPlayed[key]) {
+            this.showToast(`Mistrzostwa ${countryName} (${seasonType}) już rozegrane w tym sezonie!`, "error");
+            return;
+        }
+        const jumpers = this.jumpers.filter(j => j.countryName === countryName && !j.retired && j.injuryWeeks === 0);
+        if (jumpers.length < 2) {
+            this.showToast(`Potrzebujesz min. 2 zdrowych skoczków z ${countryName}!`, "error");
+            return;
+        }
+        const result = this.getHillsForCountry(countryName);
+        const hills = result.hills;
+        const hasOwn = result.hasOwn;
+        if (hills.length === 0) {
+            this.showToast(`Brak skoczni w bazie!`, "error");
+            return;
+        }
+        const modal = document.getElementById("general-modal");
+        const content = document.getElementById("general-modal-content");
+        if (!modal || !content) return;
+        let sortedHills = [...hills];
+        if (hasOwn) {
+            sortedHills.sort((a, b) => (a.country === countryName ? -1 : 1) - (b.country === countryName ? -1 : 1));
+        }
+        let hillButtons = sortedHills.map(h => {
+            const isForeign = h.country !== countryName;
+            const hostInfo = isForeign ? `<span class="hill-host-country">(gospodarz: ${h.country})</span>` : "";
+            return `<div class="hill-choice-item" onclick="app.confirmNationalChampionship('${countryName}', '${seasonType}', ${h.id})"><span>${h.flag} <strong>${h.city}</strong> (${h.hill})${hostInfo}</span><span style="font-size:7px; color:var(--text-muted);">${h.cycle} · HS ${h.hs}</span></div>`;
+        }).join("");
+        let headerInfo = hasOwn
+            ? `🏔️ Skocznie w kraju <strong>${countryName}</strong>:`
+            : `🌍 Kraj <strong>${countryName}</strong> nie ma własnej skoczni w bazie – wybierz dowolną skocznię z całej bazy:`;
+        content.innerHTML = `<div class="modal-title">🏆 Mistrzostwa ${countryName} – ${seasonType === 'zima' ? '❄️ Zima' : '☀️ Lato'}</div>
+            <div class="modal-text">${headerInfo}</div>
+            <div class="hill-choice-list">${hillButtons}</div>
+            <div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="app.closeGeneralModal()">ANULUJ</button></div>`;
+        modal.classList.add("show");
+    }
+
+    confirmNationalChampionship(countryName, seasonType, hillId) {
+        const hill = this.availableHillsPool.find(h => h.id === hillId);
+        if (!hill) return;
+        const jumpers = this.jumpers.filter(j => j.countryName === countryName && !j.retired && j.injuryWeeks === 0);
+        if (jumpers.length < 2) {
+            this.showToast(`Potrzebujesz min. 2 zdrowych skoczków z ${countryName}!`, "error");
+            return;
+        }
+        const key = `${countryName}_${seasonType}`;
+        const eventId = this.calendar.length + 1000;
+        const newEvent = {
+            id: eventId,
+            city: hill.city,
+            flag: hill.flag,
+            country: countryName,
+            cycle: "MK",
+            type: "individual",
+            hill: hill.hill,
+            hs: hill.hs,
+            defaultGate: hill.defaultGate || 12,
+            status: "pending",
+            results: [],
+            isNationalChampionship: true,
+            nationalCountry: countryName,
+            nationalSeason: seasonType
+        };
+        this.calendar.push(newEvent);
+        this.nationalChampionshipsPlayed[key] = true;
+        this.saveGame();
+        this.closeGeneralModal();
+        const idx = this.calendar.length - 1;
+        this.startNationalChampionshipCompetition(idx, jumpers, newEvent);
+    }
+
+    startNationalChampionshipCompetition(eventIndex, jumpers, event) {
+        this.activeCompetitionIndex = eventIndex;
+        this.generateJury();
+        this.currentIndex = 0;
+        this.assignWeatherProfile(event.city);
+        this.updateWindConditions(true);
+        const hs = event.hs || 140;
+        let baseStandardGate = hs > 200 ? 14 : (hs > 130 ? 12 : 9);
+        let windGateAdjustment = 0;
+        if (this.windSpeed < -0.8) windGateAdjustment = Math.round(Math.abs(this.windSpeed) * 0.7);
+        else if (this.windSpeed > 1.2) windGateAdjustment = -Math.round(this.windSpeed * 0.5);
+        let juryRandomShift = Math.floor(Math.random() * 3) - 1;
+        this.baseGate = Math.max(5, Math.min(30, baseStandardGate + windGateAdjustment + juryRandomShift));
+        this.currentGate = this.baseGate;
+
+        this.phase = "ROUND1";
+        let list = jumpers.map(j => ({
+            id: j.id,
+            name: j.name,
+            pureName: j.name,
+            country: j.country,
+            countryName: j.countryName,
+            flag: j.flag,
+            isTeamEntry: false,
+            skillBase: j.skillBase,
+            form: j.form,
+            distance: "-",
+            round1Distance: "-",
+            round1Score: 0,
+            wind: "+0.0 pkt",
+            comp: "+0.0 pkt",
+            roundScore: 0,
+            totalScore: 0,
+            notes: Array(5).fill({val: "18.0", flag: "🏳️"}),
+            rank: "-",
+            rankingPoints: j.pointsWC || 0
+        }));
+        list.sort((a,b) => a.rankingPoints - b.rankingPoints);
+        this.currentList = list;
+
+        const button = this.getElement("btn-next-jump");
+        if (button) { button.disabled = false; button.innerText = "PUŚĆ KOLEJNEGO SKOCZKA"; }
+        const simBtn = this.getElement("btn-simulate-series");
+        if (simBtn) simBtn.style.display = "flex";
+        const status = this.getElement("competition-status-badge");
+        if (status) { status.innerText = "1. Seria (MK)"; status.style.color = "var(--warning)"; }
+        const hillBadge = this.getElement("live-hill-display");
+        if (hillBadge) hillBadge.innerText = `${event.city} · ${event.hill} [MK ${event.nationalSeason === 'zima' ? 'Zima' : 'Lato'}] (Belka: ${this.baseGate})`;
+        event.weatherName = this.currentWeatherProfile.name;
+        this.saveGame();
+        this.switchTab("live", document.querySelectorAll(".nav-item")[1]);
+        this.updateLiveInterface();
+        this.showToast(`🏆 Mistrzostwa ${event.nationalCountry} – ${event.nationalSeason}!`, "success");
+    }
+
+    // ===== KONKURS =====
+    startCompetition(index = -1) {
+        if (this.isSeasonFinished()) { this.processEndOfSeason(); return; }
+        
+        if (index === -1) {
+            const currentStatus = this.calendar[this.activeCompetitionIndex]?.status;
+            if (currentStatus === "finished" || currentStatus === "cancelled") {
+                this.findNextPendingEvent();
+            }
+            if (this.activeCompetitionIndex >= this.calendar.length || 
+                this.calendar[this.activeCompetitionIndex]?.status !== "pending") {
+                this.findNextPendingEvent();
+            }
+        } else {
+            this.activeCompetitionIndex = index;
+        }
+        
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        if (!currentEv || currentEv.status === "finished" || currentEv.status === "cancelled") return;
+        if (currentEv.isNationalChampionship) {
+            const jumpers = this.jumpers.filter(j => j.countryName === currentEv.nationalCountry && !j.retired && j.injuryWeeks === 0);
+            if (jumpers.length < 2) { this.showToast(`Potrzebujesz min. 2 zdrowych skoczków z ${currentEv.nationalCountry}!`, "error"); return; }
+            this.startNationalChampionshipCompetition(this.activeCompetitionIndex, jumpers, currentEv);
+            return;
+        }
+        this.jumpers.forEach(j => {
+            if (j.injuryWeeks > 0) {
+                j.injuryWeeks--;
+                if (j.injuryWeeks <= 0) { j.injuryWeeks = 0; j.injuryName = null; j.injurySeverity = null; }
+            }
+        });
+        const isTeamEvent = currentEv.type === 'team';
+        const isPK = currentEv.cycle === 'PK';
+        if (isTeamEvent) {
+            const countryGroups = {};
+            this.jumpers.forEach(j => {
+                if (j.squadTeam && !j.retired && j.injuryWeeks === 0) {
+                    if (!countryGroups[j.country]) countryGroups[j.country] = [];
+                    countryGroups[j.country].push(j);
+                }
+            });
+            let playerTeamCount = (countryGroups["🇵🇱 Polska"] || countryGroups["Polska"] || []).length;
+            if (playerTeamCount < 4) {
+                this.showToast("Potrzebujesz min. 4 zdrowych skoczków w Team!", "error");
+                this.switchTab("squads", document.querySelectorAll(".nav-item")[2]);
+                return;
+            }
+        } else {
+            const activePool = this.jumpers.filter(j => (isPK ? j.squadPK : j.active) && !j.retired && j.injuryWeeks === 0);
+            if (activePool.length === 0) {
+                this.showToast(`Brak zdrowych skoczków w cyklu ${currentEv.cycle}!`, "error");
+                this.switchTab("squads", document.querySelectorAll(".nav-item")[2]);
+                return;
+            }
+        }
+        this.jumpers.forEach(j => {
+            if (!j.retired && j.injuryWeeks === 0) {
+                const drift = (Math.random() - 0.5) * 0.08;
+                j.form = Math.max(0.80, Math.min(1.20, (j.form || 1.0) + drift));
+            }
+        });
+        this.generateJury();
+        this.currentIndex = 0;
+        this.assignWeatherProfile(currentEv.city);
+        this.updateWindConditions(true);
+        const hs = currentEv.hs || 140;
+        let baseStandardGate = hs > 200 ? 14 : (hs > 130 ? 12 : 9);
+        let windGateAdjustment = 0;
+        if (this.windSpeed < -0.8) windGateAdjustment = Math.round(Math.abs(this.windSpeed) * 0.7);
+        else if (this.windSpeed > 1.2) windGateAdjustment = -Math.round(this.windSpeed * 0.5);
+        let juryRandomShift = Math.floor(Math.random() * 3) - 1;
+        this.baseGate = Math.max(5, Math.min(30, baseStandardGate + windGateAdjustment + juryRandomShift));
+        this.currentGate = this.baseGate;
+
+        if (isTeamEvent) {
+            this.phase = "ROUND1";
+            let teamList = [];
+            const countryGroups = {};
+            this.jumpers.forEach(j => {
+                if (j.squadTeam && !j.retired && j.injuryWeeks === 0) {
+                    if (!countryGroups[j.country]) countryGroups[j.country] = [];
+                    countryGroups[j.country].push(j);
+                }
+            });
+            Object.keys(countryGroups).forEach(country => {
+                let groupJumpers = countryGroups[country];
+                if (groupJumpers.length >= 4) {
+                    for (let roundGroup = 0; roundGroup < 4; roundGroup++) {
+                        let jumper = groupJumpers[roundGroup];
+                        if (jumper) {
+                            teamList.push({
+                                id: jumper.id, name: `${jumper.countryName} (Grupa ${roundGroup + 1})`,
+                                realJumpName: jumper.name, pureName: jumper.name,
+                                country: jumper.country, countryName: jumper.countryName, flag: jumper.flag,
+                                isTeamEntry: true, groupIndex: roundGroup + 1,
+                                skillBase: jumper.skillBase, form: jumper.form,
+                                distance: "-", round1Distance: "-", wind: "+0.0 pkt", comp: "+0.0 pkt",
+                                roundScore: 0, totalScore: 0, notes: Array(5).fill({val: "18.0", flag: "🏳️"}), rank: "-"
+                            });
+                        }
+                    }
+                }
+            });
+            teamList.sort((a,b) => a.groupIndex - b.groupIndex);
+            this.currentList = teamList;
+        } else {
+            this.phase = "QUAL";
+            let activePool = this.jumpers.filter(j => (isPK ? j.squadPK : j.active) && !j.retired && j.injuryWeeks === 0);
+            this.currentList = activePool.map(jumper => ({
+                id: jumper.id, name: jumper.name, pureName: jumper.name,
+                country: jumper.country, countryName: jumper.countryName, flag: jumper.flag,
+                isTeamEntry: false, skillBase: jumper.skillBase, form: jumper.form,
+                distance: "-", round1Distance: "-", round1Score: 0, wind: "+0.0 pkt", comp: "+0.0 pkt",
+                roundScore: 0, totalScore: 0, notes: Array(5).fill({val: "18.0", flag: "🏳️"}), rank: "-",
+                rankingPoints: isPK ? (jumper.pointsPK || 0) : (jumper.pointsWC || 0)
+            }));
+            this.currentList.sort((a, b) => a.rankingPoints - b.rankingPoints);
+        }
+
+        const button = this.getElement("btn-next-jump");
+        if (button) { button.disabled = false; button.innerText = "PUŚĆ KOLEJNEGO SKOCZKA"; }
+        const simBtn = this.getElement("btn-simulate-series");
+        if (simBtn) simBtn.style.display = "flex";
+        const status = this.getElement("competition-status-badge");
+        if (status) { status.innerText = isTeamEvent ? "1. Seria Drużynowa" : "Trwa runda"; status.style.color = "var(--warning)"; }
+        const hillBadge = this.getElement("live-hill-display");
+        if (hillBadge) hillBadge.innerText = `${currentEv.city} · ${currentEv.hill} [${currentEv.cycle}] (Belka: ${this.baseGate})`;
+        currentEv.weatherName = this.currentWeatherProfile.name;
+        this.saveGame();
+        this.switchTab("live", document.querySelectorAll(".nav-item")[1]);
+        this.updateLiveInterface();
+        this.showToast(`🏁 Start (${currentEv.cycle}) w ${currentEv.city}! Belka: ${this.baseGate}`, "success");
+    }
+
+    assignWeatherProfile(cityName) {
+        const isWindyHill = cityName.includes("Ruka") || cityName.includes("Oslo") || cityName.includes("Willingen");
+        const profiles = isWindyHill ? [
+            { name: "☀️ Stabilne warunki", volatility: 0.20, maxWind: 2.0 },
+            { name: "🌤️ Zmienne warunki", volatility: 0.50, maxWind: 3.8 },
+            { name: "💨 Silny wiatr", volatility: 0.80, maxWind: 5.5 }
+        ] : [
+            { name: "☀️ Stabilne warunki", volatility: 0.10, maxWind: 1.2 },
+            { name: "🌤️ Lekki wiatr", volatility: 0.30, maxWind: 2.5 },
+            { name: "💨 Zmienne warunki", volatility: 0.55, maxWind: 4.0 }
+        ];
+        this.currentWeatherProfile = profiles[Math.floor(Math.random() * profiles.length)];
+    }
+
+    generateJury() {
+        const flags = ["🇵🇱", "🇳🇴", "🇦🇹", "🇩🇪", "🇸🇮", "🇫🇮", "🇯🇵", "🇨🇭", "🇫🇷", "🇮🇹"];
+        this.currentJuryFlags = [];
+        for (let i = 0; i < 5; i++) {
+            let randomFlag;
+            do { randomFlag = flags[Math.floor(Math.random() * flags.length)]; }
+            while (this.currentJuryFlags.includes(randomFlag) && flags.length > 5);
+            this.currentJuryFlags.push(randomFlag);
+        }
+    }
+
+    changeGate(value) {
+        if (this.phase === "END") return;
+        this.currentGate += value;
+        if (this.currentGate < 1) this.currentGate = 1;
+        if (this.currentGate > 35) this.currentGate = 35;
+        const gate = this.getElement("current-gate");
+        if (gate) gate.innerText = this.currentGate;
+        this.updateLiveInterface();
+    }
+
+    updateWindConditions(forceNew = false) {
+        const volatility = this.currentWeatherProfile.volatility;
+        const maxWind = this.currentWeatherProfile.maxWind;
+        if (forceNew || Math.random() < volatility) {
+            let base = (Math.random() - 0.5) * maxWind;
+            if (Math.random() < 0.2) base *= 1.3;
+            this.windSpeed = Number(Math.max(-5.5, Math.min(5.5, base)).toFixed(1));
+        }
+        if (this.windSpeed > 0.5) this.windDirectionLabel = "➡️";
+        else if (this.windSpeed < -0.5) this.windDirectionLabel = "⬅️";
+        else this.windDirectionLabel = ["↗️", "↘️", "➡️", "⬅️"][Math.floor(Math.random() * 4)];
+        const indicator = this.getElement("wind-dir-indicator");
+        if (indicator) {
+            const abs = Math.abs(this.windSpeed).toFixed(1);
+            const label = this.windSpeed > 0.15 ? "HEAD" : (this.windSpeed < -0.15 ? "TAIL" : "SIDE");
+            indicator.innerText = `${this.windDirectionLabel} ${abs} m/s (${label})`;
+            indicator.style.color = this.windSpeed > 0.3 ? "var(--success-light)" : (this.windSpeed < -0.3 ? "var(--danger)" : "#60a5fa");
+        }
+        if (!forceNew && this.phase !== "END") {
+            if (this.windSpeed > 2.2 && Math.random() < 0.4 && this.currentGate > 4) {
+                this.currentGate -= 1;
+                this.showToast(`⚖️ Jury obniżyło belkę na ${this.currentGate}!`, "info");
+            } else if (this.windSpeed < -2.0 && Math.random() < 0.4 && this.currentGate < 30) {
+                this.currentGate += 1;
+                this.showToast(`⚖️ Jury podwyższyło belkę na ${this.currentGate}!`, "info");
+            }
+        }
+        this.updateLiveInterface();
+    }
+
+    performNextJump() {
+        if (this.phase === "END") return;
+        if (!this.currentList || this.currentList.length === 0) return;
+        if (this.currentIndex >= this.currentList.length) { this.advancePhase(); return; }
+        if (Math.random() > 0.35) this.updateWindConditions(false);
+        this.executeSingleJumpForIndex(this.currentIndex);
+        this.currentIndex++;
+        this.saveGame();
+        this.updateLiveInterface();
+        if (this.currentIndex >= this.currentList.length) {
+            const currentEv = this.calendar[this.activeCompetitionIndex];
+            const isTeam = currentEv && currentEv.type === 'team';
+            const isNat = currentEv && currentEv.isNationalChampionship;
+            if (isNat) {
+                if (this.phase === "ROUND1") this.finishNationalRoundOne();
+                else if (this.phase === "ROUND2") this.finishNationalCompetition();
+            } else if (isTeam) {
+                if (this.phase === "ROUND1") this.finishTeamRoundOne();
+                else this.finishCompetition();
+            } else if (this.phase === "ROUND2") this.finishCompetition();
+            else {
+                const btn = this.getElement("btn-next-jump");
+                if (btn) btn.innerText = "PRZEJDŹ DO KOLEJNEJ FAZY";
+            }
+        }
+    }
+
+    simulateRemainingSeries() {
+        if (this.phase === "END") return;
+        while (this.currentIndex < this.currentList.length) {
+            if (Math.random() > 0.4) this.updateWindConditions(false);
+            this.executeSingleJumpForIndex(this.currentIndex);
+            this.currentIndex++;
+        }
+        this.saveGame();
+        this.updateLiveInterface();
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        const isTeam = currentEv && currentEv.type === 'team';
+        const isNat = currentEv && currentEv.isNationalChampionship;
+        if (isNat) {
+            if (this.phase === "ROUND1") this.finishNationalRoundOne();
+            else if (this.phase === "ROUND2") this.finishNationalCompetition();
+        } else if (isTeam) {
+            if (this.phase === "ROUND1") this.finishTeamRoundOne();
+            else this.finishCompetition();
+        } else if (this.phase === "ROUND2") this.finishCompetition();
+        else {
+            const btn = this.getElement("btn-next-jump");
+            if (btn) btn.innerText = "PRZEJDŹ DO KOLEJNEJ FAZY";
+        }
+        this.showToast("⚡ Symulacja zakończona!", "success");
+    }
+
+    cancelCurrentSeries() {
+        if (this.phase === "END") return;
+        if (this.phase === "QUAL") { this.showToast("⚠️ Nie można odwołać kwalifikacji.", "error"); return; }
+        if (this.phase === "ROUND2") {
+            this.phase = "ROUND1";
+            this.currentIndex = this.currentList.length;
+            this.showToast("❌ Odwołano finał – wyniki z 1. serii.", "info");
+            this.finishCompetition();
+        } else if (this.phase === "ROUND1") this.cancelEntireCompetition();
+    }
+
+    cancelEntireCompetition() {
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        if (!currentEv) return;
+        currentEv.status = "cancelled";
+        currentEv.results = [];
+        this.phase = "END";
+        this.findNextPendingEvent();
+        const btn = this.getElement("btn-next-jump");
+        if (btn) { btn.innerText = "KONKURS ODWOŁANY"; btn.disabled = true; }
+        const simBtn = this.getElement("btn-simulate-series");
+        if (simBtn) simBtn.style.display = "none";
+        const status = this.getElement("competition-status-badge");
+        if (status) { status.innerText = "Odwołany"; status.style.color = "var(--danger)"; }
+        this.saveGame();
+        this.updateLiveInterface();
+        this.renderCalendar();
+        this.renderStandings();
+        this.updateHomeCard();
+        this.updateHomeStats();
+        this.showToast("🚫 Konkurs odwołany!", "error");
+    }
+
+    executeSingleJumpForIndex(idx) {
+        const jumper = this.currentList[idx];
+        const currentEv = this.calendar[this.activeCompetitionIndex] || this.calendar[0];
+        const hsLimit = currentEv.hs || 140;
+        const gateDiff = this.baseGate - this.currentGate;
+        const gateFactor = hsLimit > 200 ? 4.2 : (hsLimit > 140 ? 3.2 : 2.6);
+        const gatePoints = Number((gateDiff * gateFactor).toFixed(1));
+        const meterValue = hsLimit > 200 ? 1.2 : (hsLimit > 130 ? 1.8 : 2.0);
+        const windEffectMeters = this.windSpeed * (hsLimit - 36) / 20;
+        let sideFactor = ["↗️","↘️","↖️","↙️"].includes(this.windDirectionLabel) ? (0.6 + Math.random() * 0.2) : 1.0;
+        let dirMultiplier = this.windSpeed < 0 ? 1.15 : 1.0;
+        const effectiveWindMeters = windEffectMeters * sideFactor * dirMultiplier;
+        const windPointsVal = Number((-effectiveWindMeters * meterValue).toFixed(1));
+        let effectiveSkill = (jumper.skillBase * jumper.form) - 75;
+        let isDomen = (jumper.name || "").includes("Domen Prevc") || (jumper.realJumpName || "").includes("Domen Prevc");
+        if (hsLimit > 200 && isDomen) effectiveSkill += 14;
+        let targetBase = hsLimit > 200 ? 218 : (hsLimit - 15);
+        let baseDist = targetBase + (effectiveSkill * (hsLimit > 200 ? (isDomen ? 0.75 : 0.55) : 0.35)) - (gateDiff * 0.85);
+        const windDistEffect = effectiveWindMeters * 0.90;
+        const randomFactor = (Math.random() - 0.5) * 6.0;
+        let rawDist = baseDist + randomFactor + windDistEffect;
+        let isFall = false;
+        let fallThreshold = hsLimit > 200 ? hsLimit + 12 : hsLimit + 4;
+        if (rawDist > fallThreshold || (Math.random() < 0.03 && jumper.form < 0.90) || (Math.abs(this.windSpeed) > 4.5 && Math.random() < 0.08)) {
+            isFall = true;
+            rawDist = Math.min(rawDist, hsLimit + (hsLimit > 200 ? 15 : 5));
+            if (Math.random() < 0.14) {
+                const injury = this.pickRandomInjury();
+                const originalJumper = this.jumpers.find(j => j.id === jumper.id);
+                if (originalJumper) {
+                    originalJumper.injuryWeeks = injury.weeks;
+                    originalJumper.injuryName = injury.name;
+                    originalJumper.injurySeverity = injury.severity;
+                    this.showToast(`🏥 ${jumper.realJumpName || jumper.name}: ${injury.name} (${injury.severity}) – pauza ${injury.weeks} kon.!`, "error");
+                }
+            }
+        }
+        let distVal = Math.round(rawDist * 2) / 2;
+        const originalJumperRef = this.jumpers.find(j => j.id === jumper.id);
+        if (originalJumperRef && (!originalJumperRef.personalBest || distVal > originalJumperRef.personalBest)) originalJumperRef.personalBest = distVal;
+        const notes = [];
+        let styleBonus = jumper.skillBase > 85 ? 1.0 : (jumper.skillBase > 75 ? 0.5 : 0.0);
+        if (isFall) styleBonus = -9.0;
+        for (let i = 0; i < 5; i++) {
+            let baseStep = 18.0 + styleBonus + ((Math.floor(Math.random() * 5) - 2) * 0.5);
+            if (isFall) baseStep = 8.0 + (Math.floor(Math.random() * 5) * 0.5);
+            notes.push({ val: Math.max(3.0, Math.min(20.0, baseStep)).toFixed(1), flag: this.currentJuryFlags[i] });
+        }
+        const sortedNotes = notes.map(n => Number(n.val)).sort((a,b) => a-b);
+        const judgesSum = sortedNotes[1] + sortedNotes[2] + sortedNotes[3];
+        const baseK = hsLimit > 200 ? 200 : (hsLimit > 130 ? 120 : 95);
+        const distancePoints = (distVal - baseK) * meterValue;
+        const finalJumpScore = Number((60 + distancePoints + judgesSum + windPointsVal + gatePoints).toFixed(1));
+        jumper.distance = `${distVal.toFixed(1)} m${isFall ? " 💥" : ""}`;
+        if (this.phase === "ROUND1" || this.phase === "QUAL") jumper.round1Distance = jumper.distance;
+        jumper.wind = `${windPointsVal >= 0 ? "+" : ""}${windPointsVal.toFixed(1)} pkt`;
+        jumper.comp = `${gatePoints >= 0 ? "+" : ""}${gatePoints.toFixed(1)} pkt`;
+        jumper.notes = notes;
+        jumper.roundScore = finalJumpScore;
+        if (this.phase === "ROUND2") jumper.totalScore = Number((Number(jumper.round1Score || 0) + finalJumpScore).toFixed(1));
+        else jumper.totalScore = finalJumpScore;
+    }
+
+    advancePhase() {
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        const isTeam = currentEv && currentEv.type === 'team';
+        const isNat = currentEv && currentEv.isNationalChampionship;
+        if (isNat) {
+            if (this.phase === "ROUND1") this.finishNationalRoundOne();
+            else if (this.phase === "ROUND2") this.finishNationalCompetition();
+            return;
+        }
+        if (isTeam) {
+            if (this.phase === "ROUND1") this.finishTeamRoundOne();
+            else this.finishCompetition();
+            return;
+        }
+        if (this.phase === "QUAL") this.finishQualification();
+        else if (this.phase === "ROUND1") this.finishRoundOne();
+    }
+
+    finishNationalRoundOne() {
+        this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+        this.currentList.reverse();
+        this.currentList.forEach(j => {
+            j.round1Distance = j.distance;
+            j.round1Score = Number(j.totalScore);
+            j.distance = "-"; j.wind = "+0.0 pkt"; j.comp = "+0.0 pkt"; j.roundScore = 0;
+            j.totalScore = j.round1Score;
+            j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+        });
+        this.phase = "ROUND2";
+        this.currentIndex = 0;
+        this.currentGate = this.baseGate;
+        this.updateWindConditions(true);
+        this.saveGame();
+        this.updateLiveInterface();
+        this.showToast("🏆 1. seria MK OK. Startuje Finał!", "success");
+    }
+
+    finishNationalCompetition() {
+        this.phase = "END";
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+        this.currentList.forEach((j, index) => { j.calculatedRank = index + 1; });
+        if (currentEv) {
+            currentEv.status = "finished";
+            currentEv.results = this.currentList.map((j, idx) => ({ id: j.id, name: j.name, flag: j.flag, country: j.country, distance: j.distance, totalScore: j.totalScore, rank: j.calculatedRank || (idx + 1) }));
+            currentEv.results.forEach(res => {
+                const jumperObj = this.jumpers.find(item => item.id === res.id);
+                if (jumperObj) {
+                    if (!jumperObj.history) jumperObj.history = [];
+                    jumperObj.history.push({ city: currentEv.city, hill: currentEv.hill, flag: currentEv.flag, cycle: "MK", rank: res.rank, points: 0 });
+                }
+            });
+        }
+        this.findNextPendingEvent();
+        const btn = this.getElement("btn-next-jump");
+        if (btn) { btn.innerText = "MISTRZOSTWA ZAKOŃCZONE"; btn.disabled = true; }
+        const simBtn = this.getElement("btn-simulate-series");
+        if (simBtn) simBtn.style.display = "none";
+        const status = this.getElement("competition-status-badge");
+        if (status) { status.innerText = "Zakończony"; status.style.color = "var(--success)"; }
+        this.saveGame();
+        this.updateLiveInterface();
+        this.renderCalendar();
+        this.renderStandings();
+        this.updateHomeCard();
+        this.updateHomeStats();
+        this.showToast("🏆 Mistrzostwa Kraju zakończone!", "success");
+    }
+
+    finishTeamRoundOne() {
+        const teamScores = {};
+        this.currentList.forEach(j => {
+            if (!teamScores[j.countryName]) teamScores[j.countryName] = { countryName: j.countryName, flag: j.flag, totalScore: 0 };
+            teamScores[j.countryName].totalScore += Number(j.totalScore || 0);
+        });
+        let sortedTeams = Object.values(teamScores).sort((a, b) => b.totalScore - a.totalScore);
+        const advancing = sortedTeams.slice(0, Math.min(8, sortedTeams.length));
+        const advancingNames = new Set(advancing.map(t => t.countryName));
+        this.currentList = this.currentList.filter(j => advancingNames.has(j.countryName));
+        this.currentList.forEach(j => {
+            j.round1Distance = j.distance;
+            j.round1Score = Number(j.totalScore || 0);
+            j.distance = "-"; j.wind = "+0.0 pkt"; j.comp = "+0.0 pkt"; j.roundScore = 0;
+            j.totalScore = j.round1Score;
+            j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+        });
+        this.currentList.reverse();
+        this.phase = "ROUND2";
+        this.currentIndex = 0;
+        this.currentGate = this.baseGate;
+        this.updateWindConditions(true);
+        this.saveGame();
+        this.updateLiveInterface();
+        this.showToast(`🏆 1. seria drużynowa OK. Awans: ${advancing.length} zespołów. Finał!`, "success");
+    }
+
+    finishQualification() {
+        this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        if (this.currentList.length > 50) {
+            const cut = this.currentList.slice(50);
+            cut.forEach((j, i) => {
+                const original = this.jumpers.find(item => item.id === j.id);
+                if (original) {
+                    if (!original.history) original.history = [];
+                    original.history.push({ city: currentEv.city, hill: currentEv.hill, flag: currentEv.flag, cycle: currentEv.cycle, rank: 51 + i, points: 0 });
+                }
+            });
+            this.currentList = this.currentList.slice(0, 50);
+        }
+        this.phase = "ROUND1";
+        this.currentIndex = 0;
+        this.currentGate = this.baseGate;
+        this.currentList.forEach(j => {
+            j.distance = "-"; j.wind = "+0.0 pkt"; j.comp = "+0.0 pkt"; j.roundScore = 0; j.totalScore = 0;
+            j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+        });
+        this.currentList.sort((a, b) => a.rankingPoints - b.rankingPoints);
+        this.updateWindConditions(true);
+        this.saveGame();
+        this.updateLiveInterface();
+        this.showToast("✅ Kwalifikacje OK (50). Startuje 1. seria!", "success");
+    }
+
+    finishRoundOne() {
+        this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        if (this.currentList.length > 30) {
+            const cut = this.currentList.slice(30);
+            cut.forEach((j, i) => {
+                const original = this.jumpers.find(item => item.id === j.id);
+                if (original) {
+                    if (!original.history) original.history = [];
+                    original.history.push({ city: currentEv.city, hill: currentEv.hill, flag: currentEv.flag, cycle: currentEv.cycle, rank: 31 + i, points: 0 });
+                }
+            });
+            this.currentList = this.currentList.slice(0, 30);
+        }
+        this.currentList.reverse();
+        this.currentList.forEach(j => {
+            j.round1Distance = j.distance;
+            j.round1Score = Number(j.totalScore);
+            j.distance = "-"; j.wind = "+0.0 pkt"; j.comp = "+0.0 pkt"; j.roundScore = 0;
+            j.totalScore = j.round1Score;
+            j.notes = Array(5).fill({val: "18.0", flag: "🏳️"});
+        });
+        this.phase = "ROUND2";
+        this.currentIndex = 0;
+        this.currentGate = this.baseGate;
+        this.updateWindConditions(true);
+        this.saveGame();
+        this.updateLiveInterface();
+        this.showToast("🏆 1. seria OK. Startuje Finał!", "success");
+    }
+
+    finishCompetition() {
+        this.phase = "END";
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        const isTeam = currentEv && currentEv.type === 'team';
+        const isPK = currentEv && currentEv.cycle === 'PK';
+        if (isTeam) {
+            const teamScores = {};
+            this.currentList.forEach(j => {
+                if (!teamScores[j.country]) teamScores[j.country] = { country: j.country, countryName: j.countryName, flag: j.flag, totalScore: 0, jumpersDetail: [] };
+                teamScores[j.country].totalScore += Number(j.totalScore || 0);
+                teamScores[j.country].jumpersDetail.push({ name: j.realJumpName || j.pureName || j.name, d1: j.round1Distance || "-", d2: j.distance || "-" });
+            });
+            let aggregatedTeams = Object.values(teamScores).sort((a,b) => b.totalScore - a.totalScore);
+            this.currentList = aggregatedTeams.map((t, idx) => {
+                const distLines = t.jumpersDetail.map(jd => {
+                    if (jd.d1 !== "-" && jd.d2 !== "-") return `${jd.name}: ${jd.d1} / ${jd.d2}`;
+                    return `${jd.name}: ${jd.d2 !== "-" ? jd.d2 : jd.d1}`;
+                }).join("<br>");
+                return { id: idx, name: `${t.flag} ${t.countryName}`, country: t.country, countryName: t.countryName, flag: t.flag, distance: distLines, totalScore: Number(t.totalScore.toFixed(1)), rank: idx + 1 };
+            });
+            const teamWcTable = [400, 350, 300, 250, 200, 150, 100, 50];
+            this.currentList.forEach((teamRes, idx) => {
+                if (idx < teamWcTable.length) {
+                    if (!this.teamStandings[teamRes.countryName]) this.teamStandings[teamRes.countryName] = { country: teamRes.countryName, flag: teamRes.flag, points: 0 };
+                    this.teamStandings[teamRes.countryName].points += teamWcTable[idx];
+                }
+            });
+        } else {
+            this.currentList.sort((a,b) => Number(b.totalScore) - Number(a.totalScore));
+            this.currentList.forEach((j, index) => { j.calculatedRank = index + 1; });
+            this.calculatePoints(isPK);
+        }
+        if (currentEv) {
+            currentEv.status = "finished";
+            currentEv.results = this.currentList.map((j, idx) => ({ id: j.id, name: j.name, flag: j.flag, country: j.country, distance: j.distance, totalScore: j.totalScore, rank: j.calculatedRank || (idx + 1) }));
+            if (!isTeam) {
+                currentEv.results.forEach(res => {
+                    const jumperObj = this.jumpers.find(item => item.id === res.id);
+                    if (jumperObj) {
+                        if (!jumperObj.history) jumperObj.history = [];
+                        const pointsTable = this.getPointsTable(currentEv.cycle);
+                        jumperObj.history.push({ city: currentEv.city, hill: currentEv.hill, flag: currentEv.flag, cycle: currentEv.cycle, rank: res.rank, points: res.rank <= pointsTable.length ? pointsTable[res.rank - 1] : 0 });
+                    }
+                });
+            }
+        }
+        this.findNextPendingEvent();
+        const btn = this.getElement("btn-next-jump");
+        if (btn) { btn.innerText = "KONKURS ZAKOŃCZONY"; btn.disabled = true; }
+        const simBtn = this.getElement("btn-simulate-series");
+        if (simBtn) simBtn.style.display = "none";
+        const status = this.getElement("competition-status-badge");
+        if (status) { status.innerText = "Zakończony"; status.style.color = "var(--success)"; }
+        this.saveGame();
+        this.updateLiveInterface();
+        this.renderCalendar();
+        this.renderStandings();
+        this.updateHomeCard();
+        this.updateHomeStats();
+        this.showToast("🏆 Konkurs zakończony!", "success");
+    }
+
+    calculatePoints(isPK) {
+        const pointsTable = this.getPointsTable(isPK ? 'PK' : 'PŚ');
+        this.currentList.forEach((jumper, index) => {
+            if (index >= pointsTable.length) return;
+            const original = this.jumpers.find(item => item.id === jumper.id);
+            if (original) {
+                let pts = pointsTable[index];
+                if (isPK) {
+                    original.pointsPK += pts;
+                    if (!this.pkTeamStandings[original.countryName]) this.pkTeamStandings[original.countryName] = { country: original.countryName, flag: original.flag, points: 0 };
+                    this.pkTeamStandings[original.countryName].points += pts;
+                } else {
+                    original.pointsWC += pts;
+                    if (!this.teamStandings[original.countryName]) this.teamStandings[original.countryName] = { country: original.countryName, flag: original.flag, points: 0 };
+                    this.teamStandings[original.countryName].points += pts;
+                }
+            }
+        });
+    }
+
+    updateLiveInterface() {
+        const currentEv = this.calendar[this.activeCompetitionIndex];
+        const isTeam = currentEv && currentEv.type === 'team';
+        const isNat = currentEv && currentEv.isNationalChampionship;
+        let phaseTitle = isTeam ? "Konkurs Drużynowy – 1. Seria" : (isNat ? "Mistrzostwa Kraju – 1. Seria" : "Kwalifikacje");
+        if (isNat) {
+            if (this.phase === "ROUND2") phaseTitle = "Mistrzostwa Kraju – Finał";
+            if (this.phase === "END") phaseTitle = "Koniec Mistrzostw Kraju";
+        } else if (isTeam) {
+            if (this.phase === "ROUND2") phaseTitle = "Konkurs Drużynowy – Finał";
+            if (this.phase === "END") phaseTitle = "Koniec Konkursu Drużynowego";
+        } else {
+            if (this.phase === "ROUND1") phaseTitle = "1. Seria";
+            if (this.phase === "ROUND2") phaseTitle = "Finał";
+            if (this.phase === "END") phaseTitle = "Koniec Konkursu";
+        }
+        const title = this.getElement("table-title-mode");
+        if (title) title.innerText = phaseTitle;
+        const gate = this.getElement("current-gate");
+        if (gate) gate.innerText = this.currentGate;
+        const nextName = this.getElement("next-jumper-name");
+        if (this.phase !== "END" && this.currentIndex < this.currentList.length) {
+            const next = this.currentList[this.currentIndex];
+            if (isTeam) { if (nextName) nextName.innerHTML = `${next.flag || ''} <strong>${next.countryName}</strong> (${next.realJumpName})`; }
+            else { if (nextName) nextName.innerHTML = `${next.flag || ''} ${next.name}`; }
+        } else { if (nextName) nextName.innerText = "Koniec rundy"; }
+
+        let displaySorted = [];
+        if (isTeam) {
+            const liveTeamMap = {};
+            this.currentList.forEach(j => {
+                if (!liveTeamMap[j.countryName]) liveTeamMap[j.countryName] = { name: `${j.flag} ${j.countryName}`, flag: j.flag, totalScore: 0, distanceLines: [], countryName: j.countryName };
+                if (j.distance !== "-") {
+                    liveTeamMap[j.countryName].totalScore += Number(j.totalScore || 0);
+                    const jumperName = j.realJumpName || j.pureName || j.name;
+                    if (this.phase === "ROUND2" || this.phase === "END") liveTeamMap[j.countryName].distanceLines.push(`${jumperName}: ${j.round1Distance || "-"} / ${j.distance}`);
+                    else liveTeamMap[j.countryName].distanceLines.push(`${jumperName}: ${j.distance}`);
+                }
+            });
+            displaySorted = Object.values(liveTeamMap).map(t => ({ name: t.name, flag: t.flag, distance: t.distanceLines.length > 0 ? t.distanceLines.join("<br>") : "-", totalScore: Number(t.totalScore.toFixed(1)), roundScore: t.totalScore, countryName: t.countryName })).sort((a,b) => b.totalScore - a.totalScore);
+        } else displaySorted = [...this.currentList].sort((a,b) => Number(b.totalScore || 0) - Number(a.totalScore || 0));
+        displaySorted.forEach((j, idx) => j.rank = idx + 1);
+
+        const targetBox = document.getElementById("leader-target-box");
+        const targetText = document.getElementById("leader-target-text");
+        if (this.phase !== "END" && this.currentIndex < this.currentList.length && !isTeam) {
+            const leader = displaySorted.length > 0 ? displaySorted[0] : null;
+            const nextJumper = this.currentList[this.currentIndex];
+            if (leader && nextJumper) {
+                if (leader.totalScore === 0) { if (targetText) targetText.innerText = "Oczekiwanie na pierwsze skoki"; }
+                else {
+                    const pointsNeeded = Number(leader.totalScore || 0) - Number(nextJumper.totalScore || 0);
+                    if (pointsNeeded <= 0 && nextJumper.id === leader.id) { if (targetText) targetText.innerText = "Jesteś liderem!"; }
+                    else {
+                        const hsLimit = currentEv.hs || 140;
+                        const meterValue = hsLimit > 200 ? 1.2 : (hsLimit > 130 ? 1.8 : 2.0);
+                        const baseK = hsLimit > 200 ? 200 : (hsLimit > 130 ? 120 : 95);
+                        const gateDiff = this.baseGate - this.currentGate;
+                        const gateFactor = hsLimit > 200 ? 4.2 : (hsLimit > 140 ? 3.2 : 2.6);
+                        const gatePoints = Number((gateDiff * gateFactor).toFixed(1));
+                        const windEffectMeters = this.windSpeed * (hsLimit - 36) / 20;
+                        let sideFactor = ["↗️","↘️","↖️","↙️"].includes(this.windDirectionLabel) ? 0.7 : 1.0;
+                        let dirMultiplier = this.windSpeed < 0 ? 1.15 : 1.0;
+                        const windPointsVal = Number((-windEffectMeters * sideFactor * dirMultiplier * meterValue).toFixed(1));
+                        let requiredDist = baseK + ((pointsNeeded + 0.1 - 60 - 54.0 - windPointsVal - gatePoints) / meterValue);
+                        requiredDist = Math.round(requiredDist * 2) / 2;
+                        requiredDist = Math.max(hsLimit * 0.68, Math.min(hsLimit + 22, requiredDist));
+                        if (targetText) targetText.innerHTML = `Musisz skoczyć ok. <strong>${requiredDist.toFixed(1)} m</strong>`;
+                    }
+                }
+                if (targetBox) targetBox.style.display = "flex";
+            } else { if (targetBox) targetBox.style.display = "none"; }
+        } else { if (targetBox) targetBox.style.display = "none"; }
+
+        if (this.phase !== "END" && this.currentIndex > 0 && this.currentIndex <= this.currentList.length) this.displayActiveJumper(this.currentList[this.currentIndex - 1], isTeam);
+        else this.displayIdleJumper();
+        this.renderFISTable(displaySorted, isTeam);
+    }
+
+    displayActiveJumper(jumper, isTeam) {
+        const setText = (id, text) => { const el = this.getElement(id); if(el) el.innerText = text; };
+        if (isTeam) setText("live-jumper-name", `${jumper.countryName} (${jumper.realJumpName})`);
+        else setText("live-jumper-name", jumper.name);
+        setText("live-jumper-flag", jumper.flag || '🏳️');
+        setText("live-stat-dist", jumper.distance);
+        setText("live-stat-comp", jumper.comp);
+        setText("live-stat-rank", jumper.rank || "-");
+        const wind = this.getElement("live-stat-wind");
+        if (wind) {
+            wind.innerText = jumper.wind || "+0.0 pkt";
+            wind.className = `stat-value ${parseFloat(jumper.wind || 0) >= 0 ? "wind-pos" : "wind-neg"}`;
+        }
+        const judges = this.getElement("live-judges-row");
+        if (judges && Array.isArray(jumper.notes)) {
+            judges.innerHTML = "";
+            jumper.notes.forEach(note => {
+                const span = document.createElement("span");
+                span.className = "judge-badge";
+                span.innerHTML = `${note.flag} ${note.val}`;
+                judges.appendChild(span);
+            });
+        }
+    }
+
+    displayIdleJumper() {
+        const setText = (id, text) => { const el = this.getElement(id); if(el) el.innerText = text; };
+        setText("live-jumper-name", "Oczekiwanie na skok");
+        setText("live-jumper-flag", "⏳");
+        setText("live-stat-dist", "- m");
+        setText("live-stat-wind", "-");
+        setText("live-stat-comp", "-");
+        setText("live-stat-rank", "-");
+        const judges = this.getElement("live-judges-row");
+        if (judges) judges.innerHTML = `<span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span><span class="judge-badge">-</span>`;
+    }
+
+    renderFISTable(displaySorted, isTeam) {
+        const tbody = this.getElement("fis-table-body");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        displaySorted.forEach((jumper, idx) => {
+            const tr = document.createElement("tr");
+            if (this.phase !== "END" && this.currentIndex > 0 && !isTeam && this.currentList[this.currentIndex - 1] && this.currentList[this.currentIndex - 1].id === jumper.id) tr.classList.add("current-skier-row");
+            let qBadgeHtml = "";
+            if (!isTeam) {
+                if (this.phase === "QUAL" && idx < 50 && jumper.totalScore > 0) qBadgeHtml = `<span class="q-badge">q</span>`;
+                else if (this.phase === "ROUND1" && idx < 30 && jumper.totalScore > 0 && !this.calendar[this.activeCompetitionIndex]?.isNationalChampionship) qBadgeHtml = `<span class="q-badge">q</span>`;
+                else if (this.phase === "ROUND2" && jumper.totalScore > 0) qBadgeHtml = `<span class="q-badge">q</span>`;
+            }
+            let distDisplay = jumper.distance || "-";
+            if (!isTeam && (this.phase === "ROUND2" || this.phase === "END") && jumper.round1Distance && jumper.round1Distance !== "-") distDisplay = `<div class="dist-stack"><span>${jumper.round1Distance}</span><span>${jumper.distance || "-"}</span></div>`;
+            tr.innerHTML = `<td><strong>${idx + 1}.</strong></td><td>${jumper.flag || ''} <strong>${jumper.name}</strong> ${qBadgeHtml}</td><td style="font-size:7px; line-height:1.35;">${distDisplay}</td><td>${jumper.roundScore || jumper.totalScore}</td><td style="color:${parseFloat(jumper.wind || 0) >= 0 ? 'var(--success-light)' : 'var(--danger)'};">${jumper.wind || '+0.0 pkt'}</td><td><strong>${jumper.totalScore}</strong></td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // === NAPRAWIONA GENERalka Z FILTROWANIEM ===
+    renderStandings() {
+        const indBody = this.getElement("standings-body");
+        const teamBody = this.getElement("standings-team-body");
+        const pkIndBody = this.getElement("standings-pk-body");
+        const pkTeamBody = this.getElement("standings-pk-team-body");
+        const filterInfo = this.getElement("active-filter-info");
+        const filterBtn = this.getElement("filter-icon-btn");
+
+        // Pokaż/ukryj chip aktywnego filtra
+        if (filterInfo) {
+            if (this.activeStandingsFilter) {
+                const jumperWithFlag = this.jumpers.find(j => j.countryName === this.activeStandingsFilter && !j.retired);
+                const flag = jumperWithFlag ? jumperWithFlag.flag : '🏳️';
+                filterInfo.innerHTML = `<span class="filter-active-chip"><span class="chip-flag">${flag}</span> ${this.activeStandingsFilter} <button class="chip-remove" onclick="app.clearFilter()" title="Wyczyść filtr">✕</button></span>`;
+                filterInfo.style.display = "block";
+                if (filterBtn) filterBtn.classList.add("active");
+            } else {
+                filterInfo.style.display = "none";
+                if (filterBtn) filterBtn.classList.remove("active");
+            }
+        }
+
+        // Filtrujemy listy na podstawie activeStandingsFilter
+        let filteredJumpers = [...this.jumpers].filter(j => !j.retired);
+        if (this.activeStandingsFilter) {
+            filteredJumpers = filteredJumpers.filter(j => j.countryName === this.activeStandingsFilter);
+        }
+
+        if (indBody) {
+            indBody.innerHTML = "";
+            const sorted = filteredJumpers.sort((a,b) => b.pointsWC - a.pointsWC);
+            if (sorted.length === 0) indBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak zawodników</div></div>`;
+            else sorted.forEach((j, idx) => {
+                const row = document.createElement("div");
+                row.className = "standing-row";
+                row.onclick = () => app.openJumperHistoryModal(j.id);
+                row.innerHTML = `<span class="standing-position">${idx + 1}.</span><span class="standing-name">${j.flag} ${j.name}</span><span class="standing-country">${j.countryName}</span><span class="standing-points">${j.pointsWC} pkt</span>`;
+                indBody.appendChild(row);
+            });
+        }
+        if (teamBody) {
+            teamBody.innerHTML = "";
+            let sortedTeams = Object.values(this.teamStandings).sort((a,b) => b.points - a.points);
+            if (this.activeStandingsFilter) {
+                sortedTeams = sortedTeams.filter(t => t.country === this.activeStandingsFilter);
+            }
+            if (sortedTeams.length === 0) teamBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak drużyn spełniających kryteria</div></div>`;
+            else sortedTeams.forEach((t, idx) => {
+                const row = document.createElement("div");
+                row.className = "standing-row-team";
+                row.innerHTML = `<span class="standing-position">${idx + 1}.</span><span class="standing-name">${t.flag} ${t.country}</span><span class="standing-points">${t.points} pkt</span>`;
+                teamBody.appendChild(row);
+            });
+        }
+        if (pkIndBody) {
+            pkIndBody.innerHTML = "";
+            const sorted = filteredJumpers.sort((a,b) => b.pointsPK - a.pointsPK);
+            if (sorted.length === 0) pkIndBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak zawodników</div></div>`;
+            else sorted.forEach((j, idx) => {
+                const row = document.createElement("div");
+                row.className = "standing-row";
+                row.onclick = () => app.openJumperHistoryModal(j.id);
+                row.innerHTML = `<span class="standing-position">${idx + 1}.</span><span class="standing-name">${j.flag} ${j.name}</span><span class="standing-country">${j.countryName}</span><span class="standing-points" style="color:var(--warning-light);">${j.pointsPK} pkt</span>`;
+                pkIndBody.appendChild(row);
+            });
+        }
+        if (pkTeamBody) {
+            pkTeamBody.innerHTML = "";
+            let sortedPkTeams = Object.values(this.pkTeamStandings).sort((a,b) => b.points - a.points);
+            if (this.activeStandingsFilter) {
+                sortedPkTeams = sortedPkTeams.filter(t => t.country === this.activeStandingsFilter);
+            }
+            if (sortedPkTeams.length === 0) pkTeamBody.innerHTML = `<div class="empty-state"><div class="empty-state-title">Brak drużyn spełniających kryteria</div></div>`;
+            else sortedPkTeams.forEach((t, idx) => {
+                const row = document.createElement("div");
+                row.className = "standing-row-team";
+                row.innerHTML = `<span class="standing-position">${idx + 1}.</span><span class="standing-name">${t.flag} ${t.country}</span><span class="standing-points" style="color:var(--warning-light);">${t.points} pkt</span>`;
+                pkTeamBody.appendChild(row);
+            });
+        }
+    }
+
+    showToast(message, type = "info") {
+        const container = this.getElement("toast-container");
+        if (!container) return;
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = "0"; setTimeout(() => toast.remove(), 300); }, 2800);
+    }
+}
+
+let app = null;
+window.addEventListener("DOMContentLoaded", () => { app = new SkiManagerUltimatePro2026(); });
+</script>
+</body>
+</html>
